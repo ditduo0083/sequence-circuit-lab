@@ -1,0 +1,7 @@
+/* 진입 모양은 여기 한 곳에서 바꾼다. ::before의 아이콘을 작은 글로 바꿔도 링크는 같다. */
+.teacher-print,#steps a.teacher-print{display:inline-flex;align-items:center;justify-content:center;width:18px;height:20px;padding:0;border:0;border-radius:3px;background:transparent;color:inherit;opacity:.48;text-decoration:none;font:16px/1 'Segoe UI Symbol',sans-serif}
+.teacher-print::before{content:'⎙'}.teacher-print:hover,.teacher-print:focus-visible,#steps a.teacher-print:hover,#steps a.teacher-print:focus-visible{opacity:1;background:transparent;outline:1px solid currentColor}
+.hero-inner{position:relative}.hero-inner>.teacher-print{position:absolute;top:8px;right:8px}
+#steps a.teacher-print{position:fixed;transform:translateY(-50%)}
+@media(max-width:600px){#steps a.teacher-print{width:12px;font-size:13px}}
+@media print{.teacher-print,#steps a.teacher-print{display:none!important}}

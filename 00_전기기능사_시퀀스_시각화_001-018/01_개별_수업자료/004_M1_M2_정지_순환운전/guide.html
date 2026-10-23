@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>전기기능사 004 · 교사용 안내 · 시퀀스 LAB | 경성전자고등학교</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="../../favicon.png">
+  <link rel="shortcut icon" href="../../favicon.ico">
+  <style>
+    :root {
+      --primary: #0c736d;
+      --primary-dark: #08524e;
+      --primary-light: #e6f4f2;
+      --text: #1d2c30;
+      --text-muted: #536b73;
+      --bg: #f5f9f8;
+      --surface: #ffffff;
+      --border: #d4e3e0;
+      --font-main: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding-bottom: 60px;
+    }
+    .guide-header {
+      background: linear-gradient(135deg, #0c736d 0%, #0a3f4d 100%);
+      color: #fff;
+      padding: 24px 20px;
+      box-shadow: 0 4px 16px rgba(12, 115, 109, 0.18);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .header-nav {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #5eead4;
+      color: #0c433e;
+    }
+    .btn-primary:hover {
+      background: #2dd4bf;
+    }
+    .btn-outline {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.22);
+    }
+    .container {
+      max-width: 900px;
+      margin: 32px auto 0;
+      padding: 0 20px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 40px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #0b4f49;
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 750;
+      color: #0c736d;
+      margin: 32px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary-light);
+      letter-spacing: -0.02em;
+    }
+    h3 {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #174e49;
+      margin: 20px 0 10px;
+    }
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+      font-size: 0.98rem;
+    }
+    ul, ol {
+      margin: 12px 0 18px 24px;
+      font-size: 0.96rem;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    strong {
+      color: #093c37;
+      font-weight: 700;
+    }
+    code {
+      background: var(--primary-light);
+      color: #08625c;
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-size: 0.88em;
+      font-family: Consolas, monospace;
+      font-weight: 600;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 20px 0 24px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      text-align: left;
+    }
+    th {
+      background: #ebf5f3;
+      color: #0a4f4a;
+      font-weight: 750;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eef3f2;
+      color: #2b3e44;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover td {
+      background-color: #f8fcfa;
+    }
+    .footer-note {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    @media (max-width: 640px) {
+      .card { padding: 24px 20px; }
+      h1 { font-size: 1.5rem; }
+      h2 { font-size: 1.2rem; }
+      .header-inner { flex-direction: column; align-items: flex-start; }
+      .header-nav { width: 100%; justify-content: space-between; }
+    }
+  </style>
+<style id="site-brand-style">
+/* site-brand.json + site_brand.py에서 생성. 페이지별 복사본을 직접 고치지 않는다. */
+body .site-bar.site-bar.site-bar{box-sizing:border-box;position:relative;z-index:40;display:flex;flex:none;align-items:center;flex-wrap:nowrap;gap:10px;width:100%;height:44px;min-height:44px;max-height:44px;margin:0;padding:0 12px;border:0;border-radius:0;background:var(--accent,var(--teal,#007f78));color:#fff;font:600 14px/1.4 'Malgun Gothic',system-ui,sans-serif;white-space:nowrap;overflow:visible}
+.site-bar *{box-sizing:border-box}.site-bar .brand-home-link{display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;flex:none}
+.site-bar .brand-logo,.sim-fit .site-bar .brand-logo{display:block;width:24px!important;height:24px!important;min-width:24px;object-fit:contain;border-radius:50%;background:white}
+.site-bar .sb-brand-name{font-weight:700}.site-bar .sb-chip{display:none;border:1px solid #ffffffb3;border-radius:6px;padding:2px 7px;font-size:12px}
+.site-bar .sb-page{flex:1 1 auto;min-width:0;border-left:2px solid #ffffff80;padding-left:10px}
+.site-bar .sb-mid,.site-bar .sb-small{display:none}
+.site-bar .header-actions{display:flex;flex:none;align-items:center;gap:8px;margin:0;order:initial}
+body .site-bar .sb-home,body .site-bar summary{display:flex;align-items:center;justify-content:center;min-height:30px;height:30px;margin:0;padding:3px 8px;border:1px solid #ffffffb3;border-radius:6px;background:transparent;color:#fff;box-shadow:none;font:600 12px/1.4 'Malgun Gothic',system-ui,sans-serif;text-decoration:none;cursor:pointer;list-style:none}
+.site-bar summary::-webkit-details-marker{display:none}.site-bar details{position:relative;flex:none}.site-bar details>summary::marker{content:''}
+.site-bar .sb-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:100;display:flex;flex-direction:column;gap:4px;width:230px;max-width:calc(100vw - 24px);padding:8px;border:1px solid var(--accent-line,#c2d6d2);border-radius:8px;background:white;color:var(--ink,#172e38);box-shadow:0 8px 24px #173d4833;white-space:normal}
+body .site-bar .sb-menu a,body .site-bar .sb-menu button{display:flex;align-items:center;min-height:40px;width:100%;margin:0;padding:8px 10px;border:0;border-radius:5px;background:white;color:var(--ink,#172e38);text-decoration:none;text-align:left;font:600 13px/1.4 'Malgun Gothic',system-ui,sans-serif;box-shadow:none}
+.site-bar .sb-menu a:hover,.site-bar .sb-menu button:hover{background:var(--accent-soft,#e3f4ef)}.site-bar .sb-menu [aria-current=page]{background:var(--accent-soft,#e3f4ef);color:var(--accent-ink,#087d76)}
+.site-bar :focus-visible{outline:2px solid var(--focus,#eaa645);outline-offset:2px}.site-bar [hidden],.site-bar .brand-engine-title,.site-bar>.lead{display:none!important}
+.hero-inner>.site-bar{width:calc(100% - 26px);margin:0 0 16px;background:transparent}.hero-subtitle{margin:6px 0 0;font-size:clamp(14px,2vw,20px);color:inherit}
+@media(max-width:1100px){.site-bar .sb-wide,.site-bar .sb-brand-name{display:none}.site-bar .sb-mid,.site-bar .sb-chip{display:inline}.site-bar .sb-menu .sb-menu-home{display:flex}}
+@media(max-width:600px){body .site-bar.site-bar.site-bar{gap:8px;padding:0 10px;font-size:13px}.site-bar .sb-mid,.site-bar .sb-home{display:none!important}.site-bar .sb-small{display:inline}.site-bar .sb-page{padding-left:8px}.site-bar .header-actions{gap:0}}
+@media(max-width:340px){body .site-bar.site-bar.site-bar{gap:5px;padding:0 6px;font-size:12px}.site-bar .sb-chip{padding:2px 4px}.site-bar .brand-home-link{gap:5px}.site-bar .sb-page{padding-left:5px}}
+@media print{body .site-bar.site-bar.site-bar{display:none!important}}
+/* 0113: 1~2개는 직접 버튼, 3개 이상은 좁은 화면에서만 접는다. */
+body .site-bar.site-bar.site-bar #fullscreen-button,body .site-bar.site-bar.site-bar #reference-button{display:flex}
+.site-bar .sb-direct{display:flex;align-items:center;gap:6px}
+body .site-bar.site-bar.site-bar .sb-direct>a,body .site-bar.site-bar.site-bar .sb-direct>button,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>a,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>button{display:flex;align-items:center;justify-content:center;flex:none;width:auto;min-height:30px;height:30px;margin:0;padding:3px 8px;border:1px solid #ffffffb3;border-radius:6px;background:transparent;color:#fff;box-shadow:none;font:600 12px/1.4 'Malgun Gothic',system-ui,sans-serif;text-decoration:none;white-space:nowrap;cursor:pointer}
+@media(min-width:601px){.site-bar .screen-menu::details-content{content-visibility:visible;display:contents}.site-bar .screen-menu{display:contents}.site-bar .screen-menu>summary{display:none}.site-bar .screen-menu>.sb-menu{position:static;display:flex;flex-direction:row;align-items:center;gap:6px;width:auto;max-width:none;padding:0;border:0;background:transparent;box-shadow:none;white-space:nowrap}}
+@media(max-width:600px){body .site-bar.site-bar.site-bar .sb-direct>.sb-home,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>.sb-home{display:flex!important}.site-bar .sb-direct{gap:4px}body .site-bar.site-bar.site-bar .sb-direct>a,body .site-bar.site-bar.site-bar .sb-direct>button{padding:3px 5px}.site-bar .sb-direct .sb-small{display:inline}.site-bar .sb-direct .sb-wide,.site-bar .sb-direct .sb-mid{display:none}body .site-bar.site-bar.site-bar .screen-menu .sb-menu>a,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>button{justify-content:flex-start;width:100%;min-height:40px;height:auto;padding:8px 10px;border:0;background:white;color:var(--ink,#172e38);font-size:13px}.site-bar .screen-menu .sb-menu .sb-small{display:inline}}
+@media(max-width:340px){body .site-bar.site-bar.site-bar .sb-direct>a,body .site-bar.site-bar.site-bar .sb-direct>button{font-size:11px;padding:3px}body .site-bar.site-bar.site-bar #printAll .sb-print-full{display:none}body .site-bar.site-bar.site-bar #printAll .sb-print-short{display:inline}}
+
+.site-bar .sb-print-short{display:none}
+
+</style>
+</head>
+<body>
+  <header class="page-header site-bar" data-brand-page="004.guide" data-title="전기기능사 004 · 교사용 안내 · 시퀀스 LAB | 경성전자고등학교" data-html2canvas-ignore="true"><a class="brand-home-link" href="../../index.html" title="학습 목차"><img class="brand-logo" src="../../logo_hologram.png" width="24" height="24" alt="경성전자고등학교"><span class="sb-brand-name">시퀀스 LAB</span><span class="sb-chip">LAB</span></a><span class="sb-page"><span class="sb-wide">전기기능사 004 · 교사용 안내</span><span class="sb-mid">전-04 · 교사용 안내</span><span class="sb-small">전-04 · 안내</span></span><div class="header-actions"><nav class="sb-direct" aria-label="화면 버튼"><a class="home-btn home-link sb-home" href="../../index.html" aria-label="학습 목차"><span class="sb-wide">← 전체 목차</span><span class="sb-mid">← 목차</span><span class="sb-small">목차</span></a></nav></div></header><div class="guide-header">
+    <div class="header-inner">
+      <div class="header-badge">
+        <span>📖</span>
+        <span>경성전자고 IoT전기과 — 교사용 수업지도 안내</span>
+      </div>
+      <nav class="header-nav">
+        <a href="index.html" class="btn btn-primary">← 회로 실습 실행</a>
+        <a href="../../00_통합목차.html" class="btn btn-outline">전체 목차 ↗</a>
+      </nav>
+    </div>
+  </div>
+
+  <main class="container">
+    <article class="card">
+      <h1>FLS 도면 004 교사용 사용안내</h1>
+      <h2>실행</h2>
+      <p><code>index.html</code>을 Chrome 또는 Edge에서 직접 엽니다. 인터넷, 계정, 별도 서버가 필요하지 않습니다. 코드 파일을 <code>index.html</code> 옆에 그대로 둡니다.</p>
+      <p>이 앱은 접점과 코일의 이상적인 논리 동작을 보여주는 수업용 모형입니다. 실측 전류, 릴레이 응답시간, FLS 전극 높이·히스테리시스, EOCR 열동 특성은 계산하지 않습니다.</p>
+      <h2>첫 시연 순서</h2>
+      <ol>
+      <li><code>자동 운전</code>에서 MCCB와 SS(A), FLS 전원 공급을 확인합니다.</li>
+      <li>감지 단계에서 X·FR이 여자되고 ① M1·RL이 즉시 켜지는 것을 봅니다.</li>
+      <li>FR 5초 경계에서 ② M1은 꺼지고 M2·GL과 T가 함께 켜지는 것을 봅니다.</li>
+      <li>T 2초 경계에서 한시 b접점이 열려 ③ M2가 먼저 정지하는 것을 확인합니다. T는 다음 FR 전환까지 여자 상태입니다.</li>
+      <li>FR 두 번째 위상이 끝나면 T가 복귀하고 다시 M1부터 반복됩니다.</li>
+      <li><code>수동 운전</code>에서 PB1을 눌렀다 놓고 X 자기유지 접점을 확인합니다.</li>
+      <li><code>과부하 경보</code>에서 운전용 EOCR b접점과 경보용 a접점, YL·BZ 동시 동작을 확인합니다.</li>
+      <li><code>자유 조작</code>에서 실제 시간, 일시정지, 모드 전환, RESET을 시험합니다.</li>
+      </ol>
+      <h2>원본에서 읽은 동작</h2>
+      <ul>
+      <li>자동: SS=A에서 FLS 코일이 여자됩니다. 감지 a접점이 닫히면 X와 FR이 여자되고 M1·RL부터 운전합니다.</li>
+      <li>수동: SS=M에서 PB1을 누르면 X와 FR이 여자되어 M1부터 운전합니다. PB1 병렬 X a접점이 자기유지합니다.</li>
+      <li>FR 첫 위상: MC1·M1·RL ON, T·MC2·M2·GL OFF.</li>
+      <li>FR 두 번째 위상 시작: MC1 OFF, T와 MC2 ON, M2·GL 운전.</li>
+      <li>T 완료: T 한시 b접점이 열려 MC2만 소자됩니다. T는 FR 두 번째 위상 끝까지 여자되며 두 모터와 두 운전등은 모두 꺼집니다.</li>
+      <li>다음 FR 전환: T가 소자·복귀하고 MC1 경로가 닫혀 M1부터 반복합니다.</li>
+      <li>자동 정지: FLS 감지 해제 또는 SS=M 전환.</li>
+      <li>수동 정지: PB0 누름 또는 SS=A 전환.</li>
+      <li>EOCR 트립: 운전용 b접점이 열리고 경보용 a접점이 닫혀 YL과 BZ가 동시에 계속 동작합니다.</li>
+      </ul>
+      <h2>시간 조건</h2>
+      <p>원본 동작사항은 <code>T 설정시간 &lt; FR 설정시간</code>을 초기 조건으로 명시합니다.</p>
+      <ul>
+      <li>수업 기본값: T 2초, FR 한 위상 5초.</li>
+      <li>한 순환은 M1 5초 → M2 2초 → 두 모터 정지 3초이며 총 10초입니다.</li>
+      <li>FR 시간은 각 교대 위상의 지속시간으로 해석했습니다. 전체 왕복 주기는 FR 설정의 두 배입니다.</li>
+      <li>입력값이 조건을 위반하면 앱이 최소 0.5초 차이를 두도록 자동 보정합니다. T를 FR 이상으로 높이면 FR도 함께 높이고, FR을 T 이하로 낮추면 T+0.5초로 유지합니다.</li>
+      <li>FR 시간을 바꾸면 수업 편의를 위해 M1 위상, 경과 0초부터 다시 시작합니다.</li>
+      <li>T 시간을 M2 구간 중 바꾸면 현재 경과시간과 새 설정값을 즉시 비교하여 한시 b접점 상태를 다시 계산합니다.</li>
+      </ul>
+      <h2>모드 전환·전원 재투입·RESET</h2>
+      <p>동작사항의 “모두 정지”는 전환 순간 기존 운전 경로가 끊어진다는 뜻으로 반영했습니다. 그 뒤 새 모드의 현재 입력을 다시 평가합니다.</p>
+      <ul>
+      <li>A → M: 기존 자동 X 자기유지를 제거합니다. PB1이 눌려 있으면 수동 M1 운전을 새로 시작하고, 아니면 기동 대기합니다.</li>
+      <li>M → A: 기존 수동 자기유지를 제거합니다. FLS 감지가 유지되면 M1부터 즉시 재기동하고, 감지가 해제되어 있으면 정지합니다.</li>
+      <li>수동 RESET: 트립 중 X 자기유지는 소실됩니다. PB1을 놓은 상태면 기동 대기하고, 계속 누른 상태면 M1부터 재기동합니다.</li>
+      <li>자동 RESET: 감지가 유지 중이면 위상과 시간을 초기화하고 M1부터 즉시 재기동합니다.</li>
+      <li>MCCB OFF → ON도 같은 방식으로 현재 모드와 입력을 재평가합니다.</li>
+      </ul>
+      <p>실제 SS 접점의 전환시간, 릴레이 소자 지연, FR의 실물 초기 출력 방식은 재현하지 않습니다.</p>
+      <h2>화면 사용</h2>
+      <ul>
+      <li><code>전체 / 제어회로 / 운전부 / 경보부</code>로 확대 범위를 바꿉니다.</li>
+      <li><code>같은 기기 찾기</code>에서 코일과 관련 접점을 함께 강조합니다.</li>
+      <li>청록색 굵은 선은 부하까지 닫힌 통전 경로, 파란색 얇은 선은 전원 측 연결, 회색은 비통전 구간입니다. 색은 교류 전류의 실제 방향을 뜻하지 않습니다.</li>
+      <li>단계별 설명은 저장된 장면으로 이동하고, 자유 조작은 실제 초 단위로 진행됩니다. 일시정지는 FR과 T 시간을 모두 멈춥니다.</li>
+      <li>PB1과 PB0는 순간동작 버튼입니다. 마우스, 터치, Space, Enter로 조작할 수 있습니다.</li>
+      <li>BZ 소리는 기본 OFF이며 사용자가 켠 뒤에만 납니다.</li>
+      </ul>
+      <h2>원본 자료</h2>
+      <p>원본 도면은 큐넷 공개문제 자료실에서 <strong>'전기기능사'</strong>를 검색해 확인하세요. (원본 저작권: 한국산업인력공단)</p>
+      <h2>접점 기호 개선 (2026-09-15)</h2>
+      <p>제공 도면의 세로 접점 막대와 작동 표시를 반영했습니다. PB의 가로 작동선, SS의 선택 표시와 점선 연결, EOCR의 × 표시, FR의 ◆ 표시, T 한시 표시를 구분합니다. MC 주접점의 사선과 MCCB의 곡선도 각각 표현합니다.</p>
+      <p>T 한시 b접점은 처음에 닫혀 있고, 설정시간 후 열려 M2를 정지시킵니다. 접점 옆에는 a/b와 현재 열림·닫힘을 표시합니다. FR의 MC1 측 b접점은 소자 상태에서도 닫혀 있으며, 전원 경로가 이어져야 모터가 운전합니다.</p>
+      <p>열린 제어접점 막대는 단자 오른쪽으로 떨어지고, 닫힌 막대는 왼쪽에서 두 단자와 연결됩니다. 개폐 간격과 MCCB 개방 틈은 수업에서 구별하기 위한 표현이며 실제 기구의 이동 거리·속도를 재현하지 않습니다. <strong>운전부 → 다음 단계</strong>로 접점을 확대해 확인하세요.</p>
+      <div class="footer-note">
+        <span>경성전자고등학교 IoT전기과 실습 포털</span>
+        <span>전기기능사 시퀀스 회로 시각화 수업 자료</span>
+      </div>
+    </article>
+  </main>
+</body>
+</html>

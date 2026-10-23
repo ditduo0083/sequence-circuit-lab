@@ -1,0 +1,880 @@
+/**
+ * KSE 전기기능사 시퀀스 LAB (통합 디자인 시스템 스타일시트)
+ * KSE Design System: Glassmorphism, Depth, Typography, Responsive Tokens
+ */
+
+:root {
+  /* Brand & Accent Colors */
+  --primary: #087d76;
+  --primary-hover: #065e59;
+  --primary-light: #e6f5f3;
+  --primary-glow: rgba(8, 125, 118, 0.2);
+  --emerald: #10b981;
+  --emerald-hover: #059669;
+  --mint-accent: #5eead4;
+  
+  /* Text Colors (WCAG AA 4.5:1+ Compliance) */
+  --text-main: #12282f;
+  --text-body: #41555c;
+  --text-muted: #566a70;
+  --text-label: #2a4248;
+  --text-inverse: #ffffff;
+  
+  /* Surface & Background */
+  --bg-page: #f4f8f7;
+  --bg-card: #ffffff;
+  --bg-surface-alt: #edf6f4;
+  --bg-glass: rgba(255, 255, 255, 0.12);
+  
+  /* Borders & Dividers */
+  --border-card: #d5e2df;
+  --border-input: #b9ceca;
+  --border-glass: rgba(255, 255, 255, 0.22);
+  
+  /* Radius Tokens */
+  --radius-sm: 8px;
+  --radius-md: 11px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  
+  /* Shadow Tokens */
+  --shadow-sm: 0 2px 8px rgba(31, 77, 71, 0.05);
+  --shadow-md: 0 4px 16px rgba(31, 77, 71, 0.07);
+  --shadow-lg: 0 8px 24px rgba(31, 77, 71, 0.12);
+  --shadow-hero: 0 8px 28px rgba(0, 0, 0, 0.25);
+  
+  /* Typography */
+  --font-main: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* 1. Global Reset & Base */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: var(--font-main);
+  color: var(--text-main);
+  background-color: var(--bg-page);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 2. 웹 접근성 건너뛰기 링크 (Tab 포커스 시 부드럽게 노출) */
+a[href="#catalog"] {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 1000;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  color: #0c736d;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+  transition: top 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+a[href="#catalog"]:focus {
+  top: 16px;
+  outline: 3px solid var(--mint-accent);
+}
+
+/* 3. 상단 히어로 헤더 (1차/3차 지시서 확정 사양) */
+.hero {
+  background: linear-gradient(135deg, #0c736d 0%, #0a3f4d 100%);
+  color: var(--text-inverse);
+  width: 100%;
+  box-shadow: var(--shadow-hero);
+}
+
+.hero-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 34px 24px 30px;
+}
+
+/* 상단 메인 영역: 좌측 제목 + 우측 대형 128px 원형 엠블럼 */
+.hero-main, .hero-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(20px, 4vw, 48px);
+}
+
+.hero-titles {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #a7f3d0;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3.8vw, 3.2rem);
+  letter-spacing: -0.04em;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.summary {
+  margin: 8px 0 0;
+  font-size: 1.02rem;
+  opacity: 0.9;
+  line-height: 1.45;
+}
+
+/* 우측 엠블럼 배지 (데스크톱 128px, 100% 불투명 순백색 원형, 여백 없이 꽉 채움) */
+.hero-badge-wrap {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.school-ci-badge, .school-ci-box {
+  width: 128px;
+  height: 128px;
+  padding: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.22), 0 10px 28px rgba(0, 0, 0, 0.30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.school-ci-badge:hover, .school-ci-box:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 0 6px rgba(94, 234, 212, 0.45), 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.hero-emblem-img, .hero-ci-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+/* Glassmorphism 통계 뱃지 */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.stats span {
+  padding: 8px 15px;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-pill);
+  background: var(--bg-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 0.86rem;
+  color: var(--text-inverse);
+  transition: background 0.15s ease;
+}
+
+.stats span:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.stats strong {
+  margin-right: 4px;
+  color: var(--mint-accent);
+}
+
+/* 4. 본문 컨테이너 및 툴바 */
+main {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 28px 24px 56px;
+}
+
+/* 4. 툴바 및 필터 바 (2단 필터: 1단 대분류 과목 / 2단 세부 분류) */
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) auto;
+  gap: 16px;
+  align-items: end;
+  position: relative;
+}
+
+/* 4-1. 1단 과목 필터 바 (전체 28 / 전기기능사 18 / 승강기기능사 10) */
+.course-filter {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  position: sticky;
+  top: 12px;
+  z-index: 20;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.course-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 18px;
+  border: 1.5px solid var(--border-input);
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface-alt);
+  color: var(--text-label);
+  font: inherit;
+  font-size: 0.96rem;
+  font-weight: 750;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.course-chip:hover {
+  background: #e1edea;
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.course-chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+
+.course-chip .tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.08);
+  color: inherit;
+}
+
+.course-chip.active .tab-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* 4-2. 검색 및 2단 세부 필터 */
+
+.search {
+  display: grid;
+  gap: 7px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--text-label);
+}
+
+.search input {
+  width: 100%;
+  height: 46px;
+  padding: 0 16px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+[hidden],
+.filters[hidden] {
+  display: none !important;
+}
+
+.filters {
+  display: flex;
+  gap: 6px;
+}
+
+.filters button {
+  height: 46px;
+  padding: 0 16px;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  color: #24424a;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 750;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+
+.filters button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.filters button.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.result-count {
+  margin: 22px 0 12px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+/* 5. 회로 카드 그리드 (일관된 카드 UI 컴포넌트) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  grid-template-rows: 1fr auto;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card[hidden] {
+  display: none !important;
+}
+
+.number {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 22px;
+  background: var(--primary-light);
+  color: #076c65;
+  font-size: 1.02rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.card-body {
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.kind {
+  margin: 0 0 6px;
+  color: #0e6e66;
+  font-size: 0.82rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.badge.draft {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #c2410c;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.card[data-course="e"] {
+  border-color: #dbe4e2;
+  background: #fbfdfc;
+}
+
+.card[data-course="e"] .number {
+  background: #eef6f5;
+  color: #0b6862;
+  border-right: 1px solid #dce8e5;
+}
+
+.card[data-course="e"].is-draft {
+  border-style: dashed;
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 1.12rem;
+  letter-spacing: -0.025em;
+  color: var(--text-main);
+}
+
+.card-body > p:not(.kind) {
+  flex-grow: 1;
+  min-height: 42px;
+  margin: 0;
+  color: var(--text-body);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+/* 카드 버튼 B안 (요청 0053): 카드 폭 가득 ▶ 시뮬레이션 + 아랫줄 '실습' 이름표·같은 폭 칸 버튼.
+   버튼 칸은 카드 폭(번호 칸 아래까지)을 다 쓴다. 글자 크기는 버튼 줄 폭(container)에 맞춰 정해 줄이 넘어가지 않게 한다. */
+.links {
+  grid-column: 1 / -1;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  border-top: 1px solid #e3eeeb;
+}
+
+.links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c8d9d6;
+  border-radius: var(--radius-sm);
+  color: #26474e;
+  font-weight: 750;
+  text-decoration: none;
+  white-space: nowrap;
+  background: #ffffff;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.links a:hover {
+  border-color: var(--primary);
+  color: var(--primary-hover);
+  background: var(--bg-surface-alt);
+}
+
+.links .primary {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 0.92rem;
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.links .primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: #ffffff;
+}
+
+.practice {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.practice-label {
+  flex: none;
+  padding: 3px 4px;
+  border-radius: 5px;
+  background: var(--primary-light);
+  color: #0e6e66;
+  font-size: 0.66rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.practice-btns {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr));
+  gap: 4px;
+}
+
+.practice-btns a,
+.practice-btns .pending {
+  min-width: 0;
+  padding: 6px 0;
+  font-size: 0.64rem;
+  letter-spacing: -0.03em;
+  overflow: hidden;
+}
+
+.practice-btns .pending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border-input);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  background: var(--bg-page);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: not-allowed;
+}
+
+/* 버튼 줄 폭이 넓을수록 한 단계씩 크게 (320~360px 휴대폰 카드의 버튼 줄 260~300px 이 가장 작은 단계) */
+@container (min-width: 310px) {
+  .practice { gap: 6px; }
+  .practice-label { padding: 3px 6px; font-size: 0.7rem; }
+  .practice-btns { gap: 5px; }
+  .practice-btns a, .practice-btns .pending { font-size: 0.72rem; letter-spacing: -0.02em; }
+}
+@container (min-width: 340px) {
+  .practice-label { font-size: 0.74rem; }
+  .practice-btns { gap: 6px; }
+  .practice-btns a, .practice-btns .pending { padding: 7px 0; font-size: 0.8rem; letter-spacing: -0.01em; }
+}
+@container (min-width: 400px) {
+  .practice-btns a, .practice-btns .pending { font-size: 0.84rem; letter-spacing: 0; }
+}
+
+/* 검색 0건 UI */
+.no-results {
+  grid-column: 1 / -1;
+  padding: 48px 24px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px dashed var(--border-input);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+}
+
+.no-results p {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-label);
+}
+
+.btn-reset {
+  padding: 9px 20px;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-reset:hover {
+  background: var(--primary-hover);
+}
+
+/* 6. 포털 안내 박스 */
+.help {
+  margin-top: 36px;
+  padding: 24px 28px;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface-alt);
+}
+
+.help h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  color: #0d4a44;
+}
+
+.help ol {
+  margin: 0;
+  padding-left: 22px;
+  line-height: 1.8;
+  color: #2b444b;
+  font-size: 0.93rem;
+}
+
+.help ol li strong {
+  color: #093c37;
+}
+
+/* 7. 하단 푸터 C안 (요청 0053): 진한 청록 바탕, 마크·학교 이름·링크 3개 / 주소 / 구분선 / 저작권·방문자 수.
+   모든 줄은 한 줄(white-space: nowrap). 560px 아래: 글자 한 단계 작게, 링크·주소 짧은 문구(.sm).
+   340px 아래: 한 단계 더 작게, 저작권도 짧은 문구. 저작권과 방문자 수가 한 줄에 안 들어가면 방문자 수가 다음 줄로 간다. */
+.site-footer {
+  width: 100%;
+  padding: 26px 24px 24px;
+  background: #12302d;
+  color: #b9d3ce;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer .sm {
+  display: none;
+}
+
+.footer-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "mark name nav"
+    "mark addr addr";
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 2px;
+}
+
+.footer-emblem {
+  grid-area: mark;
+  display: block;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #ffffff;
+  object-fit: cover;
+}
+
+.footer-name {
+  grid-area: name;
+  color: #ffffff;
+  font-size: 1.02rem;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.footer-nav {
+  grid-area: nav;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.footer-nav a {
+  color: #d8ece8;
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.footer-nav a + a::before {
+  content: "·";
+  display: inline-block;
+  margin: 0 10px;
+  color: #6f918b;
+}
+
+.footer-nav a:hover,
+.footer-nav a:focus-visible {
+  color: var(--mint-accent);
+}
+
+.footer-addr {
+  grid-area: addr;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+/* 요청 0071: 교사들의 AI 활용을 먼저 소개하고, 휴대폰에서는 제작 안내 두 줄만 표시한다. */
+.footer-credits {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 0.8rem;
+  line-height: 1.8;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.footer-credits h2,
+.footer-credits h3 {
+  margin: 0 0 4px;
+  color: #f8fafc;
+  font-size: inherit;
+}
+
+.footer-credits h2 { margin-bottom: 10px; }
+
+.footer-credit-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 32px;
+  margin-top: 16px;
+}
+
+.credit-members span { white-space: nowrap; }
+.site-footer .credit-members { margin-top: 4px; }
+.site-footer .credit-affiliation {
+  margin-top: 6px;
+  color: #9ebfb9;
+  font-size: 0.74rem;
+}
+
+.credit-affiliation span,
+.credit-production span { display: block; }
+.credit-production { color: #d8ece8; }
+
+@media (max-width: 759px) {
+  .credit-details-title,
+  .footer-credit-groups { display: none; }
+  .footer-credits { margin-top: 14px; padding-top: 12px; }
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2px 16px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 0.78rem;
+}
+
+.footer-copy,
+.footer-visits {
+  white-space: nowrap;
+}
+
+.footer-visits {
+  color: var(--mint-accent);
+  font-weight: 750;
+}
+
+@media (max-width: 559px) {
+  .site-footer { padding: 20px 16px 18px; font-size: 0.76rem; }
+  .footer-nav .lg, .footer-addr .lg { display: none; }
+  .footer-nav .sm, .footer-addr .sm { display: inline; }
+  .footer-top { column-gap: 10px; }
+  .footer-emblem { width: 36px; height: 36px; }
+  .footer-name { font-size: 0.9rem; }
+  .footer-nav a { font-size: 0.8rem; }
+  .footer-nav a + a::before { margin: 0 6px; }
+  .footer-addr { font-size: 0.74rem; }
+  .footer-bottom { margin-top: 12px; padding-top: 10px; font-size: 0.72rem; }
+}
+
+@media (max-width: 339px) {
+  .footer-copy .lg { display: none; }
+  .footer-copy .sm { display: inline; }
+  .footer-name { font-size: 0.82rem; }
+  .footer-nav a { font-size: 0.74rem; }
+  .footer-nav a + a::before { margin: 0 4px; }
+  .footer-addr { font-size: 0.7rem; }
+  .footer-bottom { font-size: 0.68rem; }
+}
+
+/* 8. 반응형 미디어 쿼리 */
+/* 카드 3칸은 1101px 이상에서만 (요청 0053: 실습 버튼 4칸이 너무 작아지지 않게) */
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-inner, main {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .hero-main {
+    gap: 14px;
+  }
+  .school-ci-badge, .school-ci-box {
+    width: 88px;
+    height: 88px;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.22), 0 6px 18px rgba(0, 0, 0, 0.28);
+  }
+  .hero h1 {
+    font-size: clamp(1.45rem, 6.2vw, 2rem);
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .filters button {
+    justify-content: center;
+    padding: 0 8px;
+  }
+  .card {
+    grid-template-columns: 54px 1fr;
+  }
+  .links {
+    padding: 10px 12px 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-main {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+}

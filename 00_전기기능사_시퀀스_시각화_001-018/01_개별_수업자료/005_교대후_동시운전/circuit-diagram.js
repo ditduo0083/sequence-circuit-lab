@@ -1,0 +1,242 @@
+(function () {
+  'use strict';
+  const NS = 'http://www.w3.org/2000/svg';
+  class CircuitDiagram {
+    constructor(svg) {
+      this.svg = svg; this.nodes = {}; this.edges = []; this.loads = []; this.parts = []; this.mainParts = [];
+      this.build(); this.selected = '';
+      const content=document.createElementNS(NS,'g');
+      while(svg.firstChild)content.appendChild(svg.firstChild);
+      svg.appendChild(content);
+      const defs=this.el('defs',{},svg),clip=this.el('clipPath',{id:'circuit-crop',clipPathUnits:'userSpaceOnUse'},defs);
+      this.crop=this.el('rect',{x:0,y:0,width:1630,height:720},clip);
+      content.setAttribute('clip-path','url(#circuit-crop)');
+    }
+    el(tag, attributes, parent = this.svg, text) {
+      const e = document.createElementNS(NS, tag);
+      for (const [k,v] of Object.entries(attributes || {})) e.setAttribute(k,v);
+      if (text !== undefined) e.textContent = text;
+      parent.appendChild(e); return e;
+    }
+    text(x,y,label,cls='',parent=this.svg,anchor='start') { return this.el('text',{x,y,class:cls,'text-anchor':anchor},parent,label); }
+    node(id,x,y) { this.nodes[id] = [x,y]; return id; }
+    pathBetween(a,b,via=[]) { return ['M',...this.nodes[a], ...via.flatMap(p=>['L',...p]), 'L',...this.nodes[b]].join(' '); }
+    wire(a,b,via=[]) {
+      const e = this.el('path',{d:this.pathBetween(a,b,via),class:'wire'});
+      this.edges.push({a,b,el:e,type:'wire'}); return e;
+    }
+    contactSymbol(parent,x1,y1,x2,y2,device,kind) {
+      // Local terminals are vertical. Rotating the entire symbol keeps the
+      // horizontal EOCR contact and its cross consistent with the source.
+      const horizontal=y1===y2, span=horizontal?x2-x1:y2-y1;
+      const glyph=this.el('g',{class:'contact-symbol',transform:`translate(${x1} ${y1})${horizontal?' rotate(-90)':''}`},parent);
+      const links=this.el('path',{class:'symbol-line contact-links',d:`M-5 0H0 M-5 ${span}H0`},glyph);
+      const moving=this.el('g',{class:'contact-moving'},glyph);
+      const blade=this.el('path',{class:'symbol-line contact-bar',d:`M0 -4V${span+4}`},moving);
+      const mid=span/2;
+      let symbol='relay';
+      if(device==='PB0'||device==='PB1'){
+        symbol='pushbutton';
+        this.el('path',{class:'symbol-line symbol-feature',d:`M0 ${mid}H11`},moving);
+      }else if(device==='SS'){
+        symbol='selector';
+        this.el('path',{class:'symbol-line symbol-feature',d:`M0 ${mid}H12 M4 ${mid+5}L10 ${mid}`},moving);
+      }else if(device==='EOCR'){
+        symbol='overload';
+        this.el('path',{class:'symbol-line symbol-feature',d:`M-4 ${mid-4}L4 ${mid+4} M-4 ${mid+4}L4 ${mid-4}`},moving);
+      }else if(device==='FR'){
+        symbol='flicker';
+        this.el('path',{class:'symbol-line symbol-feature symbol-filled',d:`M-6 ${mid}L0 ${mid-4}L6 ${mid}L0 ${mid+4}Z`},moving);
+      }else if(device==='T'&&kind.includes('한시')){
+        symbol='timer-delayed';
+        this.el('path',{class:'symbol-line symbol-feature',d:`M0 ${mid-4}L7 ${mid}L0 ${mid+4}Z`},moving);
+      }else if(device==='T')symbol='timer-instant';
+      for(const cy of [0,span])this.el('circle',{cx:0,cy,r:3.5,class:'contact-dot'},glyph);
+      parent.setAttribute('data-symbol',symbol);
+      return {moving,links,blade,span};
+    }
+    setContactClosed(symbol,closed) {
+      // A closed bar touches the left sides of both fixed terminals;
+      // an open bar sits to their right, as in the supplied drawing.
+      symbol.moving.setAttribute('transform',`translate(${closed?-5:12} 0)`);
+      symbol.links.setAttribute('visibility',closed?'visible':'hidden');
+    }
+    contact(id,device,a,b,label,kind='a',side='right') {
+      const [x1,y1] = this.nodes[a], [x2,y2] = this.nodes[b]; const horizontal = y1 === y2;
+      const g = this.el('g',{class:'contact','data-device':device,'data-contact':id});
+      const cx=(x1+x2)/2, cy=(y1+y2)/2;
+      this.el('rect',{x:horizontal?x1-6:x1-15,y:horizontal?y1-19:y1-9,width:horizontal?x2-x1+12:40,height:horizontal?38:y2-y1+18,rx:7,class:'device-selection'},g);
+      this.el('title',{},g,label+' '+kind+'접점');
+      const symbol=this.contactSymbol(g,x1,y1,x2,y2,device,kind);
+      const tx=horizontal?cx:(side==='left'?x1-22:x1+28), ty=horizontal?y1-21:device==='SS'?y1-12:cy-3;
+      const visibleLabel=device==='T'?label+(kind.includes('한시')?' 한시':' 순시'):label;
+      this.text(tx,ty,visibleLabel,'',g,horizontal?'middle':side==='left'?'end':'start');
+      const stateLabel = this.text(tx,horizontal?y1+24:device==='SS'?y2+20:cy+17,'','contact-state',g,horizontal?'middle':side==='left'?'end':'start');
+      this.edges.push({a,b,id,el:g,type:'contact',device,symbol,stateLabel,x1,y1,x2,y2,horizontal,kind});
+      this.parts.push(g);
+    }
+    load(id,device,positive,negative,label,kind='coil') {
+      const [x,top] = this.nodes[positive], [,bottom] = this.nodes[negative], cy=(top+bottom)/2;
+      const g=this.el('g',{class:'load '+(kind==='lamp'?'lamp-'+id:''),'data-device':device,'data-load':id});
+      this.el('rect',{x:x-33,y:top-8,width:66,height:bottom-top+16,rx:8,class:'device-selection'},g);
+      if(kind==='buzzer') this.el('rect',{x:x-22,y:top,width:44,height:bottom-top,class:'device-shape'},g);
+      else this.el('circle',{cx:x,cy,r:(bottom-top)/2,class:'device-shape'},g);
+      this.text(x,cy+6,label,'',g,'middle');
+      this.el('title',{},g,label+(kind==='coil'?' 코일':kind==='lamp'?' 표시등':' 부저'));
+      this.loads.push({id,positive,negative,el:g}); this.parts.push(g);
+    }
+    mainWire(d,section,phase=0) {
+      const el=this.el('path',{d,class:'wire'}); this.mainParts.push({el,section,phase}); return el;
+    }
+    mainContact(x,y,device,section,phase=-1) {
+      const g=this.el('g',{class:'contact','data-device':device,'data-symbol':device==='MCCB'?'breaker':'contactor-main'});
+      this.el('rect',{x:x-21,y:y-8,width:42,height:56,rx:6,class:'device-selection'},g);
+      const blade=this.el('path',{class:'symbol-line main-contact-blade'},g);
+      if(device!=='MCCB')this.el('path',{class:'symbol-line fixed-contact-tip',d:`M${x+3} ${y+1}h5v6`},g);
+      this.el('circle',{cx:x,cy:y,r:3.5,class:'contact-dot'},g);
+      this.el('circle',{cx:x,cy:y+40,r:3.5,class:'contact-dot'},g);
+      this.mainParts.push({el:g,blade,x,y,section,phase,device,contact:true});this.parts.push(g);
+    }
+    earth(x,y) { this.el('path',{d:`M${x} ${y}v12m-15 0h30m-23 6h16m-11 6h6`,class:'earth'}); }
+    build() {
+      this.text(35,38,'주회로','section-title');this.text(420,38,'제어회로','section-title');
+      this.text(35,62,'3P3W AC 220V','small-text');this.text(420,62,'제어 전원 L1–L3 · AC 220V','small-text');
+      const phases=[55,95,135];
+      phases.forEach((x,i)=>{
+        this.text(x,89,'L'+(i+1),'',this.svg,'middle');
+        this.mainWire(`M${x} 97V123`,'source',i);this.mainContact(x,123,'MCCB','power',i);
+        this.mainWire(`M${x} 163V${[190,190,208][i]}`,'main-feed',i);
+        this.mainWire(`M${x} ${[190,190,208][i]}V${[315,300,285][i]}`,'main-upper',i);
+        this.mainWire(`M${x} ${[315,300,285][i]}V390`,'load1-upper',i);
+        this.mainWire(`M${x} ${[315,300,285][i]}H${225+i*40}V390`,'load2-upper',i);
+        this.mainContact(x,390,'MC1','mc1');this.mainContact(225+i*40,390,'MC2','mc2');
+        this.mainWire(`M${x} 430V487L${75+i*20} 511`,'load1',i);
+        this.mainWire(`M${225+i*40} 430V487L${245+i*20} 511`,'load2',i);
+        this.text(x,470,['U1','V1','W1'][i],'small-text',this.svg,'middle');
+        this.text(225+i*40,470,['U2','V2','W2'][i],'small-text',this.svg,'middle');
+      });
+      this.text(14,115,'MCCB','small-text',this.svg,'start');
+      this.el('path',{d:'M55 144H135',class:'mechanical'});
+      this.el('path',{d:'M55 410H135 M225 410H305',class:'mechanical'});
+      this.text(40,369,'MC1');this.text(217,369,'MC2');
+      const sensor=this.el('g',{'data-device':'EOCR'});this.parts.push(sensor);
+      this.el('rect',{x:31,y:234,width:128,height:54,rx:7,class:'device-selection'},sensor);
+      this.el('rect',{x:38,y:242,width:114,height:37,fill:'#f6f9f8',stroke:'#869a9d','stroke-width':2},sensor);
+      this.text(95,267,'EOCR','',sensor,'middle');
+      this.mainWire('M55 190H318','control-feed');this.mainWire('M344 190H400V100H435','control-feed');
+      this.mainWire('M135 208H346','control-feed');this.mainWire('M372 208H388V605H435','control-feed');
+      [[318,190],[346,208]].forEach(([x,y])=>{this.el('rect',{x,y:y-7,width:26,height:14,fill:'white',stroke:'#829798','stroke-width':1.5});this.el('path',{d:`M${x} ${y+6}l26 -12`,stroke:'#829798','stroke-width':1.5});});
+      this.text(316,170,'FUSE','small-text');
+      for(const [x,id,key] of [[95,'M1','mc1'],[265,'M2','mc2']]){
+        const g=this.el('g',{'data-device':key==='mc1'?'MC1':'MC2',class:'load','data-motor':id});
+        this.el('rect',{x:x-41,y:501,width:82,height:78,rx:10,class:'device-selection'},g);
+        this.el('circle',{cx:x,cy:540,r:34,class:'device-shape'},g);this.text(x,546,id,'',g,'middle');
+        this.mainParts.push({el:g,section:key,motor:true});this.parts.push(g);
+        this.text(x,592,'전동기 '+(id==='M1'?'1':'2'),'small-text',this.svg,'middle');
+      }
+      this.text(175,89,'PE','',this.svg,'middle');this.el('path',{d:'M175 98V625 M129 540H175 M299 540H350V625',class:'earth'});this.earth(175,625);this.earth(350,625);
+      const n=(id,x,y)=>this.node(id,x,y),w=(a,b,via)=>this.wire(a,b,via);
+      n('H',435,100);n('alarmTap',510,100);n('eocrIn',545,100);n('run',590,100);
+      w('H','alarmTap');w('alarmTap','eocrIn');this.contact('eocrNC','EOCR','eocrIn','run','EOCR','b');
+      const tops=[['aTop',720],['mTop',940],['rlTop',1440],['glTop',1540]];
+      let last='run';for(const [id,x]of tops){n(id,x,100);w(last,id);last=id;}
+      const bottoms=[435,510,590,720,840,940,1040,1140,1240,1440,1540];
+      for(let i=0;i<bottoms.length;i++){n('r'+bottoms[i],bottoms[i],605);if(i)w('r'+bottoms[i-1],'r'+bottoms[i]);}
+      const coil=(id,x,device=id,kind='coil')=>{n(id+'P',x,522);n(id+'N',x,568);this.load(id,device,id+'P',id+'N',id,kind);w(id+'N','r'+x);};
+      coil('EOCR',435);w('H','EOCRP');
+      n('alarmIn',510,335);n('alarmOut',510,375);n('alarmBus',510,425);
+      w('alarmTap','alarmIn');this.contact('eocrNO','EOCR','alarmIn','alarmOut','EOCR','a');w('alarmOut','alarmBus');
+      coil('YL',510,'EOCR','lamp');coil('BZ',590,'EOCR','buzzer');w('alarmBus','YLP');w('alarmBus','BZP',[[590,425]]);
+      n('ssAIn',720,133);n('ssAOut',720,173);n('autoBus',720,285);
+      w('aTop','ssAIn');this.contact('ssA','SS','ssAIn','ssAOut','SS · A','a');w('ssAOut','autoBus');
+      coil('FLS',720);w('autoBus','FLSP');
+      n('flsIn',840,335);n('flsOut',840,375);w('autoBus','flsIn',[[840,285]]);this.contact('flsContact','FLS','flsIn','flsOut','FLS','a');
+      n('ssMIn',940,133);n('ssMOut',940,173);n('pb0In',940,215);n('pb0Out',940,255);n('manualBus',940,285);
+      w('mTop','ssMIn');this.contact('ssM','SS','ssMIn','ssMOut','SS · M','a');w('ssMOut','pb0In');this.contact('pb0','PB0','pb0In','pb0Out','PB0','b');w('pb0Out','manualBus');
+      this.selectorLink=this.el('path',{class:'mechanical selector-link'});
+      n('pb1In',940,335);n('pb1Out',940,375);n('holdIn',1020,335);n('holdOut',1020,375);
+      w('manualBus','pb1In');w('manualBus','holdIn',[[1020,285]]);this.contact('pb1','PB1','pb1In','pb1Out','PB1','a');this.contact('xHold','X','holdIn','holdOut','X','a');
+      const buses=[840,940,1020,1040,1140,1240,1340];
+      for(let i=0;i<buses.length;i++){n('b'+buses[i],buses[i],425);if(i)w('b'+buses[i-1],'b'+buses[i]);}
+      w('flsOut','b840');w('pb1Out','b940');w('holdOut','b1020');
+      coil('X',840);coil('T',940);w('b840','XP');w('b940','TP');
+      n('tNCIn',1040,465);n('tNCOut',1040,505);w('b1040','tNCIn');this.contact('tStopFR','T','tNCIn','tNCOut','T','한시 b');
+      coil('FR',1040);w('tNCOut','FRP');
+      n('fr1In',1140,465);n('fr1Out',1140,505);n('fr2In',1240,465);n('fr2Out',1240,505);
+      w('b1140','fr1In');w('b1240','fr2In');this.contact('frMC1','FR','fr1In','fr1Out','FR','b');this.contact('frMC2','FR','fr2In','fr2Out','FR','a');
+      coil('MC1',1140);coil('MC2',1240);w('fr1Out','MC1P');
+      n('tNOIn',1340,465);n('tNOOut',1340,505);n('mc2Join',1240,515);
+      w('b1340','tNOIn');this.contact('tBypass','T','tNOIn','tNOOut','T','한시 a');
+      w('fr2Out','mc2Join');w('tNOOut','mc2Join',[[1340,515]]);w('mc2Join','MC2P');
+      for(const [id,x,top,device]of [['RL',1440,'rlTop','MC1'],['GL',1540,'glTop','MC2']]){
+        n(id+'In',x,155);n(id+'Out',x,195);w(top,id+'In');this.contact(device.toLowerCase()+'Aux',device,id+'In',id+'Out',device,'a');coil(id,x,device,'lamp');w(id+'Out',id+'P');
+      }
+      for(const id of ['H','alarmTap','aTop','mTop','rlTop','autoBus','manualBus','b840','b940','b1020','b1040','b1140','b1240','mc2Join','alarmBus']){
+        const [cx,cy]=this.nodes[id];this.el('circle',{cx,cy,r:3.8,class:'junction'});
+      }
+      this.el('path',{d:'M733 560H755V653 M740 550H775V653 M745 540H795V653',class:'earth'});
+      this.el('rect',{x:744,y:642,width:62,height:24,fill:'white',stroke:'#bac6c6'});
+      [755,775,795].forEach((x,i)=>{this.el('circle',{cx:x,cy:653,r:3.5,fill:'white',stroke:'#78948d'});this.text(x,684,'E'+(i+1),'small-text',this.svg,'middle');});
+      this.text(720,660,'TB4','small-text',this.svg,'end');this.text(717,707,'FLS 전극 입력 · 감지 / 해제로 조작','small-text');
+      this.el('path',{d:'M742 536H809V541',class:'earth'});this.earth(809,541);
+      this.text(28,698,'PE 보호접지 · 정상 통전 경로에서 제외','small-text');
+    }
+    analyze(state) {
+      const adjacency={};for(const id of Object.keys(this.nodes))adjacency[id]=[];
+      for(const edge of this.edges){if(edge.type==='wire'||state.contacts[edge.id]){adjacency[edge.a].push([edge.b,edge]);adjacency[edge.b].push([edge.a,edge]);}}
+      const reach=(start)=>{const seen=new Set([start]),q=[start];while(q.length){const a=q.pop();for(const [b] of adjacency[a])if(!seen.has(b)){seen.add(b);q.push(b);}}return seen;};
+      const high=state.power?reach('H'):new Set(),low=reach('r435'),flow=new Set(),calculatedLoads={};
+      const trace=(from,to)=>{
+        const visited=new Set();
+        function walk(a){if(a===to)return true;visited.add(a);let found=false;for(const [b,edge] of adjacency[a])if(!visited.has(b)&&walk(b)){flow.add(edge);found=true;}visited.delete(a);return found;}
+        walk(from);
+      };
+      for(const load of this.loads){const on=high.has(load.positive)&&low.has(load.negative);calculatedLoads[load.id]=on;if(on){trace('H',load.positive);trace('r435',load.negative);}}
+      return {high,flow,calculatedLoads};
+    }
+    update(state) {
+      const {high,flow,calculatedLoads}=this.analyze(state);this.calculatedLoads=calculatedLoads;
+      for(const edge of this.edges){
+        const live=flow.has(edge),voltage=high.has(edge.a)||high.has(edge.b);
+        edge.el.classList.toggle('is-live',live);edge.el.classList.toggle('has-voltage',voltage);
+        if(edge.type==='contact'){
+          const closed=state.contacts[edge.id];
+          edge.el.setAttribute('data-closed',closed);edge.el.setAttribute('aria-label',edge.id+' '+(closed?'닫힘':'열림'));
+          this.setContactClosed(edge.symbol,closed);
+          edge.stateLabel.textContent=edge.device==='SS'?(closed?'선택됨':'선택 해제'):edge.kind.replace(/(?:순시|한시) /,'')+' · '+(closed?'닫힘':'열림');
+        }
+      }
+      this.selectorLink.setAttribute('d',`M${this.nodes.ssAIn[0]+(state.contacts.ssA?-5:12)} ${this.nodes.ssAIn[1]+20}H${this.nodes.ssMIn[0]+(state.contacts.ssM?-5:12)}`);
+      for(const load of this.loads){load.el.classList.toggle('on',calculatedLoads[load.id]);load.el.setAttribute('data-on',calculatedLoads[load.id]);}
+      for(const p of this.mainParts){
+        let on=false,voltage=false;
+        if(p.section==='mc1'||p.section==='load1') on=state.mc1;
+        else if(p.section==='mc2'||p.section==='load2')on=state.mc2;
+        else if(p.section==='load1-upper'){on=state.mc1;voltage=state.power;}
+        else if(p.section==='load2-upper'){on=state.mc2;voltage=state.power;}
+        else if(p.section==='main-upper'){on=state.mc1||state.mc2;voltage=state.power;}
+        else if(p.section==='control-feed')on=state.power;
+        else {on=state.power&&(state.mc1||state.mc2||p.phase!==1);voltage=state.power;}
+        if(p.contact){
+          const closed=p.section==='power'?state.power:state[p.section];
+          p.el.setAttribute('data-closed',closed);
+          p.el.setAttribute('aria-label',p.device+' 주접점 '+(closed?'닫힘':'열림'));
+          p.blade.setAttribute('d',p.device==='MCCB'
+            ?`M${p.x} ${p.y+40}C${p.x+18} ${p.y+32} ${p.x+18} ${p.y+8} ${p.x+(closed?0:7)} ${p.y+(closed?0:3)}`
+            :`M${p.x} ${p.y+40}L${p.x+(closed?0:16)} ${p.y}`);
+          if(p.section!=='power')on=closed;
+        }
+        p.el.classList.toggle('has-voltage',voltage);p.el.classList.toggle(p.motor?'on':'is-live',on);
+      }
+      this.select(this.selected);
+    }
+    select(device){this.selected=device;for(const part of this.parts)part.classList.toggle('selected-device',!!device&&part.dataset.device===device);}
+    view(mode){
+      const boxes={all:'0 0 1630 720',control:'400 45 1230 665',operation:'680 85 950 530',alarm:'400 45 250 575'};
+      const box=boxes[mode]||boxes.all;this.svg.setAttribute('viewBox',box);this.svg.parentElement.dataset.view=mode;
+      box.split(' ').forEach((value,i)=>this.crop.setAttribute(['x','y','width','height'][i],value));
+      for(const part of this.parts)part.style.display=(mode==='alarm'&&['FLS','X','T','MC1','MC2','FR'].includes(part.dataset.device))?'none':'';
+    }
+  }
+  window.CircuitDiagram=CircuitDiagram;
+})();

@@ -1,0 +1,6 @@
+interface:
+  display_name: "시퀀스 결선하기·단자대 페이지"
+  short_description: "회로별 결선 데이터(wire-NNN.js)와 결선하기·단자대 번호매기기 페이지 제작"
+  default_prompt: "$sequence-wiring-page 요청 문서에 적힌 회로 번호의 결선 데이터와 결선하기(전기는 단자대 번호매기기도) 페이지를 001·e01 견본과 같은 방식으로 만들고 결선검사.cjs 로 확인해줘."
+policy:
+  allow_implicit_invocation: true

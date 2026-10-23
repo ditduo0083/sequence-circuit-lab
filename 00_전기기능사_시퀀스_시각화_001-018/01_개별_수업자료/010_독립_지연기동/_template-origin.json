@@ -1,0 +1,6 @@
+{
+  "skill": "sequence-circuit-visualizer",
+  "example": "alternating",
+  "adaptation_required": true,
+  "note": "This is a reference circuit, not an interpretation of a new diagram. Adapt the model, wiring, lessons, source images and tests together."
+}

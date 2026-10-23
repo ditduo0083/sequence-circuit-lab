@@ -1,0 +1,7 @@
+*.pdf
+*.pptx
+*.zip
+node_modules/
+__pycache__/
+.env*
+secrets*

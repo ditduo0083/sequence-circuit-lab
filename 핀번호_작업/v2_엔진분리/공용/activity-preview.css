@@ -1,0 +1,169 @@
+/* 핀번호 28개·단자대 18개 활동 화면 (0072 3-A). */
+.ap-practice-reference{flex:none;min-width:0;border:1px solid var(--line);border-radius:8px;margin:4px 0;background:white}
+.ap-practice-reference>summary{cursor:pointer;min-height:40px;padding:8px 10px;font-size:13px;color:var(--accent-ink)}
+.ap-practice-content{padding:8px;min-width:0}.ap-practice-content>label{display:flex;align-items:center;gap:8px;font-size:13px}.ap-practice-content select{min-width:0;max-width:100%;min-height:40px;flex:1}
+.ap-practice-reference .ap-reference-tabs{display:flex;gap:4px;margin:6px 0}.ap-practice-reference [role=tab]{min-height:40px;font-size:12px}.ap-practice-reference [aria-selected=true]{background:var(--accent);color:white}
+.ap-practice-reference .ap-photo-gallery{height:140px;flex:none;overflow:auto}.ap-practice-reference .ap-photo-thumb{height:140px}.ap-practice-reference .ap-photo-note,.ap-practice-description{font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.ap-practice-reference [hidden]{display:none!important}.ap-tb-side>.ap-practice-reference{margin-top:6px}
+@media print{.ap-practice-reference{display:none!important}}
+body.ap-pin > main { grid-template-columns:minmax(0,1fr) 382px; min-height:572px; }
+body.ap-pin #panel { padding:10px; overflow:visible; }
+.ap-pin #panel > h2 { font-size:15px; margin:0 0 6px; }
+.ap-pin .ap-reference-tools { display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+.ap-pin .ap-reference-tools span { margin-right:auto; font-size:12px; color:var(--accent-ink); }
+.ap-pin #panel .ap-reference-tools h2 { margin:0 auto 0 0; padding:0; border:0; font-size:14px; }
+.ap-pin .ap-reference-tools button { padding:4px 8px; font-size:12px; }
+.ap-pin #panel .fig { margin:0; padding:0; border:0; background:transparent; }
+.ap-pin #panel .fig::before { content:none; }
+.ap-pin #panel .fig + .fig { margin-top:8px; border-top:1px solid var(--line); padding-top:8px; }
+.ap-pin #panel .fig svg { width:var(--ap-width); max-width:100%; height:auto; }
+.ap-pin #panel [data-pin] { cursor:pointer; }
+.ap-pin #panel [data-pin]:focus { outline:none; }
+.ap-pin #panel [data-pin]:focus .ap-hit { stroke:var(--accent-ink); stroke-width:2; }
+.ap-reference-dialog { width:min(840px,calc(100vw - 40px)); padding:16px; border:1px solid var(--line); border-radius:12px; max-height:90dvh; overflow:auto; }
+.ap-reference-dialog::backdrop { background:#173d4866; }
+.ap-reference-dialog header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.ap-reference-dialog .ap-large-figs { display:flex; align-items:start; gap:16px; }
+.ap-reference-dialog svg { width:100%; height:auto; }
+.ap-reference-dialog .fig { flex:1; min-width:0; margin:0; }
+.ap-reference-dialog [data-pin] { cursor:pointer; }
+@media(min-width:600px) {
+ .ap-pin #panel .keypad { display:none; }
+}
+@media(min-width:600px) and (orientation:portrait) {
+ body.ap-pin > main { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(520px,1fr) auto; min-height:0; }
+ .ap-pin .pf-side { min-height:400px; }
+ .ap-pin #panel { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:auto 1fr; column-gap:12px; align-content:start; }
+ .ap-pin #panel > h2,.ap-pin .ap-reference-tools,.ap-pin #panel .empty-panel { grid-column:1/-1; }
+ .ap-pin #panel .fig + .fig { margin:0; padding:0; border:0; }
+}
+/* 낮은 화면에서는 그림을 잘라 한 화면에 억지로 넣지 않는다. */
+@media(min-width:600px) and (max-height:720px) {
+ body.ap-pin { height:auto; min-height:100dvh; }
+ body.ap-pin > main { flex:none; min-height:600px; }
+}
+@media(max-width:599px) {
+ body.ap-pin > main { min-height:0; }
+ .ap-reference-dialog .ap-large-figs { flex-direction:column; }
+}
+body.ap-order > main.pf-tb-main { display:flex; flex-direction:column; gap:6px; }
+body.ap-order > main.pf-tb-main > .card:first-child { flex:1; min-height:430px; height:auto; }
+body.practice-fit.ap-order #tInfo { flex:none; width:auto; align-self:stretch; max-height:160px; padding:6px 12px; display:flex; flex-direction:row; flex-wrap:wrap; align-items:center; gap:6px; }
+.ap-order #tInfo > h2,.ap-order #tInfo > .ip-prompt,.ap-order #tInfo > .note,
+.ap-order #tInfo > .tq-slots,.ap-order #tInfo > .tq-pool { display:none; }
+.ap-order #tInfo > p { margin:4px 0; font-size:12px; display:inline-block; }
+.ap-order #tInfo > .ip-row { display:inline-flex; margin:0 12px 0 0; }
+.ap-order #qoRetry { float:right; font-size:12px; }
+.ap-order #tInfo .ip-verdict { margin:0 0 6px; padding:8px; font-size:13px; flex-basis:100%; }
+.ap-order .ap-pipe-legend { font-size:11px; color:#47615b; }
+.ap-options { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:6px; padding:8px; background:#f0f8f6; border:1px solid var(--accent-line,#c2d6d2); border-radius:8px; flex:none; }
+.ap-options strong { font-size:13px; margin-right:6px; }
+.ap-options .tq-group { min-height:44px; margin:0; padding:5px 10px; font-size:13px; }
+.ap-options small { display:none; }
+.ap-order #tBoard { min-height:300px; }
+.ap-answer-strip { box-sizing:border-box; width:100%; height:100%; display:flex; flex-direction:column; gap:4px; background:#e8f6f2; border:2px solid #33776d; border-radius:5px; padding:4px; font-family:'Malgun Gothic',sans-serif; }
+.ap-strip-label { color:#205c51; font-weight:700; font-size:20px; line-height:1.1; }
+.ap-answer-strip .tq-slots { display:flex; flex:1; flex-wrap:nowrap; align-items:stretch; gap:4px; margin:0; min-height:0; }
+.ap-answer-strip .tq-arrow { display:none; }
+.ap-answer-strip .tq-slot { flex:1; min-width:0; padding:2px; border-radius:3px; display:flex; flex-direction:column; text-align:center; justify-content:center; background:white; }
+.ap-answer-strip .tq-pos { font-size:18px; line-height:1; }
+.ap-answer-strip .note { font-size:22px; }
+.ap-answer-strip .tq-group { min-width:0; width:100%; flex:1; min-height:72px; padding:2px; font-size:24px; margin:0; }
+.ap-answer-strip .tq-group small { display:none; }
+.ap-answer-strip .tq-slot.is-ok { border-color:#398060; background:#e2f5e9; }
+.ap-answer-strip .tq-slot.is-bad { border-color:#c45050; background:#fff0ed; }
+@media(max-width:850px) {
+ .ap-options { gap:5px; padding:6px; }
+ .ap-options strong { flex-basis:100%; text-align:center; }
+ body.ap-order > main.pf-tb-main > .card:first-child { flex:none; min-height:0; height:auto; }
+ body.ap-order #tBoard { flex:none; min-height:0; height:auto; aspect-ratio:var(--ap-aspect,2); }
+}
+@media(max-width:599px) {
+ body.ap-order #tBoard { min-height:300px; }
+ .ap-options .tq-group { font-size:12px; padding:4px 7px; }
+}
+
+/* 단자대 전 탭: 배관도 전체 폭 위, 학습 활동 아래. 긴 설명은 안쪽 스크롤. */
+body.practice-fit[data-stage=tb] > main.pf-tb-main { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(260px,1fr) minmax(140px,.55fr); gap:6px; }
+body.practice-fit[data-stage=tb] #tInfo { width:auto; align-self:stretch; max-height:none; }
+body.practice-fit[data-stage=tb].ap-order #tInfo { max-height:160px; }
+@media (max-width:599px) { body.practice-fit[data-stage=tb] > main.pf-tb-main { display:flex; } }
+/* 구형 가로 화면 flex 규칙보다 우선하여 전 탭의 그림 높이를 확보한다. */
+body.practice-fit[data-stage=tb]:not(.ap-order) > main.pf-tb-main { display:grid; grid-template-rows:minmax(180px,1fr) minmax(110px,.55fr); }
+@media(max-width:599px) { body.practice-fit[data-stage=tb]:not(.ap-order) > main.pf-tb-main { display:flex; } }
+/* 공통단자 문제와 선택 버튼은 그림 바로 아래, 중복 제목·설명은 한 줄 안내로. */
+.ap-common #tInfo > h2,.ap-common #tInfo > .ip-prompt,.ap-common #tInfo > .note { display:none; }
+.ap-common #tInfo .wi-chips { margin:0 0 6px; }
+.ap-common #tInfo .ip-row { margin:4px 0; }
+body.practice-fit.ap-common[data-stage=tb] > main.pf-tb-main { grid-template-rows:minmax(320px,1fr) minmax(160px,.55fr); }
+
+/* 0072 3-A 보완 2: 가로는 배관도 68%·설명 32%, 세로는 그림 높이 우선. */
+@media(min-width:600px) and (orientation:landscape) {
+ body.practice-fit[data-stage=tb]:not(.ap-order) > main.pf-tb-main { grid-template-columns:minmax(0,68fr) minmax(0,32fr); grid-template-rows:minmax(0,1fr); }
+ body.practice-fit[data-stage=tb]:not(.ap-order) #tInfo { align-self:stretch; max-height:none; overflow:auto; }
+}
+body.practice-fit[data-stage=tb] .ap-tb-side > .ps-progress { padding:8px 12px; margin-bottom:6px; flex:none; }
+body.practice-fit[data-stage=tb] .ap-tb-side #tInfo { flex:1; }
+@media(orientation:portrait),(max-width:599px) {
+ body.practice-fit[data-stage=tb] { height:auto; min-height:100dvh; }
+ body.practice-fit[data-stage=tb]:not(.ap-order) > main.pf-tb-main { display:flex; flex-direction:column; flex:none; }
+ body.practice-fit[data-stage=tb]:not(.ap-order) > main.pf-tb-main > .card:first-child { height:auto; flex:none; }
+ body.practice-fit[data-stage=tb]:not(.ap-order) #tBoard { height:auto; min-height:0; flex:none; aspect-ratio:var(--ap-aspect,1); }
+ body.practice-fit[data-stage=tb]:not(.ap-order) #tInfo { max-height:50dvh; overflow:auto; }
+ body.practice-fit[data-stage=tb]:not(.ap-order) .ap-tb-side { flex:none; }
+}
+
+/* 0078: 실제 브라우저 높이에서 참고 그림을 탭으로 바꾸며 칸 높이는 유지한다. */
+@media(min-width:600px) {
+ body.ap-pin { height:100dvh; min-height:0; }
+ body.ap-pin > main { flex:1 1 0; min-height:0; }
+ body.ap-pin #panel { display:flex; flex-direction:column; min-height:0; overflow:hidden; padding:10px; }
+ .ap-pin #panel .ap-reference-tools { flex:none; flex-wrap:wrap; gap:4px; margin-bottom:6px; }
+ .ap-pin .ap-reference-tools h2 { min-width:0; overflow-wrap:anywhere; }
+}
+.ap-pin .ap-reference-tabs { display:flex; gap:4px; flex:none; margin-bottom:6px; }
+.ap-pin .ap-reference-tabs button { flex:1; min-width:0; padding:5px; font-size:13px; }
+.ap-pin .ap-reference-tabs [aria-selected=true] { background:var(--accent-ink); color:white; }
+.ap-pin .ap-reference-frame { flex:1 1 0; min-height:0; min-width:0; position:relative; }
+.ap-pin #panel .ap-reference-frame .fig { margin:0; padding:0; border:0; height:100%; }
+.ap-pin #panel .ap-reference-frame .fig svg { width:100%; height:100%; max-width:none; object-fit:contain; }
+.ap-pin #panel .ap-photo-panel { display:flex; flex-direction:column; gap:6px; min-width:0; min-height:0; }
+.ap-pin #panel .ap-photo-panel[hidden] { display:none; }
+.ap-photo-gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; flex:1; min-height:0; }
+.ap-photo-thumb { padding:4px; min-width:0; min-height:0!important; overflow:hidden; background:white; border:1px solid var(--line); cursor:zoom-in; }
+.ap-photo-thumb img { width:100%; height:100%; object-fit:contain; display:block; }
+.ap-photo-note { flex:none; margin:0; font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.ap-pin #panel .ap-photo-keys { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); flex:none; gap:3px; margin:0; }
+.ap-pin #panel .ap-photo-keys button { min-width:0; min-height:44px; padding:4px; font-size:13px; }
+.ap-photo-large { margin:0; height:100%; display:flex; flex-direction:column; gap:8px; min-height:0; }
+.ap-photo-large img { flex:1; min-height:0; height:0; max-width:100%; width:100%; object-fit:contain; }
+.ap-photo-large figcaption { flex:none; font-size:12px; }
+.ap-reference-dialog:has(.ap-photo-large) .ap-large-figs { display:block; flex:1; min-height:0; }
+.ap-reference-dialog:has(.ap-photo-large)[open] { display:flex; flex-direction:column; height:min(720px,90dvh); overflow:hidden; }
+.ap-reference-dialog:has(.ap-photo-large) header { flex:none; }
+.ap-pin #panel:has(.ap-photo-panel:not([hidden])) > .keypad { display:none; }
+@media(min-width:600px) and (orientation:portrait) {
+ body.ap-pin > main { grid-template-rows:minmax(0,1fr) minmax(0,1fr); }
+ .ap-pin .pf-side { min-height:0; }
+}
+@media(max-width:599px) {
+ .ap-pin .ap-reference-frame { height:360px; flex:none; }
+}
+/* 설명 펼침은 해당 칸 안에 둔다. 긴 글·표는 내부에서 줄바꿈/스크롤한다. */
+.practice-fit .pf-popover { box-sizing:border-box; max-width:100%; overflow-wrap:anywhere; }
+.practice-fit .pf-options .pf-popover { left:auto; right:0; width:min(280px,calc(100vw - 24px)); max-width:none; }
+body.practice-fit[data-stage=tb] .ap-tb-side,body.practice-fit[data-stage=tb] #tInfo { min-width:0; overflow-wrap:anywhere; }
+body.practice-fit[data-stage=tb] #tInfo > *,body.practice-fit[data-stage=tb] #tInfo table { max-width:100%; box-sizing:border-box; }
+body.practice-fit[data-stage=tb] #tInfo th,body.practice-fit[data-stage=tb] #tInfo td { white-space:normal; overflow-wrap:anywhere; }
+body.practice-fit[data-stage=tb] .ap-tb-side > .ps-brief { margin:0 0 6px; }
+body.practice-fit[data-stage=tb] .ap-tb-side .ps-brief .pf-popover { width:100%; max-height:45dvh; }
+
+/* 사진을 펼친 낮은 화면에서는 문서 높이를 늘려 결선 도면의 클릭 영역을 남긴다. */
+@media(min-width:600px){
+ body.wire-workspace:has(.ap-practice-reference[open]),body.practice-fit[data-stage=tb]:has(.ap-practice-reference[open]){height:auto;min-height:100dvh;overflow:auto}
+ body.wire-workspace:has(.ap-practice-reference[open]) .wire-main,body.practice-fit[data-stage=tb]:has(.ap-practice-reference[open])>main{min-height:720px;flex:1 0 720px}
+}
+
+@media(min-width:600px) and (max-aspect-ratio:1/1){
+ body.wire-workspace:has(.ap-practice-reference[open]) .wire-main{min-height:1100px;flex-basis:1100px}
+}

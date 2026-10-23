@@ -1,0 +1,59 @@
+@page { size: A4 portrait; margin: 0; }
+@page ps-landscape { size: A4 landscape; margin: 0; }
+* { box-sizing: border-box; }
+body { margin:0; background:#e8ecee; color:#1f2933; font-family:'Malgun Gothic',sans-serif; }
+.ps-sheet { width:210mm; height:297mm; padding:8mm 8mm 10mm; background:white; position:relative; break-after:page; }
+.ps-sheet:last-child { break-after:auto; }
+.ps-sheet header { height:21mm; display:flex; justify-content:space-between; align-items:center; border-bottom:.4mm solid #344f49; }
+.ps-sheet header small {font-size:8pt; color:#52615e;}
+.ps-sheet h1 {font-size:12pt; margin:1mm 0;}
+.ps-sheet p {font-size:9pt; margin:1.5mm 0;}
+.ps-student {font-size:9pt; line-height:2; white-space:nowrap;}
+.ps-sheet h2 {font-size:9pt; margin:2mm 0;}
+.ps-sheet h2 small {font-size:7pt; font-weight:normal;}
+.ps-sheet footer {position:absolute; bottom:5mm; left:8mm; right:8mm; display:flex; justify-content:space-between; border-top:.2mm solid #bdc7c4; padding-top:1.5mm; font-size:7pt;}
+.ps-watermark {position:absolute; width:160mm; aspect-ratio:501 / 504; left:25mm; top:65mm; opacity:.075; filter:grayscale(1) brightness(0); pointer-events:none; z-index:0;}
+.ps-sheet > :not(.ps-watermark):not(footer) {position:relative; z-index:1;}
+.ps-sheet footer {z-index:1;}
+.ps-emblem {width:16mm; height:16mm; object-fit:contain; flex:none; margin-right:3mm;}
+.ps-title {flex:1; min-width:0;}
+.ps-wire.ps-landscape .ps-emblem {width:13mm; height:13mm;}
+.ps-circuit {width:100%; height:107mm; margin:2mm 0 1mm;}
+.ps-circuit svg,.ps-panel svg,.ps-piping svg {display:block; width:100%; height:100%;}
+.ps-circuit svg text {font-size:18px;}
+.ps-circuit .ps-reference-pin {font-size:28px;}
+.ps-lines {height:117mm; display:grid; grid-template-rows:repeat(12,1fr);}
+.ps-lines div {border-bottom:.2mm solid #b8c3c0;}
+.ps-lines span {font-size:7pt; color:#87948e;}
+.ps-pin .ps-circuit {height:105mm;}
+.ps-ref-grid {display:grid; grid-template-columns:repeat(3,1fr); gap:1.8mm 2mm;}
+.ps-ref-card {height:34.5mm; padding:.7mm; border:.2mm solid #b8c3c0; background:#fff; break-inside:avoid;}
+.ps-ref-card strong {display:block; font-size:7pt; height:4mm; white-space:nowrap;}
+.ps-ref-card strong span {font-weight:normal;}
+.ps-ref-card svg {width:100%; height:28.5mm; display:block; overflow:visible;}
+.ps-ref-card.ps-ref-tall {height:53.5mm;}
+.ps-ref-tall svg {height:47.5mm;}
+.ps-ref-plain {grid-template-columns:repeat(4,1fr); margin-top:1.8mm;}
+.ps-reference-next {height:auto;}
+.ps-reference-next .ps-references {break-before:page;}
+.ps-pin .ps-ref-card {height:31mm;}
+.ps-pin .ps-ref-card svg {height:25mm;}
+.ps-pin .ps-ref-card.ps-ref-tall {height:46mm;}
+.ps-pin .ps-ref-tall svg {height:40mm;}
+.ps-sheet.ps-landscape {page:ps-landscape; width:297mm; height:210mm;}
+.ps-wire.ps-landscape header {height:16mm;}
+.ps-wire.ps-landscape h1 {font-size:11pt; margin:.5mm 0;}
+.ps-wire.ps-landscape header p {margin:.5mm 0; font-size:8pt;}
+.ps-wire.ps-landscape .ps-student {font-size:8pt; line-height:1.7;}
+.ps-wire.ps-landscape .ps-watermark {width:125mm; left:86mm; top:43mm;}
+.ps-panel {height:159mm;}
+.ps-panel .pr-term text {font-size:13px;}
+.ps-legend {font-size:7pt; display:flex; flex-wrap:wrap; gap:1.5mm 4mm; margin-top:2mm;}
+.ps-piping {height:245mm;}
+@media print {
+  body {background:white; print-color-adjust:exact; -webkit-print-color-adjust:exact;}
+  .local-controls {display:none;}
+}
+
+/* 단자대 위·아래 필기 띠까지 같은 교표 한 개가 닿도록 쪽 폭에 맞춘다. */
+.ps-tb .ps-watermark {width:210mm; left:0; top:55mm;}

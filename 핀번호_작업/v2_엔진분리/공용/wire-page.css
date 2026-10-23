@@ -1,0 +1,405 @@
+/* 결선하기·단자대 번호매기기 페이지 (2026-09-26 요청 0028, 2026-09-27 요청 0030 기능, 요청 0033 청록 톤). pin-page.css 다음에 불러온다 */
+
+/* 이동 막대: 흰 둥근 판(핀번호 도구 줄과 같은 모양) */
+.wire-bar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin: 0 20px 12px; padding: 10px 14px; background: #fff; border: 1px solid var(--line); border-radius: 13px; box-shadow: var(--shadow-sm); }
+.wire-bar select { max-width: min(460px, 100%); }
+.wire-bar label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600; font-size: 14px; }
+/* 구간 번호 = 시뮬레이션 단계 번호(.step-count) 배지 */
+.wire-count { color: #588176; font-weight: 700; font-size: 12px; min-width: 64px; text-align: center; padding: 6px 8px; border: 1px solid #b8d2c5; border-radius: 7px; font-variant-numeric: tabular-nums; }
+.wire-count:empty { visibility: hidden; }
+/* 설명 카드 = 시뮬레이션 설명 띠(.explanation) 색 */
+.wire-info { margin: 0 20px 14px; padding: 14px 18px; background: var(--band); border-color: var(--band-line); }
+.wire-info h2 { font-size: 19px; margin: 4px 0 6px; letter-spacing: -0.35px; line-height: 1.4; }
+.wire-info p { margin: 6px 0; }
+.wi-head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.wi-tag { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: #fff; }
+.wi-main { background: #8b4a1f; } .wi-pe { background: #2f9e44; } .wi-aux { background: #b07d00; }   /* 선 색과 맞춘 구분색 — 그대로 둠 */
+.muted { color: var(--muted); font-size: 13px; }
+.wi-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0 10px; }
+.wi-chip { background: #fff; color: var(--accent-deep); border: 1px solid #a9d3c9; border-radius: 999px; padding: 4px 12px; font-weight: 700; box-shadow: var(--shadow-sm); }
+.wi-chip.out { background: #fbfcfc; border-style: dashed; box-shadow: none; }
+.wi-chip small { font-weight: 400; color: var(--muted); }
+.wi-eq { color: var(--accent); font-weight: 800; }
+.wi-wires { margin: 4px 0; padding-left: 0; list-style: none; }
+.wi-wires li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; padding: 3px 0; }
+.wi-wires small { color: var(--muted); }
+.wi-no { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; box-shadow: 0 1px 2px rgba(0, 127, 120, .3); }
+.wi-line { display: inline-flex; align-items: center; }
+.wi-swatch { display: inline-block; width: 28px; height: 6px; border-radius: 3px; margin: 0 4px 2px 0; vertical-align: middle; border: 1px solid rgba(0,0,0,.15); }
+.wi-note { background: #fff8e6; border: 1px solid #f1e0b5; border-radius: 10px; padding: 8px 12px; font-size: 14px; }
+.wi-rules { margin: 6px 0; padding-left: 20px; }
+.wi-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.wire-main { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; padding: 0 20px 20px; align-items: start; }
+.wire-main .card { padding: 12px; overflow-x: auto; }
+.wire-main h3 { margin: 2px 4px 8px; font-size: 16px; letter-spacing: -0.3px; }
+#wCircuit { display: block; width: 100%; min-width: 760px; height: auto; }
+#wBoard svg, #tBoard svg { display: block; width: 100%; height: auto; min-width: 520px; border-radius: 8px; }
+/* 제어판 배치도 ↔ 배관도 탭 = 시뮬레이션 세그먼트(.view-tabs) */
+.wire-tabs { display: inline-flex; gap: 3px; margin: 0 0 8px; background: #f2f5f4; border-radius: 8px; padding: 3px; }
+.wire-tabs button { min-height: 32px; padding: 5px 14px; font-size: 13px; border-color: transparent; background: transparent; box-shadow: none; }
+.wire-tabs button:hover:not(:disabled) { background: rgba(255, 255, 255, .6); border-color: transparent; }
+.wire-tabs button[aria-pressed="true"] { background: #fff; color: var(--accent-ink); box-shadow: 0 1px 3px rgba(18, 34, 51, .2); }
+.tb-table { border-collapse: separate; border-spacing: 0; margin: 8px 0; font-size: 14px; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.tb-table th, .tb-table td { border-bottom: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+.tb-table tr:last-child td { border-bottom: 0; }
+.tb-table th + th, .tb-table td + td { border-left: 1px solid var(--line); }
+.tb-table th { background: var(--tint); color: var(--accent-deep); font-size: 13px; }
+.tb-main { display: block; padding: 0 20px 20px; }
+.tb-main .card { padding: 12px; overflow-x: auto; }
+@media (max-width: 1100px) { .wire-main { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .wire-bar { margin: 0 16px 12px; padding: 10px 12px; } .wire-info { margin: 0 16px 12px; } .wire-main, .tb-main { padding: 0 16px 16px; } #wCircuit { min-width: 640px; } }
+.tb-common { color: #b42318; }
+
+/* 요청 0030: 구역 나눠 보기(view-tabs)·자유 탐색(free-button) — 시뮬레이션 페이지(eNN/sim/styles.css)와 같은 모양 */
+.wire-modebar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; padding: 0 20px 12px; }
+.view-tabs { display: flex; flex-wrap: wrap; gap: 3px; background: #e6eeec; border-radius: 9px; padding: 3px; }
+.view-tabs button { padding: 6px 16px; min-height: 34px; border-color: transparent; background: transparent; font-weight: 700; box-shadow: none; color: #3d5560; }
+.view-tabs button:hover:not(:disabled) { background: rgba(255, 255, 255, .6); border-color: transparent; }
+.view-tabs button.selected { background: #fff; color: var(--accent-ink); box-shadow: 0 1px 3px rgba(18, 34, 51, .2); }
+.wire-mode { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+/* 모드 배지 = 시뮬레이션 조작부 머리 배지(단계별 설명/자유 조작) */
+.wire-mode-badge { font-size: 11px; color: #65847b; background: #eef6f2; padding: 4px 8px; border-radius: 5px; font-weight: 600; }
+.free-button { border: 1px solid #a7bdb8; background: #fff; font-weight: 700; }
+.free-button.selected { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.wire-free #wCircuit { cursor: crosshair; }
+.wire-free #wBoard .pr-term, .wire-free #wBoard .pr-cell { cursor: pointer; }
+.wire-free #wBoard .pr-term:hover circle { stroke: #f59e0b; stroke-width: 3; }
+.wire-free #wBoard .pr-cell:hover rect { stroke: #f59e0b; stroke-width: 3; }
+.wi-also { background: #eef2f1; color: #52606d; border: 1px dashed #9aaeaa; }
+.wi-found { background: #fff4d6; border: 1px solid #f1dcaa; border-radius: 8px; padding: 5px 10px; display: inline-block; margin: 6px 0 0; }
+.wi-chip.picked { outline: 3px solid #f59e0b; outline-offset: 1px; }
+.wi-inline { margin-left: 6px; min-height: 30px; padding: 3px 10px; font-size: 13px; }
+@media (max-width: 600px) { .wire-modebar { padding: 0 16px 10px; } .view-tabs { width: 100%; } .view-tabs button { flex: 1; padding: 6px 6px; } .wire-mode { margin-left: 0; } }
+
+/* 요청 0030: 단자대 권장 배치 안내·퀴즈 (탭·판정 모양은 interpret-page.css 를 그대로 씀) */
+#tTabs { padding: 0 20px 12px; }
+.tb-free { background: #eef6f4; border: 1px solid var(--accent-line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 8px 12px; font-size: 14px; }
+.tq-slots { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0; }
+.tq-slot { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 120px; min-height: 64px; padding: 6px 8px; border: 2px dashed #b9cdc9; border-radius: 12px; background: #fff; }
+.tq-slot.is-ok { border: 2px solid var(--ok); background: var(--ok-soft); }
+.tq-slot.is-bad { border: 2px solid var(--bad); background: var(--bad-soft); }
+.tq-pos { font-size: 12px; color: #588176; font-weight: 700; }
+.tq-arrow { color: var(--muted); font-weight: 700; }
+.tq-pool { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.tq-group { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 8px 14px; text-align: left; border-radius: 10px; }
+.tq-group:hover:not(:disabled) { background: var(--accent-soft); border-color: var(--accent); }
+.tq-group small { color: var(--muted); font-size: 12px; font-weight: 400; }
+.tq-group.picked { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-deep); }
+@media (max-width: 600px) { #tTabs { padding: 0 16px 10px; } .tq-slot { min-width: 96px; } }
+.wire-bar[hidden], .wire-tabs[hidden] { display: none; }
+
+/* ===================================================================== 요청 0034 (UI 2단계) */
+/* 구역 단추에 구역 색 점(선 색과 같은 구분색) */
+.view-tabs button { display: inline-flex; align-items: center; gap: 7px; }
+.view-tabs button[data-zone]::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.view-tabs button[data-zone="main"]::before { background: #8b4a1f; }
+.view-tabs button[data-zone="aux"]::before { background: #e0a800; }
+.view-tabs button[data-zone="pe"]::before { background: linear-gradient(90deg, #2f9e44 50%, #f2c200 50%); }
+/* 자유 탐색 중에는 모드 배지를 코랄로(시뮬레이션 조작부 배지처럼 지금 모드를 눈에 띄게) */
+.wire-free .wire-mode-badge { background: var(--coral-soft); color: var(--coral-ink); border: 1px solid var(--coral-line); }
+/* 코랄: 누른 곳 · 주의 메모 · 구역 밖 안내 단추 · 올려 보기 */
+.wi-found { background: var(--coral-soft); border-color: var(--coral-line); color: var(--coral-ink); }
+.wi-found b { color: #7a3f12; }
+.wi-chip.picked { outline-color: var(--pick); }
+.wi-note { background: var(--coral-bg); border: 1px solid #efd3b8; border-left: 4px solid var(--coral); }
+.wi-inline { background: var(--coral-soft); border-color: var(--coral-line); color: var(--coral-ink); font-weight: 700; }
+.wi-inline:hover:not(:disabled) { background: #ffe8d2; border-color: var(--coral); }
+.wire-free #wBoard .pr-term:hover circle, .wire-free #wBoard .pr-cell:hover rect { stroke: var(--pick); }
+.tb-common { color: var(--coral); }
+/* 오른쪽 판 머리 = 시뮬레이션 조작부 머리 */
+.wire-main .card > h3 { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.wire-main .card > h3::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+/* 설명 카드 머리 배지 줄 아래 구분 */
+.wi-head { padding-bottom: 6px; border-bottom: 1px dashed var(--band-line); margin-bottom: 4px; }
+/* 단자대 퀴즈: 고른 자리 번호 배지는 코랄 */
+.tq-slot .tq-pos { color: var(--coral-ink); }
+
+/* ===================================================================== 요청 0058 단자대 화면 A안(2단) — 단자대 페이지(body[data-stage="tb"])에만 */
+/* 머리말 줄이기: 한 줄(로고·제목·단추), 설명 문장·eyebrow 숨김. 0030 이후 머리말(.page-header)과 그 전 머리말(.header-top) 모두 */
+body[data-stage="tb"] > header { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; padding: 8px 20px; }
+body[data-stage="tb"] > header .header-row, body[data-stage="tb"] > header .header-top { display: contents; }
+body[data-stage="tb"] > header .lead, body[data-stage="tb"] > header .eyebrow { display: none; }
+body[data-stage="tb"] > header h1 { order: 1; font-size: 17px; margin: 0; }
+body[data-stage="tb"] > header .header-actions, body[data-stage="tb"] > header .header-top .home-link { order: 2; margin-left: auto; }
+body[data-stage="tb"] > header .header-top #fullscreen-button { order: 3; }
+body[data-stage="tb"] .brand { gap: 10px; }
+body[data-stage="tb"] .brand-logo { width: 32px; height: 32px; }
+body[data-stage="tb"] .brand-name { font-size: 17px; }
+body[data-stage="tb"] .brand-name span { font-size: 14px; }
+body[data-stage="tb"] #steps { padding: 6px 20px; margin-bottom: 10px; }
+body[data-stage="tb"] #tTabs { padding: 0 0 8px; gap: 4px; }
+body[data-stage="tb"] #tTabs button { padding: 7px 12px; font-size: 14px; }
+body[data-stage="tb"] .wire-bar { margin: 0 0 8px; padding: 8px 10px; gap: 6px 8px; }
+body[data-stage="tb"] .wire-bar select { flex: 1 1 160px; min-width: 0; }
+body[data-stage="tb"] .wire-info { margin: 0; }
+body[data-stage="tb"] .wire-info h2 { font-size: 17px; }
+body[data-stage="tb"] .tb-table { font-size: 13px; }
+body[data-stage="tb"] .tb-table th, body[data-stage="tb"] .tb-table td { padding: 5px 7px; }
+body[data-stage="tb"] > p.note { font-size: 12px; margin: 8px 0 0; padding: 0 0 12px !important; }
+body[data-stage="tb"] .datacheck { margin: 0 20px 10px; }
+
+/* 크게 보기 단추 줄(배관도 카드 위) */
+.tb-zoombar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 0 6px; }
+.tb-zoombar .note { margin: 0; font-size: 12px; }
+#tZoom { min-height: 32px; padding: 4px 12px; font-size: 13px; font-weight: 700; }
+#tZoom[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-ink); border-color: var(--accent); }
+body[data-stage="tb"] #tBoard svg { min-width: 0; border-radius: 6px; }
+body.tb-zoomed #tBoard svg { width: 100%; height: auto; min-width: 900px; }
+
+/* 900px 이상: 왼쪽 열(탭·단계 단추·설명, 설명은 자체 스크롤) / 오른쪽 배관도(남은 화면 높이에 맞춤) */
+@media (min-width: 900px) {
+  body[data-stage="tb"] { height: 100vh; height: 100dvh; display: grid; grid-template-columns: minmax(340px, 420px) minmax(0, 1fr); grid-template-rows: auto auto auto auto auto minmax(150px, 1fr) auto; column-gap: 14px; }
+  body[data-stage="tb"] > header { grid-column: 1 / -1; grid-row: 1; }
+  body[data-stage="tb"] > #steps { grid-column: 1 / -1; grid-row: 2; }
+  body[data-stage="tb"] > #wireCheck { grid-column: 1 / -1; grid-row: 3; }
+  body[data-stage="tb"] > #tTabs { grid-column: 1; grid-row: 4; margin-left: 16px; }
+  body[data-stage="tb"] > #tExplainBar { grid-column: 1; grid-row: 5; margin-left: 16px; }
+  body[data-stage="tb"] > #tInfo { grid-column: 1; grid-row: 6; margin-left: 16px; min-height: 0; overflow: auto; overscroll-behavior: contain; }
+  body[data-stage="tb"] > p.note { grid-column: 1; grid-row: 7; margin-left: 16px; }
+  body[data-stage="tb"] > main.tb-main { grid-column: 2; grid-row: 4 / 8; min-height: 0; display: flex; flex-direction: column; align-items: stretch; padding: 0 16px 12px 0; }
+  body[data-stage="tb"] .tb-main .card { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow: hidden; padding: 8px 10px 10px; }
+  body[data-stage="tb"] #tBoard { flex: 1 1 0; min-height: 0; position: relative; }
+  body[data-stage="tb"] #tBoard svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  body.tb-zoomed #tBoard { overflow: auto; }
+  body.tb-zoomed #tBoard svg { position: static; width: 100%; height: auto; min-width: 0; }
+}
+/* 900px 미만: 위아래로 쌓기. 설명은 화면의 36%까지만(자체 스크롤), 배관도는 폭에 맞춤 */
+@media (max-width: 899px) {
+  body[data-stage="tb"] #tTabs { padding: 0 16px 8px; }
+  body[data-stage="tb"] .wire-bar { margin: 0 16px 8px; }
+  body[data-stage="tb"] .wire-info { margin: 0 16px 10px; max-height: 36vh; overflow: auto; }
+  body[data-stage="tb"] .tb-main { padding: 0 16px 12px; }
+  body[data-stage="tb"] #tBoard svg { width: 100%; height: auto; }
+  body[data-stage="tb"] > p.note { margin: 0 16px; }
+  body.tb-zoomed .tb-main .card { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+@media (max-width: 600px) {
+  body[data-stage="tb"] > header { padding: 8px 12px; gap: 4px 10px; }
+  body[data-stage="tb"] > header h1 { order: 3; font-size: 15px; flex-basis: 100%; }
+  body[data-stage="tb"] > header .header-actions .home-link, body[data-stage="tb"] > header .header-top .home-link { padding: 4px 10px; font-size: 12px; }
+  body[data-stage="tb"] > header .header-top .home-link { margin-left: 0; }
+  body[data-stage="tb"] > header #fullscreen-button { display: none; }   /* 휴대폰은 전체 화면 단추를 숨겨 머리말을 두 줄로 */
+  body[data-stage="tb"] .brand-name { font-size: 15px; }
+  body[data-stage="tb"] .brand-name span { display: none; }   /* 단계 이름은 아래 제목(h1)에 있음 */
+  body[data-stage="tb"] .brand-logo { width: 28px; height: 28px; }
+  body[data-stage="tb"] #steps { padding: 4px 12px; margin-bottom: 8px; }
+  body[data-stage="tb"] #tTabs { display: flex; flex-wrap: nowrap; overflow-x: auto; padding: 0 12px 8px; }
+  body[data-stage="tb"] #tTabs button { white-space: nowrap; flex: 0 0 auto; font-size: 13px; padding: 6px 10px; }
+  body[data-stage="tb"] .wire-bar { margin: 0 12px 8px; }
+  body[data-stage="tb"] .wire-info { margin: 0 12px 10px; padding: 10px 12px; }
+  body[data-stage="tb"] .tb-main { padding: 0 12px 12px; }
+  body[data-stage="tb"] .tb-main .card { padding: 8px; }
+  body[data-stage="tb"] > p.note { margin: 0 12px; }
+  /* 휴대폰: 크게 보기 단추를 크게(손가락으로 누르기 쉽게) */
+  .tb-zoombar { position: sticky; left: 0; }
+  #tZoom { min-height: 40px; padding: 6px 14px; font-size: 14px; background: var(--accent-ink); color: #fff; border-color: var(--accent-ink); }
+  #tZoom[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent-ink); }
+}
+
+/* ===================================================================== 요청 0062 직접 연결해 보기 (결선하기 세 번째 모드) */
+.wire-practice .wire-bar, .wire-practice .wire-tabs { display: none; }
+.wp-bar[hidden], .wp-head[hidden] { display: none; }
+.wp-bar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; justify-content: space-between; margin: 0 20px 12px; padding: 10px 14px; background: #fff; border: 1px solid var(--line); border-radius: 13px; box-shadow: var(--shadow-sm); }
+.wp-sw { display: inline-block; width: 22px; height: 7px; border-radius: 3px; border: 1px solid rgba(0, 0, 0, .15); }
+.wp-acts { display: flex; flex-wrap: wrap; gap: 6px; }
+.wp-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; margin: 0 0 8px; }
+.wp-status { flex: 1 1 240px; min-height: 36px; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; padding: 4px 10px; font-size: 14px; background: var(--coral-bg); border: 1px solid #efd3b8; border-radius: 8px; }
+.wp-a { color: var(--coral-ink); }
+.wp-zoom { display: inline-flex; gap: 3px; }
+.wp-zoom button { min-width: 40px; min-height: 36px; padding: 4px 10px; font-weight: 800; }
+.wire-practice #wBoard { position: relative; overflow: hidden; border-radius: 8px; border: 1px solid var(--line); touch-action: none; -webkit-user-select: none; user-select: none; }
+.wire-practice #wBoard svg { min-width: 0; cursor: crosshair; }
+.wire-practice #wBoard.wp-zoomed svg { cursor: grab; }
+.wire-practice #wBoard .pr-wire { cursor: pointer; }
+.wire-practice #wBoard .pr-wire:hover polyline:nth-last-child(2) { stroke-opacity: .6; }
+.wp-sum { display: inline-block; margin: 6px 0; padding: 6px 12px; border-radius: 8px; background: #fff; border: 1px solid var(--line); font-size: 15px; }
+.wp-sum.is-all { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.wp-bad { color: var(--bad); font-weight: 700; }
+.wp-warn { color: #b54708; font-weight: 700; }
+.wp-warns { background: #fff8e6; border: 1px solid #f1e0b5; border-left: 4px solid #f79009; border-radius: 8px; padding: 6px 12px; margin: 6px 0; font-size: 14px; }
+.wp-warns ul { margin: 4px 0; padding-left: 18px; }
+.wp-list { list-style: none; padding: 0; margin: 8px 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 4px 12px; }
+.wp-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 5px 8px; border-radius: 8px; background: #fff; border: 1px solid var(--line); cursor: pointer; font-size: 14px; }
+.wp-list li.is-focus { outline: 2px solid var(--accent); }
+.wp-list small { color: var(--muted); }
+.wp-no { display: inline-grid; place-items: center; min-width: 22px; height: 22px; border-radius: 50%; background: #eef2f1; color: #52606d; font-size: 12px; font-weight: 700; }
+.wp-st { font-size: 12px; font-weight: 800; padding: 2px 8px; border-radius: 999px; background: #f2f4f7; color: #52606d; }
+.wp-name { flex: 1 1 160px; }
+.wp-done .wp-st, .wp-given .wp-st { background: var(--ok-soft); color: var(--ok); }
+.wp-short { border-color: var(--bad); }
+.wp-short .wp-st { background: var(--bad-soft); color: var(--bad); }
+.wp-part .wp-st { background: #fff4d6; color: #8a5a00; }
+.wp-hint { min-height: 30px; padding: 3px 10px; font-size: 13px; background: var(--coral-soft); border-color: var(--coral-line); color: var(--coral-ink); font-weight: 700; }
+.wp-submit { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--band-line); }
+.wp-submit label { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+.wp-submit input { width: 120px; }
+.practice-button { margin-left: 2px; }
+.wire-practice .wire-mode-badge { background: var(--accent-soft); color: var(--accent-ink); border: 1px solid var(--accent); }
+@media (max-width: 600px) {
+  .wp-bar { margin: 0 16px 12px; padding: 8px 10px; }
+  .wp-acts { width: 100%; } .wp-acts button { flex: 1; padding: 6px 6px; }
+  .wp-list { grid-template-columns: 1fr; }
+  .wire-mode { flex-wrap: wrap; }
+}
+.wire-practice .wire-main { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+@media (min-width: 1101px) { .wire-practice #wCircuit { min-width: 0; } }
+.wire-practice .wire-info { margin-top: 0; }
+.wp-okt { color: var(--ok); }
+@media (max-width: 1100px) { .wire-practice .wire-main { grid-template-columns: 1fr; } }
+/* 0062 작성자 답변: 회로도에서 구간 고르기 → 배치도에서 잇기 (선마다 바로 판정) */
+.wire-practice #wCircuit { cursor: pointer; }
+.wp-head { flex-direction: column; align-items: stretch; }
+.wp-now { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 6px 10px; font-size: 15px; background: #eef6f4; border: 1px solid var(--accent-line); border-left: 4px solid var(--accent); border-radius: 8px; }
+.wp-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; }
+.wp-step { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; font-size: 13px; }
+.wp-cur { color: #1d4ed8; }
+.wp-now .wp-st.wp-done { background: var(--ok-soft); color: var(--ok); }
+.wp-now .wp-st.wp-short { background: var(--bad-soft); color: var(--bad); }
+.wp-now .wp-st.wp-part { background: #fff4d6; color: #8a5a00; }
+.wp-next { min-height: 32px; padding: 4px 12px; font-size: 13px; }
+.wp-del { min-height: 28px; padding: 2px 10px; font-size: 13px; margin-left: 4px; background: #fff; border-color: var(--bad); color: var(--bad); font-weight: 700; }
+.wp-prog { font-size: 14px; color: #3d5560; padding: 0 6px; align-self: center; }
+@media (max-width: 600px) { .wp-prog { width: 100%; text-align: center; } }
+@media (min-width: 1101px) { .wire-practice #wBoard svg { width: auto; max-width: 100%; max-height: calc(100vh - 262px); margin: 0 auto; } .wire-practice .wp-bar { scroll-margin-top: 8px; } }
+/* 0062 작성자 결정: 선 종류 고르기 없음 — 선 색은 구간 종류대로 자동(도구 줄에는 색 범례만) */
+.wp-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 13px; color: #3d5560; }
+.wp-lg { display: inline-flex; align-items: center; gap: 5px; }
+.wire-practice .wp-flash line { animation: wp-flash .6s ease-in-out 3 alternate; }
+@keyframes wp-flash { from { stroke-opacity: .15; } to { stroke-opacity: .9; } }
+@media (max-width: 600px) { .wp-legend { width: 100%; font-size: 12px; } }
+
+/* 0069 · v2.12: 결선 A안. 600px 이상은 화면 높이 안, 세로는 위아래.
+   모든 기존 선택자는 .wire-workspace로 한정해 단자대 화면에는 적용하지 않는다. */
+.wire-workspace .page-header { padding:8px 14px; display:flex; flex-wrap:wrap; align-items:center; gap:6px 16px; flex:none; }
+.wire-workspace .header-row { display:contents; }
+.wire-workspace .brand-logo { width:30px; height:30px; }
+.wire-workspace .eyebrow { font-size:10px; }
+.wire-workspace .brand-name { font-size:15px; }
+.wire-workspace .brand-name > span,.wire-workspace .lead { display:none; }
+.wire-workspace .header-actions { order:3; margin-left:auto; gap:6px; }
+.wire-workspace .home-link { margin:0; padding:5px 9px; }
+.wire-workspace h1 { font-size:17px; margin:0; }
+.wire-workspace #steps { padding:4px 12px; gap:4px; margin:0; flex:none; }
+.wire-workspace #steps a,.wire-workspace #steps span { padding:5px 9px; font-size:12px; }
+.wire-workspace button,.wire-workspace select,.wire-workspace summary { min-height:40px; font-size:13px; }
+.wire-workspace button { padding:5px 10px; }
+.wire-workspace button,.wire-workspace summary { touch-action:manipulation; }
+.w-workspace { min-height:0; min-width:0; margin:0 12px 10px; display:flex; flex-direction:column; flex:1; }
+.w-controls { flex:none; min-width:0; }
+.wire-workspace .wire-modebar { padding:5px 0; flex-wrap:nowrap; gap:8px; }
+.wire-workspace .wire-mode { margin:0; gap:5px; min-width:0; }
+.wire-workspace .wire-mode-badge { display:none; }
+.wire-workspace .wire-mode .selected { background:var(--accent-ink); color:white; border-color:var(--accent-ink); }
+.wire-workspace .wire-mode button { transition:none; }
+.wire-workspace .wire-mode button[aria-pressed="false"] { background:#fff; color:var(--ink); border-color:var(--line); }
+#wProgress { display:flex; align-items:center; justify-content:center; gap:8px; padding:2px 0 5px; grid-column:1/-1; }
+#wProgress[hidden] { display:none; }
+#wProgress button { min-width:80px; min-height:40px; }
+#wProgress .wire-count { min-width:55px; text-align:center; }
+.w-options { position:relative; margin-left:auto; }
+.w-options > summary { display:flex; align-items:center; justify-content:center; cursor:pointer; padding:4px 12px; background:#fff; border:1px solid var(--line); border-radius:8px; white-space:nowrap; }
+.w-options-body { position:absolute; z-index:30; right:0; top:100%; width:min(370px,calc(100vw - 24px)); max-height:65dvh; overflow:auto; background:#fff; border:1px solid var(--line); padding:12px; border-radius:10px; box-shadow:var(--shadow-md); }
+.w-options-body label { display:flex; align-items:center; gap:8px; min-height:44px; }
+.w-options-body .view-tabs { margin-bottom:8px; }
+.wire-workspace .view-tabs button { white-space:nowrap; padding:5px 9px; }
+.w-options-body .wp-legend { padding-top:10px; border-top:1px solid var(--line); }
+#wTools,#wHelp { min-width:0; position:relative; }
+#wTools > summary { display:none; }
+.wire-workspace .wire-bar,.wire-workspace .wp-bar { margin:0; padding:5px 8px; gap:6px; border-radius:8px; }
+.wire-workspace .wire-bar select { flex:1; min-width:0; max-width:none; }
+.wire-workspace .wire-count { padding:4px 6px; min-width:48px; }
+.wire-workspace .wp-bar { justify-content:flex-end; }
+.wire-workspace .wp-bar[hidden] { display:none; }
+.wire-workspace .wp-acts { width:100%; align-items:center; }
+.wire-workspace .wp-prog { margin-right:auto; font-size:12px; }
+#wHelp > summary { display:flex; align-items:center; gap:7px; padding:3px 7px; cursor:pointer; color:var(--accent-deep); }
+.w-help-icon { display:grid; place-items:center; width:22px; height:22px; border-radius:50%; background:var(--accent-ink); color:white; flex:none; }
+#wBrief { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+.w-help-more { margin-left:auto; white-space:nowrap; font-size:12px; }
+.w-help-body { position:absolute; z-index:25; top:100%; right:0; width:min(680px,calc(100vw - 24px)); max-height:65dvh; overflow:auto; background:var(--band); border:1px solid var(--band-line); border-radius:10px; box-shadow:0 12px 35px #173d4833; }
+.wire-workspace #wInfo { margin:0; padding:12px; box-shadow:none; border:0; border-radius:10px; }
+.wire-workspace #wInfo h2 { font-size:16px; }
+.w-help-body > .note { padding:8px 12px!important; margin:0; font-size:11px; }
+.wire-workspace .wp-list { grid-template-columns:1fr; }
+.wire-workspace .wire-main { padding:0; margin:0; min-height:0; min-width:0; gap:10px; flex:1; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); align-items:stretch; }
+.wire-workspace .wire-main > .card { min-width:0; min-height:0; display:flex; flex-direction:column; padding:8px; overflow:hidden; }
+.w-figure-head,.w-board-head { display:flex; align-items:center; justify-content:space-between; gap:4px; flex:none; margin-bottom:4px; min-width:0; }
+.wire-workspace .wire-main h3 { font-size:14px; margin:0; min-width:0; }
+.w-zoom { display:flex; gap:2px; flex:none; }
+.wire-workspace .w-zoom button { min-width:40px; min-height:40px; padding:3px 7px; }
+.w-circuit-viewport { flex:1; min-width:0; min-height:0; position:relative; overflow:hidden; touch-action:none; }
+.wire-workspace #wCircuit { display:block; min-width:0; width:100%; height:100%; }
+.wire-workspace #wBoard { flex:1; min-height:0; min-width:0; position:relative; overflow:hidden; touch-action:none; }
+.wire-workspace #wBoard svg { display:block; width:100%; height:100%; min-width:0; max-width:none; max-height:none; margin:0; }
+.wire-workspace .wire-tabs { margin:0; flex:none; }
+.wire-workspace .wire-tabs[hidden] { display:none; }
+.wire-workspace .wire-tabs button { padding:4px 7px; font-size:12px; }
+.wire-workspace.wire-practice .w-board-head { display:none; }
+.wire-workspace .wp-head { flex:none; margin-bottom:4px; gap:4px; }
+.wire-workspace .wp-head[hidden] { display:none; }
+.wire-workspace .wp-now { padding:3px 6px; font-size:12px; gap:4px; }
+.wire-workspace .wp-row { gap:4px; flex-wrap:nowrap; }
+.wire-workspace .wp-status { padding:3px 6px; font-size:12px; min-width:0; min-height:40px; flex:1; }
+.wire-workspace .wp-zoom button { min-width:40px; min-height:40px; padding:3px 7px; }
+.wire-workspace .wp-next { margin-left:auto; }
+.w-zoomed { cursor:grab; }
+#wTouchChoices { width:min(430px,calc(100vw - 24px)); max-height:80dvh; border:1px solid var(--accent-line); border-radius:14px; padding:16px; box-shadow:var(--shadow-md); }
+#wTouchChoices::backdrop { background:#173d4870; }
+#wTouchChoices h2 { margin:0 0 8px; font-size:18px; }
+#wTouchChoices p { font-size:13px; }
+.w-touch-list { display:grid; gap:6px; max-height:48dvh; overflow:auto; margin-bottom:10px; }
+#wTouchChoices button { min-height:44px; width:100%; padding:8px; }
+@media(min-width:600px) {
+ body.wire-workspace { height:100vh; height:100dvh; display:flex; flex-direction:column; overflow:hidden; }
+ .wire-workspace .page-header { min-height:52px; }
+ .wire-workspace #steps a,.wire-workspace #steps span,.wire-workspace #steps .cn-pick { min-height:40px; align-items:center; }
+ .wire-workspace .w-circuit-viewport,.wire-workspace #wBoard { min-height:0; }
+}
+@media(max-width:1100px),(max-height:650px),(orientation:portrait) {
+ .w-controls { display:grid; grid-template-columns:132px minmax(0,1fr); }
+ .wire-workspace .wire-modebar { grid-column:1/-1; }
+ #wTools > summary { display:flex; align-items:center; padding:4px 8px; cursor:pointer; color:var(--accent-ink); font-weight:700; }
+ .w-tools-body { position:absolute; z-index:26; left:0; top:100%; width:min(680px,calc(100vw - 24px)); max-height:60dvh; overflow:auto; padding:8px; background:white; border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow-md); }
+ .wire-workspace .brand-text .eyebrow { display:none; }
+ .wire-workspace .brand-name { font-size:13px; }
+ .wire-workspace #fullscreen-button { display:none; }
+ .wire-workspace h1 { font-size:15px; }
+ .wire-workspace .page-header { gap:4px 12px; }
+ .wire-workspace #steps .cn-title,.wire-workspace #steps .cn-word { display:none; }
+ .wire-workspace #steps .cn-pick { padding:0 8px; }
+ .w-help-more { display:none; }
+}
+@media(min-width:600px) and (max-aspect-ratio:1/1) {
+ .wire-workspace .wire-main { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,.85fr) minmax(0,1.25fr); }
+ .wire-workspace .page-header .brand-home-link { flex:1; }
+ .wire-workspace h1 { order:4; flex-basis:100%; }
+ .wire-workspace .wp-now { min-height:40px; }
+}
+@media(max-width:599px) {
+ .wire-workspace .page-header { padding:6px 10px; }
+ .wire-workspace .brand-home-link { flex:1; }
+ .wire-workspace h1 { order:4; flex-basis:100%; }
+ .wire-workspace #steps { padding:4px 10px; }
+ .wire-workspace #steps .circuit-nav { margin-left:0; }
+ .w-workspace { margin:0 8px 10px; }
+ .wire-workspace .wire-main { grid-template-columns:minmax(0,1fr); }
+ .wire-workspace .w-circuit-viewport { height:290px; flex:none; }
+ .wire-workspace #wBoard { height:430px; flex:none; }
+ .wire-workspace .wire-mode { flex:1; gap:3px; }
+ .wire-workspace .wire-mode button { flex:1; padding:4px 7px; font-size:12px; }
+ .w-options > summary { padding:4px 8px; font-size:12px; }
+ .w-controls { grid-template-columns:114px minmax(0,1fr); }
+ #wBrief { font-size:12px; }
+ .w-board-head { flex-wrap:wrap; }
+ .wire-workspace .wire-tabs button { font-size:11px; padding:4px 5px; }
+ .wire-workspace .wp-row { flex-wrap:wrap; }
+ .wire-workspace .wp-zoom { margin-left:auto; }
+ .wire-workspace .wp-submit input { width:95px; }
+}
+
+/* 0072 3-A 보완: 가로 화면의 순서 이동을 한 줄에 묶는다. */
+@media (min-width:600px) and (orientation:landscape) {
+ #wProgress select { flex:1; min-width:0; max-width:680px; }
+ .wire-workspace:not(.wire-practice):not(.wire-free) #wTools { display:none; }
+ .wire-workspace:not(.wire-practice):not(.wire-free) #wHelp { grid-column:1/-1; }
+}

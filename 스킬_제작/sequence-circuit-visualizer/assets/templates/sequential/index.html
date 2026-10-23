@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>시퀀스 LAB · FLS 시퀀스</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="circuit-model.js" defer></script>
+  <script src="circuit-diagram.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="page-header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">⌁</div><div><p class="eyebrow">전기기능사 · 시퀀스 회로 실습</p><h1>시퀀스 LAB <span>FLS</span></h1></div></div>
+    <div class="header-actions"><span class="version">도면 ① · 접점 기호 개선</span><button id="reference-button" class="quiet">원본 자료</button><button id="fullscreen-button" class="quiet">전체 화면</button></div>
+  </header>
+  <main>
+    <nav class="lesson-nav" aria-label="수업 장면">
+      <div class="lesson-tabs">
+        <button data-lesson="auto" class="selected" aria-pressed="true"><span>01</span> 자동 운전</button>
+        <button data-lesson="manual" aria-pressed="false"><span>02</span> 수동 운전</button>
+        <button data-lesson="alarm" aria-pressed="false"><span>03</span> 과부하 경보</button>
+      </div>
+      <button id="free-button" class="free-button" aria-pressed="false">자유 조작으로 전환</button>
+    </nav>
+    <div class="workspace">
+      <section class="diagram-panel" aria-label="동작 회로도">
+        <div class="diagram-toolbar"><div><p class="eyebrow">접점을 따라 동작을 확인하세요</p><h2 id="scene-heading">전원 투입 전</h2></div><div class="view-tabs" role="group" aria-label="회로 확대"><button data-view="all" class="selected" aria-pressed="true">전체</button><button data-view="control" aria-pressed="false">제어회로</button><button data-view="operation" aria-pressed="false">운전부</button><button data-view="alarm" aria-pressed="false">경보부</button></div></div>
+        <div id="diagram-viewport" class="diagram-viewport" data-view="all"><svg id="circuit" viewBox="0 0 1560 720" role="img" aria-label="FLS 시퀀스 회로도. 접점의 열림과 닫힘, 코일의 여자 상태와 통전 경로를 표시합니다."></svg></div><p class="pan-hint">회로도를 좌우로 밀어서 살펴보세요.</p>
+        <div class="diagram-legend"><span><i class="legend-line flow"></i>통전 경로</span><span><i class="legend-line voltage"></i>전원 측 연결</span><span><i class="legend-line inactive"></i>비통전</span><span class="legend-note">교류 회로 · 색은 전류 방향을 뜻하지 않습니다</span></div>
+        <div class="device-strip" role="group" aria-label="관련 코일과 접점 찾기"><span>같은 기기 찾기</span><button data-device="X" aria-pressed="false">X</button><button data-device="T" aria-pressed="false">T</button><button data-device="MC1" aria-pressed="false">MC1</button><button data-device="MC2" aria-pressed="false">MC2</button><button data-device="EOCR" aria-pressed="false">EOCR</button><button data-device="FR" aria-pressed="false">FR</button><button data-device="FLS" aria-pressed="false">FLS</button><span id="device-hint">기기를 선택하면 코일과 관련 접점을 함께 표시합니다.</span></div>
+      </section>
+      <aside class="control-panel" aria-label="조작과 동작 결과">
+        <div class="panel-heading"><h2>조작부</h2><span id="mode-badge">단계별 설명</span></div>
+        <p id="control-help" class="control-help">아래 ‘다음 단계’로 진행하세요.</p>
+        <div class="control-row"><div><strong>MCCB</strong><span>전원</span></div><button id="power-button" class="toggle" aria-pressed="false">OFF</button></div>
+        <div class="control-row"><div><strong>SS</strong><span>운전 선택</span></div><div class="segmented" role="group" aria-label="운전 선택"><button id="auto-button" aria-pressed="false">A 자동</button><button id="manual-button" class="selected" aria-pressed="true">M 수동</button></div></div>
+        <div class="pushbuttons"><button id="start-button" class="start"><strong>PB1</strong><span>기동 · 누르고 있기</span></button><button id="stop-button" class="stop"><strong>PB0</strong><span>정지 · 누르고 있기</span></button></div>
+        <div class="control-row"><div><strong>FLS</strong><span>수위 감지 입력</span></div><button id="sensor-button" class="toggle" aria-pressed="false">해제</button></div>
+        <div class="fault-buttons"><button id="trip-button">EOCR 과부하</button><button id="reset-trip-button">RESET</button></div>
+        <div class="results"><div class="panel-heading"><h2>동작 결과</h2><span id="power-status">전원 OFF</span></div><div class="motors">
+          <div class="motor-card" id="motor1"><div class="motor-icon" aria-hidden="true"><div class="rotor">✣</div></div><div><strong>M1</strong><span id="m1-state">정지</span></div><div id="rl-led" class="indicator red" aria-label="RL 소등">RL</div></div>
+          <div class="motor-card" id="motor2"><div class="motor-icon" aria-hidden="true"><div class="rotor">✣</div></div><div><strong>M2</strong><span id="m2-state">정지</span></div><div id="gl-led" class="indicator green" aria-label="GL 소등">GL</div></div>
+        </div>
+        <div class="timer-head"><label for="delay-input">T 설정 <input id="delay-input" type="number" min="1" max="30" value="5" step="1" aria-label="타이머 설정 초"> 초</label><span id="timer-value">0.0 / 5.0초</span></div><div id="timer-progress" class="timer-track" role="progressbar" aria-label="타이머 경과" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><div id="timer-fill"></div></div><p id="timer-state" class="timer-state">대기 · 수업 예시 설정</p>
+        <div class="alarm-status"><div id="yl-led" class="indicator yellow" aria-label="YL 소등">YL</div><div id="bz-led" class="buzzer" aria-label="BZ 정지">BZ <span>정지</span></div><button id="sound-button" class="quiet" aria-pressed="false">소리 OFF</button></div>
+        <label class="interval-label">FR 교대 간격 <select id="interval-input"><option value="0.5">0.5초</option><option value="1" selected>1초</option><option value="2">2초</option></select><span>수업 예시</span></label></div>
+      </aside>
+    </div>
+    <section class="explanation" aria-label="현재 동작 설명"><div class="explanation-text"><span id="step-count" class="step-count">01 / 07</span><div><h2 id="step-title">MCCB를 투입하기 전입니다.</h2><p id="step-description" aria-live="polite">회로가 대기 중입니다. 전원을 넣으면 어떤 기기에 먼저 전원이 공급될까요?</p></div></div><div class="play-controls"><button id="previous-button" aria-label="이전 단계">← 이전</button><button id="play-button" class="primary">자동 재생</button><button id="next-button">다음 단계 →</button><button id="restart-button" class="quiet">처음으로</button></div></section>
+    <div class="lesson-bottom"><div id="step-dots" class="step-dots" aria-label="단계 선택"></div><p id="lesson-note">실제 동작을 학습용 단계로 나누어 보여줍니다.</p></div>
+  </main>
+  <dialog id="reference-dialog"><div class="dialog-header"><h2>원본 도면 안내</h2><button id="close-reference">닫기</button></div><div class="reference-content" style="padding:16px 0;line-height:1.7;"><p style="font-size:15px;color:var(--text);margin-bottom:12px;">원본 도면은 큐넷 공개문제 자료실에서 <strong>'전기기능사'</strong>를 검색해 확인하세요.<br><span style="font-size:13px;color:var(--muted);">(원본 저작권: 한국산업인력공단)</span></p><p><a href="https://www.q-net.or.kr/cst006.do?id=cst00601&amp;gSite=Q&amp;gId=&amp;brdId=Q006&amp;code=1204" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--teal, #087d76);color:#fff;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px;">큐넷 공개문제 자료실 바로가기 ↗</a></p></div></dialog>
+</body>
+</html>

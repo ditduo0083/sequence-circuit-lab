@@ -1,0 +1,6 @@
+interface:
+  display_name: "시퀀스 회로해석 콘텐츠"
+  short_description: "회로별 동작 설명 모범 답안(synopsis)과 접점 고르기 문제 9개 작성·원문 대조"
+  default_prompt: "$sequence-interpret-content 요청 문서에 적힌 회로 번호의 동작 설명 모범 답안과 접점 고르기 문제를 001 견본과 같은 방식으로 쓰고, 원문 대조(최장 연속 일치 15자 미만)와 브라우저 확인까지 해줘."
+policy:
+  allow_implicit_invocation: true

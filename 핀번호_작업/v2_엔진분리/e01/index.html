@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>승강기기능사 01 · 회로해석 · 시퀀스 LAB | 경성전자고등학교</title>
+<link rel="stylesheet" href="../공용/pin-page.css">
+<link rel="stylesheet" href="../공용/interpret-page.css">
+<link rel="stylesheet" href="../공용/practice-shell.css">
+<link rel="stylesheet" href="../공용/interpret-layout.css">
+<style id="site-brand-style">
+/* site-brand.json + site_brand.py에서 생성. 페이지별 복사본을 직접 고치지 않는다. */
+body .site-bar.site-bar.site-bar{box-sizing:border-box;position:relative;z-index:40;display:flex;flex:none;align-items:center;flex-wrap:nowrap;gap:10px;width:100%;height:44px;min-height:44px;max-height:44px;margin:0;padding:0 12px;border:0;border-radius:0;background:var(--accent,var(--teal,#007f78));color:#fff;font:600 14px/1.4 'Malgun Gothic',system-ui,sans-serif;white-space:nowrap;overflow:visible}
+.site-bar *{box-sizing:border-box}.site-bar .brand-home-link{display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;flex:none}
+.site-bar .brand-logo,.sim-fit .site-bar .brand-logo{display:block;width:24px!important;height:24px!important;min-width:24px;object-fit:contain;border-radius:50%;background:white}
+.site-bar .sb-brand-name{font-weight:700}.site-bar .sb-chip{display:none;border:1px solid #ffffffb3;border-radius:6px;padding:2px 7px;font-size:12px}
+.site-bar .sb-page{flex:1 1 auto;min-width:0;border-left:2px solid #ffffff80;padding-left:10px}
+.site-bar .sb-mid,.site-bar .sb-small{display:none}
+.site-bar .header-actions{display:flex;flex:none;align-items:center;gap:8px;margin:0;order:initial}
+body .site-bar .sb-home,body .site-bar summary{display:flex;align-items:center;justify-content:center;min-height:30px;height:30px;margin:0;padding:3px 8px;border:1px solid #ffffffb3;border-radius:6px;background:transparent;color:#fff;box-shadow:none;font:600 12px/1.4 'Malgun Gothic',system-ui,sans-serif;text-decoration:none;cursor:pointer;list-style:none}
+.site-bar summary::-webkit-details-marker{display:none}.site-bar details{position:relative;flex:none}.site-bar details>summary::marker{content:''}
+.site-bar .sb-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:100;display:flex;flex-direction:column;gap:4px;width:230px;max-width:calc(100vw - 24px);padding:8px;border:1px solid var(--accent-line,#c2d6d2);border-radius:8px;background:white;color:var(--ink,#172e38);box-shadow:0 8px 24px #173d4833;white-space:normal}
+body .site-bar .sb-menu a,body .site-bar .sb-menu button{display:flex;align-items:center;min-height:40px;width:100%;margin:0;padding:8px 10px;border:0;border-radius:5px;background:white;color:var(--ink,#172e38);text-decoration:none;text-align:left;font:600 13px/1.4 'Malgun Gothic',system-ui,sans-serif;box-shadow:none}
+.site-bar .sb-menu a:hover,.site-bar .sb-menu button:hover{background:var(--accent-soft,#e3f4ef)}.site-bar .sb-menu [aria-current=page]{background:var(--accent-soft,#e3f4ef);color:var(--accent-ink,#087d76)}
+.site-bar :focus-visible{outline:2px solid var(--focus,#eaa645);outline-offset:2px}.site-bar [hidden],.site-bar .brand-engine-title,.site-bar>.lead{display:none!important}
+.hero-inner>.site-bar{width:calc(100% - 26px);margin:0 0 16px;background:transparent}.hero-subtitle{margin:6px 0 0;font-size:clamp(14px,2vw,20px);color:inherit}
+@media(max-width:1100px){.site-bar .sb-wide,.site-bar .sb-brand-name{display:none}.site-bar .sb-mid,.site-bar .sb-chip{display:inline}.site-bar .sb-menu .sb-menu-home{display:flex}}
+@media(max-width:600px){body .site-bar.site-bar.site-bar{gap:8px;padding:0 10px;font-size:13px}.site-bar .sb-mid,.site-bar .sb-home{display:none!important}.site-bar .sb-small{display:inline}.site-bar .sb-page{padding-left:8px}.site-bar .header-actions{gap:0}}
+@media(max-width:340px){body .site-bar.site-bar.site-bar{gap:5px;padding:0 6px;font-size:12px}.site-bar .sb-chip{padding:2px 4px}.site-bar .brand-home-link{gap:5px}.site-bar .sb-page{padding-left:5px}}
+@media print{body .site-bar.site-bar.site-bar{display:none!important}}
+/* 0113: 1~2개는 직접 버튼, 3개 이상은 좁은 화면에서만 접는다. */
+body .site-bar.site-bar.site-bar #fullscreen-button,body .site-bar.site-bar.site-bar #reference-button{display:flex}
+.site-bar .sb-direct{display:flex;align-items:center;gap:6px}
+body .site-bar.site-bar.site-bar .sb-direct>a,body .site-bar.site-bar.site-bar .sb-direct>button,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>a,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>button{display:flex;align-items:center;justify-content:center;flex:none;width:auto;min-height:30px;height:30px;margin:0;padding:3px 8px;border:1px solid #ffffffb3;border-radius:6px;background:transparent;color:#fff;box-shadow:none;font:600 12px/1.4 'Malgun Gothic',system-ui,sans-serif;text-decoration:none;white-space:nowrap;cursor:pointer}
+@media(min-width:601px){.site-bar .screen-menu::details-content{content-visibility:visible;display:contents}.site-bar .screen-menu{display:contents}.site-bar .screen-menu>summary{display:none}.site-bar .screen-menu>.sb-menu{position:static;display:flex;flex-direction:row;align-items:center;gap:6px;width:auto;max-width:none;padding:0;border:0;background:transparent;box-shadow:none;white-space:nowrap}}
+@media(max-width:600px){body .site-bar.site-bar.site-bar .sb-direct>.sb-home,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>.sb-home{display:flex!important}.site-bar .sb-direct{gap:4px}body .site-bar.site-bar.site-bar .sb-direct>a,body .site-bar.site-bar.site-bar .sb-direct>button{padding:3px 5px}.site-bar .sb-direct .sb-small{display:inline}.site-bar .sb-direct .sb-wide,.site-bar .sb-direct .sb-mid{display:none}body .site-bar.site-bar.site-bar .screen-menu .sb-menu>a,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>button{justify-content:flex-start;width:100%;min-height:40px;height:auto;padding:8px 10px;border:0;background:white;color:var(--ink,#172e38);font-size:13px}.site-bar .screen-menu .sb-menu .sb-small{display:inline}}
+@media(max-width:340px){body .site-bar.site-bar.site-bar .sb-direct>a,body .site-bar.site-bar.site-bar .sb-direct>button{font-size:11px;padding:3px}body .site-bar.site-bar.site-bar #printAll .sb-print-full{display:none}body .site-bar.site-bar.site-bar #printAll .sb-print-short{display:inline}}
+
+.site-bar .sb-print-short{display:none}
+
+</style>
+</head>
+<!--
+  회로해석 페이지 템플릿 (2026-09-23, 요청 0018)
+  - 회로를 바꿀 때: 아래 data-circuit 값과 circuit-001.js 두 곳만 바꾼다. 엔진(공용/interpret-engine.js)은 열지 않는다.
+  - 서버 주소는 /c/NNN/interpret/ (핀번호 /c/NNN/pin/ 과 같은 방식). 배포 때 경로 치환은 핀번호 스테이징 스크립트와 같은 방식으로 한다.
+  - 인라인 스크립트를 넣지 않는다(서버 CSP: script-src 'self').
+-->
+<body data-circuit="e01" data-stage="interpret">
+<header class="page-header site-bar" data-brand-page="e01.interpret" data-title="승강기기능사 01 · 회로해석 · 시퀀스 LAB | 경성전자고등학교" data-html2canvas-ignore="true"><a class="brand-home-link" href="../../../00_전기기능사_시퀀스_시각화_001-018/index.html" title="학습 목차"><img class="brand-logo" src="../../../00_전기기능사_시퀀스_시각화_001-018/logo_hologram.png" width="24" height="24" alt="경성전자고등학교"><span class="sb-brand-name">시퀀스 LAB</span><span class="sb-chip">LAB</span></a><span class="sb-page"><span class="sb-wide">승강기기능사 01 · 회로해석</span><span class="sb-mid">승-01 · 회로해석</span><span class="sb-small">승-01 · 해석</span></span><div class="header-actions"><nav class="sb-direct" aria-label="화면 버튼"><a class="home-btn home-link sb-home" href="../../../00_전기기능사_시퀀스_시각화_001-018/index.html" aria-label="학습 목차"><span class="sb-wide">← 전체 목차</span><span class="sb-mid">← 목차</span><span class="sb-small">목차</span></a><button id="fullscreen-button" class="quiet">전체 화면</button></nav></div><h1 class="brand-engine-title" hidden>승강기기능사 01 · 회로해석</h1><p class="lead">① 회로의 동작을 살펴보고, ② 동작을 글로 설명하고, ③ 질문에 맞는 접점을 회로도에서 골라 보세요. 다 하면 <b>이미지 저장</b>으로 선생님께 보내요.</p></header>
+<nav id="steps"></nav>
+
+<div class="ip-tabs" role="tablist" aria-label="회로해석 활동">
+  <button type="button" role="tab" id="tab-watch" data-mode="watch" aria-controls="panel">① 동작 보기</button>
+  <button type="button" role="tab" id="tab-write" data-mode="write" aria-controls="panel">② 동작 설명 쓰기</button>
+  <button type="button" role="tab" id="tab-pick" data-mode="pick" aria-controls="panel">③ 접점 고르기</button>
+</div>
+
+<div class="toolbar">
+  <span class="sep"></span>
+  <label>이름 <input type="text" id="stuName" autocomplete="off"></label>
+  <label>학번 <input type="text" id="stuId" autocomplete="off"></label>
+  <button class="primary" id="btnSave">이미지 저장</button>
+  <button id="btnShare" hidden>공유</button>
+  <span id="progress" class="ip-progress" aria-live="polite"></span>
+</div>
+
+<main>
+  <div class="card circuit-wrap"><svg id="circuit" viewBox="0 0 1220 760" style="--svg-width:1220px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="승강기기능사 01 시퀀스 회로도"></svg></div>
+  <aside class="card panel" id="panel" role="tabpanel" aria-live="polite"></aside>
+</main>
+
+<p class="note" style="padding:0 20px 20px">회로도는 기구 규격(핀 배치·접점 연결)과 회로 해석을 바탕으로 우리 방식으로 그린 것입니다. 원본 도면의 그림·이미지·문장은 넣지 않았습니다. 원본 도면은 <a href="https://www.q-net.or.kr/cst006.do?id=cst00601&amp;gSite=Q&amp;gId=&amp;brdId=Q006&amp;code=1204" target="_blank" rel="noopener noreferrer">큐넷 공개문제 자료실</a>에서 확인하세요. (원본 저작권: 한국산업인력공단)</p>
+
+<script src="../공용/steps.js"></script>
+<script src="../공용/device-library.js"></script>
+<script src="../공용/pin-validate.js"></script>
+<script src="../회로/circuit-e01.js"></script>
+<script src="../공용/diagram-render.js"></script>
+<script src="../공용/interpret-engine.js"></script>
+<script src="../공용/practice-shell.js"></script>
+<script src="../공용/interpret-layout.js"></script>
+</body>
+</html>

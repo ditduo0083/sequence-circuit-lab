@@ -1,0 +1,67 @@
+/* 결선하기와 0072 세 실습 시안의 공통 모드·제출 줄. */
+.ps-row { display:flex; align-items:center; gap:8px; min-width:0; margin:4px 12px; flex:none; }
+.ps-row button,.ps-row summary,.ps-submit button { min-height:40px; padding:5px 9px; font-size:13px; white-space:nowrap; }
+.ps-modes,.ps-progress,.ps-actions { display:flex; align-items:center; gap:4px; flex:none; }
+.ps-modes button[aria-pressed=true],.ps-modes button[aria-selected=true] { background:var(--accent-ink); color:#fff; border-color:var(--accent-ink); }
+.ps-modes button { transition:none; }
+.ps-modes.ip-tabs { margin:0; padding:0; }
+.ps-progress { font-size:12px; color:var(--accent-ink); }
+.ps-progress output { min-width:50px; text-align:center; white-space:nowrap; }
+.ps-settings { position:relative; margin-left:auto; }
+.ps-settings > summary { border:1px solid var(--line); border-radius:8px; cursor:pointer; list-style:none; background:white; }
+.ps-settings > summary::-webkit-details-marker { display:none; }
+.ps-settings .pf-popover { right:0; left:auto; width:300px; }
+.ps-settings .pf-popover label { display:flex; gap:8px; align-items:center; min-height:40px; }
+.ps-submit { display:flex; align-items:center; gap:5px; flex:none; padding:4px 6px; border:1px solid var(--accent-line,#c2d6d2); border-radius:9px; background:#f3f9f8; }
+.ps-submit label { display:flex; align-items:center; gap:4px; font-size:12px; white-space:nowrap; }
+.ps-submit input[type=text] { box-sizing:border-box; width:70px; min-height:34px; padding:5px 7px; border:1px solid var(--line); border-radius:7px; font:inherit; background:white; }
+.ps-submit button { min-height:34px; font-size:12px; padding:5px 8px; }
+.ps-submit [hidden] { display:none!important; }
+.ps-brief { position:relative; flex:none; margin:0 12px 6px; min-width:0; }
+.ps-brief > summary { display:flex; align-items:center; gap:8px; border:0; background:transparent; min-height:30px; padding:3px 6px; }
+.ps-brief-icon { display:grid; place-items:center; border-radius:50%; width:22px; height:22px; color:white; background:var(--accent-ink); flex:none; }
+.ps-brief-text { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size:13px; color:var(--accent-ink); }
+.ps-brief-more { margin-left:auto; white-space:nowrap; font-size:12px; }
+.practice-fit .ps-brief .pf-popover { left:0; right:auto; width:min(680px,calc(100vw - 32px)); }
+.practice-fit .ps-tools-removed { display:none!important; }
+.practice-fit #panel > .where { display:none; }
+.practice-fit .ps-row .ps-progress button { padding:5px 8px; }
+.practice-fit .ps-row .ip-progress { margin:0; font-size:12px; white-space:nowrap; }
+.practice-fit #panel .fig svg { max-width:360px; display:block; margin:auto; }
+.practice-fit #panel .fig { text-align:left; }
+.practice-fit .pf-figure-head { min-height:40px; }
+.practice-shell-wire .wp-submit { display:none; }
+.practice-shell-wire .wire-modebar > .ps-submit { margin-left:0; padding:2px 6px; }
+.practice-fit .pf-tb-main #tInfo { align-self:start; max-height:100%; }
+@media(min-width:600px) and (orientation:portrait) {
+ body.practice-fit > main.pf-tb-main { grid-template-rows:minmax(0,1fr) auto; }
+ .practice-fit .pf-tb-main #tInfo { max-height:40dvh; }
+}
+@media(max-width:1100px),(orientation:portrait) {
+ .practice-fit .brand-text .eyebrow,.practice-fit #fullscreen-button { display:none; }
+ .practice-fit .brand-name { font-size:13px; }
+ body.practice-fit .page-header h1 { font-size:15px; }
+ .practice-fit #steps .cn-title,.practice-fit #steps .cn-word { display:none; }
+ .ps-row { flex-wrap:wrap; gap:5px; }
+}
+@media(max-width:599px) {
+ .ps-row .ps-modes { flex:1; gap:3px; }
+ .ps-row .ps-modes button { padding:5px 6px; font-size:12px; }
+ .ps-row .ps-settings { margin-left:auto; }
+ .ps-brief-more { display:none; }
+}
+
+/* 0111: 이름·학번을 바로 표시하고 좁은 화면은 입력/버튼 두 줄로 둔다. */
+.ps-submit .ps-fields,.ps-submit .ps-buttons{display:flex;align-items:center;gap:5px;min-width:0}
+.ps-submit .ps-fields label{display:block;min-width:0;flex:1}
+body .ps-submit input[type=text]{width:90px;min-height:40px;height:40px;padding:6px 9px;font-size:14px}
+body .ps-submit button{min-height:40px;height:40px}
+.ps-row>.ps-submit{margin-left:auto}
+@media(max-width:1100px),(orientation:portrait){
+ .ps-row,body.practice-shell-wire .wire-modebar{flex-wrap:wrap}
+ body .ps-row>.ps-submit,body .wire-modebar>.ps-submit{display:flex;flex-direction:column;align-items:stretch;flex:0 0 100%;width:100%;max-width:100%;margin:0;padding:5px;gap:5px}
+ .ps-submit .ps-fields{width:100%}
+ body .ps-submit input[type=text]{width:100%;min-width:0;font-size:16px}
+ .ps-submit .ps-buttons{justify-content:flex-end;flex-wrap:wrap}
+}
+@media(max-width:340px){.ps-submit .ps-fields{flex-wrap:wrap}.ps-submit .ps-fields label{flex:1 1 110px}}

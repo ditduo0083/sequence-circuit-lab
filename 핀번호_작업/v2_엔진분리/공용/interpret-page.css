@@ -1,0 +1,146 @@
+/* 회로해석 페이지 — pin-page.css 다음에 불러온다 (2026-09-23 요청 0018, 2026-09-27 요청 0033 청록 톤)
+ * 단자대 번호매기기 퀴즈 탭(tb-engine)도 이 파일의 .ip-tabs·.ip-verdict·.ip-qdots 를 쓴다. */
+
+/* 활동 탭 = 시뮬레이션 수업 탭(.lesson-tabs): 배경 없는 글자 탭, 고른 탭은 짙은 남색 알약 */
+.ip-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 12px; }
+.ip-tabs button { font-weight: 700; font-size: 15px; padding: 10px 20px; border-color: transparent; background: transparent; box-shadow: none; border-radius: 10px; color: var(--ink); }
+.ip-tabs button:hover:not(:disabled) { background: #e6eeec; border-color: transparent; }
+.ip-tabs button[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: #fff; box-shadow: 0 2px 6px rgba(23, 46, 56, .22); }
+.ip-tabs button[aria-selected="true"]:hover { background: var(--ink); }
+.ip-progress { color: var(--muted); font-size: 13px; }
+
+/* 회로도 기호 (diagram-render.js wrapItems) — 고름 = 청록, 기기 찾기 = 시뮬레이션의 주황 선택색 */
+.ip-circuit .dr-hit { fill: transparent; stroke: transparent; stroke-width: 2; pointer-events: all; }
+.ip-circuit.clickable .dr-item { cursor: pointer; }
+.ip-circuit.clickable .dr-item:hover .dr-hit { fill: rgba(0, 127, 120, 0.07); stroke: var(--accent); stroke-dasharray: 4 3; }
+.ip-circuit .dr-item.sel .dr-hit { fill: #d4eee7; stroke: var(--accent); stroke-width: 3; stroke-dasharray: none; }
+.ip-circuit .dr-item.ok .dr-hit { fill: #e3f4ea; stroke: #1f7a4d; stroke-width: 3; stroke-dasharray: none; }
+.ip-circuit .dr-item.bad .dr-hit { fill: #fde7e5; stroke: #b42318; stroke-width: 3; stroke-dasharray: none; }
+.ip-circuit .dr-item.miss .dr-hit { fill: none; stroke: #1f7a4d; stroke-width: 3; stroke-dasharray: 6 4; }
+.ip-circuit .dr-item.focus .dr-hit { fill: #fff3e3; stroke: var(--pick); stroke-width: 2.4; stroke-dasharray: 5 3; }
+.ip-circuit.has-focus .dr-item:not(.focus) { opacity: 0.3; }
+
+/* 오른쪽 패널 */
+/* 기기 이름 칩 = 시뮬레이션 "같은 기기 찾기"(.device-strip) 단추 */
+.ip-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; padding: 10px 12px; background: #fbfcfc; border: 1px solid #e6eceb; border-radius: 10px; }
+.ip-chips button { min-width: 48px; min-height: 32px; font-weight: 700; font-size: 13px; padding: 5px 11px; border-radius: 6px; }
+.ip-chips button[aria-pressed="true"] { background: var(--pick-soft); border-color: var(--pick); color: var(--pick-ink); box-shadow: none; }
+.ip-list { margin: 6px 0; padding-left: 20px; }
+.ip-list li { margin: 2px 0; }
+.ip-sim { border: 1px solid var(--band-line); border-radius: 12px; padding: 12px 14px; margin: 12px 0; background: var(--band); }
+.ip-sim h3, .ip-model h3 { margin: 0 0 6px; font-size: 16px; }
+.ip-sim p { margin: 6px 0; }
+.ip-button { display: inline-flex; align-items: center; gap: 6px; min-height: 38px; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--line); text-decoration: none; font-weight: 700; color: var(--ink); background: var(--card); box-shadow: var(--shadow-sm); transition: background .15s; }
+.ip-button.primary { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 1px 3px rgba(0, 127, 120, .35); }
+.ip-button:hover, .ip-button:focus-visible { filter: none; background: #eef5f3; }
+.ip-button.primary:hover, .ip-button.primary:focus-visible { background: var(--accent-strong); }
+.ip-label { display: block; font-weight: 700; margin: 12px 0 4px; }
+#answer { width: 100%; min-height: 240px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; line-height: 1.7; resize: vertical; background: #fff; }
+#answer:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0, 127, 120, .15); }
+.ip-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+.ip-row .sep { flex: 1; width: auto; background: none; }
+.ip-model { border-top: 1px dashed var(--line); margin-top: 12px; padding-top: 10px; }
+.ip-model-text { padding-left: 22px; margin: 6px 0 10px; }
+.ip-model-text li { margin: 4px 0; }
+/* 문제 번호 = 시뮬레이션 단계 번호(.step-count) 배지 */
+.ip-qno { display: inline-block; font-size: 12px; color: #588176; font-weight: 700; margin-left: 8px; padding: 3px 8px; border: 1px solid #b8d2c5; border-radius: 7px; vertical-align: middle; font-variant-numeric: tabular-nums; }
+.ip-prompt { font-size: 17px; font-weight: 700; margin: 8px 0 4px; letter-spacing: -0.3px; }
+.ip-picked { margin: 8px 0; }
+.ip-verdict { border: 1px solid transparent; }
+.ip-verdict.is-ok { background: var(--ok-soft); border-color: #bfe0cc; }
+.ip-verdict.is-ok b { color: var(--ok); }
+.ip-verdict.is-bad { background: var(--bad-soft); border-color: #f3c3bd; }
+.ip-verdict.is-bad b { color: var(--bad); }
+.ip-explain { display: inline-block; margin-top: 4px; }
+/* 문제 점 = 시뮬레이션 단계 점(.step-dots) */
+.ip-qdots { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0 6px; }
+.ip-qdots button { min-width: 36px; min-height: 30px; padding: 4px 9px; font-weight: 700; font-size: 13px; border-radius: 999px; box-shadow: none; }
+.ip-qdots button.is-ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.ip-qdots button.is-bad { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+.ip-qdots button[aria-current="true"] { outline: 2px solid var(--accent); outline-offset: 1px; }
+button:disabled { opacity: 0.42; cursor: not-allowed; }
+@media (max-width: 600px) { .ip-tabs { padding: 0 16px 10px; gap: 4px; } .ip-tabs button { padding: 9px 11px; font-size: 14px; } }
+
+/* ===================================================================== 요청 0034 (UI 2단계) */
+/* 오른쪽 판 머리 = 시뮬레이션 조작부 머리(굵은 제목 + 아래 선) */
+#panel > h2 { display: flex; align-items: center; gap: 8px; }
+#panel > h2::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+/* 기기 찾기 = 시뮬레이션 "같은 기기 찾기" 줄: 제목 + 기기 종류별 색 점 (data-tag 로 구분)
+ *   조작·검출(PB·SS·FLS·LS) = 코랄, 계전기·타이머(MC·X·T·FR) = 청록, 보호(EOCR·THR) = 짙은 회색, 표시등은 실제 램프 색 */
+.ip-chips::before { content: "같은 기기 찾기"; flex-basis: 100%; font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #657b7e; margin-bottom: 2px; }
+.ip-chips button { display: inline-flex; align-items: center; gap: 6px; }
+.ip-chips button::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; box-shadow: 0 0 0 2px rgba(255, 255, 255, .9); }
+.ip-chips button[data-tag^="PB"]::before, .ip-chips button[data-tag^="SS"]::before, .ip-chips button[data-tag="FLS"]::before, .ip-chips button[data-tag^="LS"]::before { background: var(--coral); }
+.ip-chips button[data-tag="EOCR"]::before, .ip-chips button[data-tag^="THR"]::before { background: #52606d; }
+.ip-chips button[data-tag="RL"]::before { background: #eb6b61; }
+.ip-chips button[data-tag="GL"]::before { background: #4daa66; }
+.ip-chips button[data-tag="YL"]::before { background: #f5c543; }
+.ip-chips button[data-tag="WL"]::before { background: #fff; box-shadow: 0 0 0 1.5px #809492; }
+.ip-chips button[data-tag="BZ"]::before { background: #fff; box-shadow: 0 0 0 2px #c88d00; }
+/* 기기를 고르면 그 설명 상자도 코랄(시뮬레이션 기기 선택색) */
+.ip-chips + .hint { background: var(--pick-soft); border-color: #f0d2ad; }
+.ip-chips + .hint b { color: var(--pick-ink); }
+/* 시뮬레이션 안내 띠에 배지 */
+.ip-sim h3 { display: flex; align-items: center; gap: 8px; }
+.ip-sim h3::before { content: "시뮬레이션"; font-size: 10.5px; font-weight: 700; color: #fff; background: var(--accent); padding: 2px 8px; border-radius: 5px; }
+/* 모범 답안 영역: 코랄 경고 문구 */
+.ip-model .tag-warn { color: var(--coral); }
+#btnClearAnswer { color: var(--coral-ink); }
+
+/* ===================================================================== 요청 0059 (회로해석 화면 B안: 다 쓴 뒤 나란히 비교)
+ * pin-page.css 의 main 격자를 핀번호 페이지와 같이 쓰므로 모든 배치 규칙은 body[data-stage="interpret"] 로 한정한다.
+ * data-ip-mode(watch|write|pick)·data-ip-compare·--ip-main-top 은 interpret-engine.js layout() 이 붙인다. */
+body[data-stage="interpret"] header.page-header { padding: 10px 24px 8px; }
+body[data-stage="interpret"] .page-header .eyebrow, body[data-stage="interpret"] .page-header .lead { display: none; }
+body[data-stage="interpret"] .page-header h1 { margin: 6px 0 0; }
+body[data-stage="interpret"] .brand-logo { width: 36px; height: 36px; }
+body[data-stage="interpret"] .brand-name { font-size: 20px; }
+body[data-stage="interpret"] #steps { margin-bottom: 10px; }
+
+/* 쓰는 순서 도움말: 한 줄로 접음 */
+.ip-help { margin: 4px 0 6px; border: 1px solid var(--band-line); border-radius: 10px; background: var(--band); padding: 6px 12px; }
+.ip-help summary { cursor: pointer; font-weight: 700; font-size: 14px; color: var(--accent-deep); }
+.ip-help[open] summary { margin-bottom: 4px; }
+.ip-help .ip-list { font-size: 14px; }
+.ip-row #btnModel.primary { font-weight: 800; }
+.ip-model-note { margin: 2px 0 0; font-size: 13px; }
+
+/* 나란히 비교 두 칸 */
+.ip-compare { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+.ip-compare .ip-label { margin-top: 4px; }
+.ip-cmp-model { border-top: 0; margin-top: 0; padding: 0 0 0 14px; border-left: 1px dashed var(--line); }
+.ip-cmp-model h3 { margin-top: 4px; }
+.ip-selfsum { margin: 4px 0 6px; padding: 6px 10px; font-weight: 700; font-size: 13.5px; color: var(--accent-deep); background: var(--accent-soft); border-radius: 8px; }
+.ip-selfchk { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; padding: 0 8px 0 4px; font-size: 12.5px; color: var(--muted); white-space: nowrap; border: 1px solid var(--line); border-radius: 999px; background: #fbfcfc; cursor: pointer; vertical-align: 1px; }
+.ip-selfchk:has(input:checked) { color: var(--ok); border-color: #bfe0cc; background: var(--ok-soft); font-weight: 700; }
+.ip-selfchk input { margin: 0; accent-color: var(--ok); }
+
+/* 회로도 접기 단추: 좁은 화면의 쓰기 탭에서만 보인다 */
+.ip-circ-toggle { display: none; }
+
+@media (min-width: 1101px) {
+  /* 쓰기: 회로도 55 : 쓰기 45, 회로도는 남은 화면 높이에 맞춤 */
+  body[data-stage="interpret"][data-ip-mode="write"] main { grid-template-columns: minmax(0, 1.1fr) minmax(460px, 1fr); }
+  body[data-stage="interpret"][data-ip-mode="write"] #circuit { width: auto; min-width: 0; max-width: 100%; height: max(360px, calc(100vh - var(--ip-main-top, 260px) - 34px)); margin: 0 auto; }
+  body[data-stage="interpret"][data-ip-mode="write"] #answer { height: max(220px, calc(100vh - var(--ip-main-top, 260px) - 290px)); min-height: 0; }
+  /* 비교: 회로도 칸을 좁히고 오른쪽을 넓혀 두 칸 */
+  body[data-stage="interpret"][data-ip-compare] main { grid-template-columns: minmax(0, 0.7fr) minmax(640px, 1.3fr); }
+  body[data-stage="interpret"][data-ip-compare] #answer { height: max(260px, calc(100vh - var(--ip-main-top, 260px) - 190px)); }
+}
+@media (max-width: 1100px) {
+  /* 좁은 화면 쓰기: 쓰기 칸 먼저, 회로도는 접어 둠 */
+  body[data-stage="interpret"][data-ip-mode="write"] main { display: flex; flex-direction: column; }
+  body[data-stage="interpret"][data-ip-mode="write"] .panel { order: -1; }
+  body[data-stage="interpret"][data-ip-mode="write"] .ip-circ-toggle { display: inline-flex; margin: 0 20px 10px; border: 1px solid var(--line); background: var(--card); color: var(--accent-deep); font-size: 14px; font-weight: 700; }
+  body[data-stage="interpret"][data-ip-mode="write"].ip-circ-closed .circuit-wrap { display: none; }
+  body[data-stage="interpret"][data-ip-mode="write"] #answer { min-height: 200px; }
+}
+@media (max-width: 700px) {
+  /* 휴대폰 비교: 두 칸을 위아래로 */
+  .ip-compare { grid-template-columns: minmax(0, 1fr); }
+  .ip-cmp-model { padding: 10px 0 0; border-left: 0; border-top: 1px dashed var(--line); }
+}
+@media (max-width: 600px) {
+  body[data-stage="interpret"] header.page-header { padding: 8px 16px; }
+  body[data-stage="interpret"][data-ip-mode="write"] .ip-circ-toggle { margin: 0 16px 8px; }
+}

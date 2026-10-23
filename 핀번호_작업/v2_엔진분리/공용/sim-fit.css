@@ -1,0 +1,108 @@
+/* 0080: 001 검수 배치를 전기·승강기 시뮬레이션에 공통 적용. */
+body.sim-fit { height:100dvh; min-height:0; display:flex; flex-direction:column; }
+.sim-fit .page-header { padding:8px 12px; gap:8px 14px; flex:none; }
+.sim-fit .brand { gap:8px; }
+.sim-fit .brand img { width:30px!important; height:30px!important; }
+.sim-fit .brand h1 { font-size:15px; letter-spacing:0; }
+.sim-fit .brand h1 span,.sim-fit .eyebrow,.sim-fit .version { display:none; }
+.sim-fit .sim-title { font-size:17px; margin:0; }
+.sim-fit .header-actions { margin-left:auto; }
+.sim-fit #steps { padding:4px 12px; gap:4px; flex:none; }
+.sim-fit #steps a,.sim-fit #steps span { font-size:12px; }
+.sim-fit main { display:flex; flex-direction:column; flex:1; width:100%; padding:4px 12px 12px; min-height:0; }
+.sim-fit .lesson-nav { flex:none; gap:8px; margin:0 0 6px; flex-wrap:wrap; }
+.sim-fit button { min-height:40px; transition:none; }
+.sim-fit .lesson-tabs { gap:4px; }
+.sim-fit .lesson-tabs button { padding:6px 9px; font-size:13px; }
+.sim-fit .lesson-tabs button span { display:none; }
+.sim-fit #free-button { padding:6px 9px; font-size:13px; }
+.sim-fit .sim-progress { display:flex; align-items:center; gap:5px; margin-left:auto; }
+.sim-fit .play-controls { align-self:auto; gap:4px; }
+.sim-fit .play-controls button { font-size:12px; padding:5px 8px; }
+.sim-fit .step-count { font-size:11px; padding:6px; }
+.sim-fit .workspace { display:grid; grid-template-columns:minmax(0,82fr) minmax(0,18fr); flex:1; min-height:0; gap:10px; }
+.sim-fit .sim-activity { display:grid; grid-template-columns:minmax(0,1fr) 268px; min-width:0; min-height:0; gap:10px; }
+.sim-fit .diagram-panel { display:flex; flex-direction:column; min-width:0; min-height:0; overflow:hidden; }
+.sim-fit .diagram-toolbar { padding:6px 8px; flex:none; flex-wrap:wrap; gap:6px; }
+.sim-fit .diagram-toolbar h2 { font-size:14px; margin:0; }
+.sim-fit .cad-title-block { display:none!important; }
+.sim-fit .view-tabs { flex-wrap:wrap; gap:3px; }
+.sim-fit .view-tabs button { padding:4px 7px; font-size:12px; }
+.sim-fit .diagram-viewport { display:block; flex:1; position:relative; min-height:0; padding:0; overflow:hidden; }
+.sim-fit #circuit,.sim-fit .diagram-viewport[data-view] #circuit { position:absolute; inset:0; width:100%; height:100%; min-width:0; min-height:0; max-height:none; }
+.sim-fit .pan-hint { display:none; }
+.sim-fit .device-strip { padding:5px 8px; flex:none; gap:3px; }
+.sim-fit .device-strip button { padding:3px 6px; min-height:36px; }
+.sim-fit #device-hint { font-size:11px; }
+.sim-fit .control-panel { padding:8px; min-width:0; min-height:0; overflow:auto; }
+.sim-fit .control-panel h2 { font-size:14px; }
+.sim-fit .panel-heading { margin:0; }
+.sim-fit .control-row { margin:4px 0; gap:5px; }
+.sim-fit .control-row>div:first-child { flex-direction:row; gap:3px; }
+.sim-fit .control-row strong { font-size:12px; }
+.sim-fit .control-row span { font-size:10px; }
+.sim-fit .control-row button,.sim-fit .segmented button { min-height:40px; padding:4px 7px; font-size:12px; }
+.sim-fit .pushbuttons,.sim-fit .fault-buttons { margin:4px 0; gap:4px; }
+.sim-fit .pushbuttons button { padding:5px 3px; min-height:44px; }
+.sim-fit .pushbuttons strong { font-size:12px; }
+.sim-fit .pushbuttons span { font-size:10px; }
+.sim-fit .fault-buttons button { min-height:40px; font-size:11px; padding:4px 5px; }
+.sim-fit .results { padding-top:5px; }
+.sim-fit .motors { flex-direction:row; gap:4px; margin:4px 0; }
+.sim-fit .motor-card { min-width:0; flex:1; padding:4px; gap:4px; }
+.sim-fit .motor-card>div:nth-child(2) { flex-direction:column; gap:2px; }
+.sim-fit .motor-icon { width:22px; height:22px; }
+.sim-fit .rotor { font-size:20px; }
+.sim-fit .motor-card strong { font-size:12px; }
+.sim-fit .motor-card span { font-size:10px; }
+.sim-fit .indicator { width:23px; height:23px; font-size:10px; }
+.sim-fit .timer-head { font-size:11px; }
+.sim-fit .timer-head input { width:42px; }
+.sim-fit .timer-state { margin:4px 0; font-size:10px; }
+.sim-fit .alarm-status { margin:4px 0; gap:4px; }
+.sim-fit .alarm-status button { padding:4px; font-size:11px; }
+.sim-fit .interval-label { margin:4px 0 0; gap:4px; font-size:11px; }
+.sim-fit .sim-reference { min-width:0; min-height:0; padding:8px; background:white; border:1px solid var(--border); border-radius:12px; overflow:auto; }
+.sim-fit .sim-reference details { margin-bottom:8px; }
+.sim-fit .sim-reference summary { cursor:pointer; font-weight:700; padding:6px 0; border-bottom:1px solid var(--border); }
+.sim-fit .explanation { display:block; margin:0; padding:8px 0; border:0; box-shadow:none; background:transparent; }
+.sim-fit .explanation-text { display:block; }
+.sim-fit .explanation h2 { font-size:14px; }
+.sim-fit .explanation p { font-size:12px; line-height:1.7; }
+.sim-fit .lesson-bottom { margin:4px 0; flex-direction:column; align-items:flex-start; }
+.sim-fit .lesson-bottom p,.sim-fit .control-help { font-size:11px; line-height:1.6; }
+.sim-fit .step-dots { flex-wrap:wrap; }
+.sim-fit .diagram-legend { flex-direction:column; align-items:flex-start; border:0; padding:6px 0; gap:8px; font-size:11px; }
+.sim-fit .kse-watermark { display:none!important; }
+@media(orientation:portrait) {
+ .sim-fit .workspace { grid-template-columns:minmax(0,74fr) minmax(0,26fr); }
+ .sim-fit .sim-activity { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(260px,1fr) auto; }
+ .sim-fit .control-panel { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:12px; }
+ .sim-fit .control-panel>.panel-heading { grid-column:1/-1; }
+ .sim-fit .control-panel>.control-row,.sim-fit .pushbuttons,.sim-fit .fault-buttons { grid-column:1; }
+ .sim-fit .control-panel .results { grid-column:2; grid-row:2/7; border-top:0; border-left:1px solid var(--border); padding:0 0 0 8px; }
+ .sim-fit .motors { flex-direction:column; }
+ .sim-fit #fullscreen-button,.sim-fit #steps .cn-title,.sim-fit #steps .cn-word { display:none; }
+ .sim-fit .sim-title { font-size:14px; }
+ .sim-fit .page-header { flex-wrap:wrap; }
+}
+@media(max-width:599px) {
+ body.sim-fit { height:auto; min-height:100dvh; }
+ .sim-fit .page-header { flex-wrap:wrap; align-items:center; }
+ .sim-fit .header-actions { flex-direction:row; gap:2px; }
+ .sim-fit .header-actions button { font-size:11px; padding:4px; }
+ .sim-fit .sim-title { order:3; flex-basis:100%; }
+ .sim-fit main { flex:none; }
+ .sim-fit .lesson-nav { flex-direction:column; align-items:stretch; }
+ .sim-fit #free-button { align-self:auto; }
+ .sim-fit .sim-progress { flex-wrap:wrap; margin:0; }
+ .sim-fit .play-controls { flex:1; }
+ .sim-fit .play-controls button { min-width:0; padding:4px; font-size:11px; }
+ .sim-fit .workspace,.sim-fit .sim-activity { display:flex; flex-direction:column; flex:none; }
+ .sim-fit .diagram-panel { height:390px; flex:none; }
+ .sim-fit .view-tabs { width:auto; }
+ .sim-fit .sim-reference { overflow:visible; }
+ .sim-fit .control-panel { display:block; overflow:visible; }
+ .sim-fit .control-panel .results { border-left:0; border-top:1px solid var(--border); padding:6px 0 0; }
+ .sim-fit .motors { flex-direction:row; }
+}

@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>시퀀스 LAB · 전기기능사 &amp; 승강기기능사 | 경성전자고등학교</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <meta name="description" content="경성전자고등학교 IoT전기과 - 시퀀스 LAB (전기기능사 001–018 및 승강기기능사 01–10 인터랙티브 실습)">
+  <meta name="theme-color" content="#0c736d">
+  <meta property="og:title" content="시퀀스 LAB · 전기기능사 &amp; 승강기기능사 | 경성전자고등학교">
+  <meta property="og:description" content="경성전자고등학교 IoT전기과 시퀀스 회로 인터랙티브 실습 포털 (전기기능사 18개 · 승강기기능사 10개)">
+  <meta property="og:image" content="logo_emblem_white.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="목차.css?v=20260930b">
+  <link rel="stylesheet" href="../핀번호_작업/v2_엔진분리/공용/print-entry.css?v=20261019b">
+<style id="site-brand-style">
+/* site-brand.json + site_brand.py에서 생성. 페이지별 복사본을 직접 고치지 않는다. */
+body .site-bar.site-bar.site-bar{box-sizing:border-box;position:relative;z-index:40;display:flex;flex:none;align-items:center;flex-wrap:nowrap;gap:10px;width:100%;height:44px;min-height:44px;max-height:44px;margin:0;padding:0 12px;border:0;border-radius:0;background:var(--accent,var(--teal,#007f78));color:#fff;font:600 14px/1.4 'Malgun Gothic',system-ui,sans-serif;white-space:nowrap;overflow:visible}
+.site-bar *{box-sizing:border-box}.site-bar .brand-home-link{display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none;flex:none}
+.site-bar .brand-logo,.sim-fit .site-bar .brand-logo{display:block;width:24px!important;height:24px!important;min-width:24px;object-fit:contain;border-radius:50%;background:white}
+.site-bar .sb-brand-name{font-weight:700}.site-bar .sb-chip{display:none;border:1px solid #ffffffb3;border-radius:6px;padding:2px 7px;font-size:12px}
+.site-bar .sb-page{flex:1 1 auto;min-width:0;border-left:2px solid #ffffff80;padding-left:10px}
+.site-bar .sb-mid,.site-bar .sb-small{display:none}
+.site-bar .header-actions{display:flex;flex:none;align-items:center;gap:8px;margin:0;order:initial}
+body .site-bar .sb-home,body .site-bar summary{display:flex;align-items:center;justify-content:center;min-height:30px;height:30px;margin:0;padding:3px 8px;border:1px solid #ffffffb3;border-radius:6px;background:transparent;color:#fff;box-shadow:none;font:600 12px/1.4 'Malgun Gothic',system-ui,sans-serif;text-decoration:none;cursor:pointer;list-style:none}
+.site-bar summary::-webkit-details-marker{display:none}.site-bar details{position:relative;flex:none}.site-bar details>summary::marker{content:''}
+.site-bar .sb-menu{position:absolute;top:calc(100% + 6px);right:0;z-index:100;display:flex;flex-direction:column;gap:4px;width:230px;max-width:calc(100vw - 24px);padding:8px;border:1px solid var(--accent-line,#c2d6d2);border-radius:8px;background:white;color:var(--ink,#172e38);box-shadow:0 8px 24px #173d4833;white-space:normal}
+body .site-bar .sb-menu a,body .site-bar .sb-menu button{display:flex;align-items:center;min-height:40px;width:100%;margin:0;padding:8px 10px;border:0;border-radius:5px;background:white;color:var(--ink,#172e38);text-decoration:none;text-align:left;font:600 13px/1.4 'Malgun Gothic',system-ui,sans-serif;box-shadow:none}
+.site-bar .sb-menu a:hover,.site-bar .sb-menu button:hover{background:var(--accent-soft,#e3f4ef)}.site-bar .sb-menu [aria-current=page]{background:var(--accent-soft,#e3f4ef);color:var(--accent-ink,#087d76)}
+.site-bar :focus-visible{outline:2px solid var(--focus,#eaa645);outline-offset:2px}.site-bar [hidden],.site-bar .brand-engine-title,.site-bar>.lead{display:none!important}
+.hero-inner>.site-bar{width:calc(100% - 26px);margin:0 0 16px;background:transparent}.hero-subtitle{margin:6px 0 0;font-size:clamp(14px,2vw,20px);color:inherit}
+@media(max-width:1100px){.site-bar .sb-wide,.site-bar .sb-brand-name{display:none}.site-bar .sb-mid,.site-bar .sb-chip{display:inline}.site-bar .sb-menu .sb-menu-home{display:flex}}
+@media(max-width:600px){body .site-bar.site-bar.site-bar{gap:8px;padding:0 10px;font-size:13px}.site-bar .sb-mid,.site-bar .sb-home{display:none!important}.site-bar .sb-small{display:inline}.site-bar .sb-page{padding-left:8px}.site-bar .header-actions{gap:0}}
+@media(max-width:340px){body .site-bar.site-bar.site-bar{gap:5px;padding:0 6px;font-size:12px}.site-bar .sb-chip{padding:2px 4px}.site-bar .brand-home-link{gap:5px}.site-bar .sb-page{padding-left:5px}}
+@media print{body .site-bar.site-bar.site-bar{display:none!important}}
+/* 0113: 1~2개는 직접 버튼, 3개 이상은 좁은 화면에서만 접는다. */
+body .site-bar.site-bar.site-bar #fullscreen-button,body .site-bar.site-bar.site-bar #reference-button{display:flex}
+.site-bar .sb-direct{display:flex;align-items:center;gap:6px}
+body .site-bar.site-bar.site-bar .sb-direct>a,body .site-bar.site-bar.site-bar .sb-direct>button,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>a,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>button{display:flex;align-items:center;justify-content:center;flex:none;width:auto;min-height:30px;height:30px;margin:0;padding:3px 8px;border:1px solid #ffffffb3;border-radius:6px;background:transparent;color:#fff;box-shadow:none;font:600 12px/1.4 'Malgun Gothic',system-ui,sans-serif;text-decoration:none;white-space:nowrap;cursor:pointer}
+@media(min-width:601px){.site-bar .screen-menu::details-content{content-visibility:visible;display:contents}.site-bar .screen-menu{display:contents}.site-bar .screen-menu>summary{display:none}.site-bar .screen-menu>.sb-menu{position:static;display:flex;flex-direction:row;align-items:center;gap:6px;width:auto;max-width:none;padding:0;border:0;background:transparent;box-shadow:none;white-space:nowrap}}
+@media(max-width:600px){body .site-bar.site-bar.site-bar .sb-direct>.sb-home,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>.sb-home{display:flex!important}.site-bar .sb-direct{gap:4px}body .site-bar.site-bar.site-bar .sb-direct>a,body .site-bar.site-bar.site-bar .sb-direct>button{padding:3px 5px}.site-bar .sb-direct .sb-small{display:inline}.site-bar .sb-direct .sb-wide,.site-bar .sb-direct .sb-mid{display:none}body .site-bar.site-bar.site-bar .screen-menu .sb-menu>a,body .site-bar.site-bar.site-bar .screen-menu .sb-menu>button{justify-content:flex-start;width:100%;min-height:40px;height:auto;padding:8px 10px;border:0;background:white;color:var(--ink,#172e38);font-size:13px}.site-bar .screen-menu .sb-menu .sb-small{display:inline}}
+@media(max-width:340px){body .site-bar.site-bar.site-bar .sb-direct>a,body .site-bar.site-bar.site-bar .sb-direct>button{font-size:11px;padding:3px}body .site-bar.site-bar.site-bar #printAll .sb-print-full{display:none}body .site-bar.site-bar.site-bar #printAll .sb-print-short{display:inline}}
+
+.site-bar .sb-print-short{display:none}
+
+</style>
+</head>
+<body>
+  <a href="#catalog">본문으로 건너뛰기</a>
+  <header class="hero">
+    <div class="hero-inner"><header class="page-header site-bar" data-brand-page="catalog" data-title="학습 목차 · 시퀀스 LAB | 경성전자고등학교" data-html2canvas-ignore="true"><a class="brand-home-link" href="index.html" title="학습 목차"><img class="brand-logo" src="logo_hologram.png" width="24" height="24" alt="경성전자고등학교"><span class="sb-brand-name">시퀀스 LAB</span><span class="sb-chip">LAB</span></a><span class="sb-page"><span class="sb-wide">학습 목차</span><span class="sb-mid">학습 목차</span><span class="sb-small">목차</span></span><div class="header-actions"><nav class="sb-direct" aria-label="화면 버튼"><a class="home-btn home-link sb-home" href="index.html" aria-label="학습 목차"><span class="sb-wide">← 전체 목차</span><span class="sb-mid">← 목차</span><span class="sb-small">목차</span></a></nav></div></header>
+      <a class="teacher-print" href="/print/" title="교사용 유인물" aria-label="교사용 유인물" data-html2canvas-ignore="true"></a>
+      <div class="hero-main">
+        <div class="hero-titles">
+          <p class="eyebrow">경성전자고등학교 IoT전기과 실습 포털</p>
+          <h1>시퀀스 LAB</h1><p class="hero-subtitle">동작을 읽고, 회로를 그린다</p>
+          <p class="summary">전기기능사(전-01~전-18) · 승강기기능사(승-01~승-10) · 인터랙티브 동작 검증 · 핀번호 적기</p>
+        </div>
+        <div class="hero-badge-wrap">
+          <div class="school-ci-badge" title="경성전자고등학교 IoT전기과">
+            <img src="logo_emblem_white.png" alt="경성전자고등학교" class="hero-emblem-img">
+          </div>
+        </div>
+      </div>
+      <div class="stats" aria-label="자료 현황">
+        <span><strong>28</strong>개 회로 (전기 18 + 승강기 10)</span>
+        <span><strong>전기기능사</strong> 18</span>
+        <span><strong>승강기기능사</strong> 10</span>
+        <span><strong>경성전자고</strong> IoT전기과</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="자료 검색과 분류">
+      <div class="course-filter" role="group" aria-label="과목 선택">
+        <button class="course-chip active" data-course="all">전체 <span class="tab-badge">28</span></button>
+        <button class="course-chip" data-course="c">⚡ 전기기능사 <span class="tab-badge">18</span></button>
+        <button class="course-chip" data-course="e">🛗 승강기기능사 <span class="tab-badge">10</span></button>
+      </div>
+      <label class="search"><span>자료 찾기</span><input id="search" type="search" placeholder="회로명, 번호, 키워드 검색 (예: 전-01, 승-01, 와이델타, 정역, FLS, LS)"></label>
+      <div class="filters course-c" role="group" aria-label="전기기능사 번호 범위" hidden>
+        <button class="active" data-filter="all">전체 18</button>
+        <button data-filter="fls">전-01~전-09 (FLS)</button>
+        <button data-filter="ls">전-10~전-18 (LS)</button>
+      </div>
+      <div class="filters course-e" role="group" aria-label="승강기기능사 번호 범위" hidden>
+        <button class="active" data-filter="all">전체 10</button>
+        <button data-filter="e-rev">승-01~승-05 (정역 운전)</button>
+        <button data-filter="e-yd">승-06~승-07 (Y-Δ 기동)</button>
+        <button data-filter="e-2m">승-08~승-10 (전동기 2대)</button>
+      </div>
+    </section>
+
+    <p id="result-count" class="result-count" aria-live="polite">28개 자료</p>
+        <section class="grid" id="catalog">
+      <article class="card" data-course="c" data-group="fls" data-text="전기기능사 전기 전 fls 전-01 전01 001 기본 시퀀스 회로 자동 수동 순차기동 타이머 과부하 교대경보 플리커 eocr pb0 pb1 pb2 ss 접점기호개선">
+        <div class="number">전-01</div><div class="card-body"><p class="kind">FLS · 기본 회로</p><h2>기본 시퀀스 회로</h2><p>자동·수동 운전, 타이머 순차 기동, 과부하 교대 경보</p></div>
+        <div class="links"><a class="primary" href="c/001/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="fls" data-text="전기기능사 전기 전 fls 전-02 전02 002 지연 후 교대 운전 타이머 m1 m2 자동 수동 접점기호개선">
+        <div class="number">전-02</div><div class="card-body"><p class="kind">FLS · 교대 운전</p><h2>지연 후 교대 운전</h2><p>타이머 지연 뒤 M1·M2 교대 운전</p></div>
+        <div class="links"><a class="primary" href="c/002/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="fls" data-text="전기기능사 전기 전 fls 전-03 전03 003 자동 즉시 수동 지연 교대 운전 자동 수동 접점기호개선">
+        <div class="number">전-03</div><div class="card-body"><p class="kind">FLS · 자동/수동</p><h2>자동 즉시·수동 지연 교대</h2><p>자동과 수동에서 달라지는 기동·교대 조건</p></div>
+        <div class="links"><a class="primary" href="c/003/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="fls" data-text="전기기능사 전기 전 fls 전-04 전04 004 m1 m2 정지 순환 운전 반복 순환 접점기호개선">
+        <div class="number">전-04</div><div class="card-body"><p class="kind">FLS · 순환 운전</p><h2>M1 → M2 → 정지 순환</h2><p>두 전동기와 정지 구간의 반복 순환</p></div>
+        <div class="links"><a class="primary" href="c/004/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="fls" data-text="전기기능사 전기 전 fls 전-05 전05 005 교대 후 동시 운전 복합 운전 m1 m2">
+        <div class="number">전-05</div><div class="card-body"><p class="kind">FLS · 복합 운전</p><h2>교대 후 동시 운전</h2><p>교대 운전 뒤 두 전동기의 동시 운전</p></div>
+        <div class="links"><a class="primary" href="c/005/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="fls" data-text="전기기능사 전기 전 fls 전-06 전06 006 자동 동시 수동 동시 후 교대 운전">
+        <div class="number">전-06</div><div class="card-body"><p class="kind">FLS · 자동/수동</p><h2>동시 후 교대 운전</h2><p>자동 동시 운전과 수동 동시 후 교대</p></div>
+        <div class="links"><a class="primary" href="c/006/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="fls" data-text="전기기능사 전기 전 fls 전-07 전07 007 순차 정지 반복 m1 m2 시간 순차">
+        <div class="number">전-07</div><div class="card-body"><p class="kind">FLS · 반복 운전</p><h2>순차 정지 반복</h2><p>M1 → M2 → 정지의 시간 순차 반복</p></div>
+        <div class="links"><a class="primary" href="c/007/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="fls" data-text="전기기능사 전기 전 fls 전-08 전08 008 자동 운전 표시 수동 시간 정지 타이머">
+        <div class="number">전-08</div><div class="card-body"><p class="kind">FLS · 표시/정지</p><h2>자동 표시·수동 시간 정지</h2><p>자동 운전 표시와 수동 타이머 정지</p></div>
+        <div class="links"><a class="primary" href="c/008/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="fls" data-text="전기기능사 전기 전 fls 전-09 전09 009 순차 기동 교대 경보 자동 m1 수동 플리커">
+        <div class="number">전-09</div><div class="card-body"><p class="kind">FLS · 기동/경보</p><h2>순차 기동·교대 경보</h2><p>자동 M1, 수동 순차 기동과 교대 경보</p></div>
+        <div class="links"><a class="primary" href="c/009/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="ls" data-text="전기기능사 전기 전 ls 전-10 전10 010 ls 감지 두 계통 독립 지연 기동 타이머">
+        <div class="number">전-10</div><div class="card-body"><p class="kind">LS · 지연 기동</p><h2>두 계통 독립 지연 기동</h2><p>LS 감지와 두 타이머 계통의 독립 동작</p></div>
+        <div class="links"><a class="primary" href="c/010/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="ls" data-text="전기기능사 전기 전 ls 전-11 전11 011 한시 자기유지 버튼 유지시간 ls 즉시 기동">
+        <div class="number">전-11</div><div class="card-body"><p class="kind">LS · 자기유지</p><h2>한시 자기유지</h2><p>버튼 유지시간과 LS 즉시 기동 조건 비교</p></div>
+        <div class="links"><a class="primary" href="c/011/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="ls" data-text="전기기능사 전기 전 ls 전-12 전12 012 타이머 교차 기동 센서 조건 교차 기동">
+        <div class="number">전-12</div><div class="card-body"><p class="kind">LS · 교차 기동</p><h2>타이머 교차 기동</h2><p>센서 조건과 타이머 접점의 교차 기동</p></div>
+        <div class="links"><a class="primary" href="c/012/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="ls" data-text="전기기능사 전기 전 ls 전-13 전13 013 감지 우선 순차 정지 ls 감지 우선 타이머">
+        <div class="number">전-13</div><div class="card-body"><p class="kind">LS · 순차 정지</p><h2>감지 우선·순차 정지</h2><p>LS 감지 우선 기동과 타이머 순차 정지</p></div>
+        <div class="links"><a class="primary" href="c/013/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="ls" data-text="전기기능사 전기 전 ls 전-14 전14 014 and or ls 감지 조건 타이머 한시 정지">
+        <div class="number">전-14</div><div class="card-body"><p class="kind">LS · AND/OR</p><h2>AND·OR 한시 정지</h2><p>센서 조합 조건과 타이머 한시 정지</p></div>
+        <div class="links"><a class="primary" href="c/014/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="ls" data-text="전기기능사 전기 전 ls 전-15 전15 015 조건 우회 한시 정지 ls 감지 기동 자기유지 우회">
+        <div class="number">전-15</div><div class="card-body"><p class="kind">LS · 조건 우회</p><h2>조건 우회·한시 정지</h2><p>최초 감지 조건과 자기유지 우회 경로</p></div>
+        <div class="links"><a class="primary" href="c/015/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="ls" data-text="전기기능사 전기 전 ls 전-16 전16 016 t1 지연 t2 표시 전환 2단 타이머 m2 wl">
+        <div class="number">전-16</div><div class="card-body"><p class="kind">LS · 2단 타이머</p><h2>T1 지연·T2 표시 전환</h2><p>지연 기동과 M2·WL 한시 표시 전환</p></div>
+        <div class="links"><a class="primary" href="c/016/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="ls" data-text="전기기능사 전기 전 ls 전-17 전17 017 xor 센서 t1 허가 t2 전환 2단 타이머 상반 센서 m2 wl">
+        <div class="number">전-17</div><div class="card-body"><p class="kind">LS · XOR</p><h2>XOR·T1 허가·T2 전환</h2><p>상반 센서 조건과 2단 타이머 표시 전환</p></div>
+        <div class="links"><a class="primary" href="c/017/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="c" data-group="ls" data-text="전기기능사 전기 전 ls 전-18 전18 018 상반 ls 조건 타이머 자기유지 wl 한시 표시 점등">
+        <div class="number">전-18</div><div class="card-body"><p class="kind">LS · 상반 조건</p><h2>상반 조건·타이머 자기유지</h2><p>상반 센서 최초기동과 한시 WL 점등</p></div>
+        <div class="links"><a class="primary" href="c/018/">▶ 시뮬레이션</a></div>
+      </article>
+            <article class="card" data-course="e" data-group="e-rev" data-text="승강기기능사 승강기 승 정역 운전 정역 전환 정회전 역회전 승-01 승01 01 e01 t1 한시 전환">
+        <div class="number">승-01</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · 정역 운전</p>
+          </div>
+          <h2>정역 전환</h2>
+          <p>T1 한시로 정회전에서 역회전으로 전환</p>
+        </div>
+        <div class="links"><a class="primary" href="e/01/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="e" data-group="e-rev" data-text="승강기기능사 승강기 승 정역 운전 정지 후 역회전 승-02 승02 02 e02 t1 정회전 정지 구간 t2 역회전">
+        <div class="number">승-02</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · 정역 운전</p>
+          </div>
+          <h2>정지 후 역회전</h2>
+          <p>T1 정회전, 정지 구간 뒤 T2로 역회전</p>
+        </div>
+        <div class="links"><a class="primary" href="e/02/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="e" data-group="e-rev" data-text="승강기기능사 승강기 승 정역 운전 정·역 한 번씩 승-03 승03 03 e03 t1 정회전 t2 역회전 정지">
+        <div class="number">승-03</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · 정역 운전</p>
+          </div>
+          <h2>정·역 한 번씩</h2>
+          <p>T1 정회전, T2 역회전 뒤 정지</p>
+        </div>
+        <div class="links"><a class="primary" href="e/03/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="e" data-group="e-rev" data-text="승강기기능사 승강기 승 정역 운전 T2 자기유지 전환 승-04 승04 04 e04 t1 t2 자기유지 역회전">
+        <div class="number">승-04</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · 정역 운전</p>
+          </div>
+          <h2>T2 자기유지 전환</h2>
+          <p>T1 → T2 자기유지, T2 한시로 역회전</p>
+        </div>
+        <div class="links"><a class="primary" href="e/04/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="e" data-group="e-rev" data-text="승강기기능사 승강기 승 정역 운전 지연 기동 정역 승-05 승05 05 e05 t1 기동 지연 t2 정회전 역회전">
+        <div class="number">승-05</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · 정역 운전</p>
+          </div>
+          <h2>지연 기동 정역</h2>
+          <p>T1 기동 지연, T2 정회전 시간 뒤 역회전</p>
+        </div>
+        <div class="links"><a class="primary" href="e/05/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="e" data-group="e-yd" data-text="승강기기능사 승강기 승 와이델타 y-delta Y-Δ 기동 승-06 승06 06 e06 6단자 전동기 y 기동 delta 운전">
+        <div class="number">승-06</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · Y-Δ 기동</p>
+          </div>
+          <h2>Y-Δ 기동</h2>
+          <p>6단자 전동기 Y 기동 뒤 T 한시로 Δ 운전</p>
+        </div>
+        <div class="links"><a class="primary" href="e/06/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="e" data-group="e-yd" data-text="승강기기능사 승강기 승 와이델타 y-delta Y-Δ 표시등 교대 승-07 승07 07 e07 delta 운전 fr rl gl 교대 점등">
+        <div class="number">승-07</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · Y-Δ 기동</p>
+          </div>
+          <h2>Y-Δ · 표시등 교대</h2>
+          <p>Δ 운전 중 FR로 RL·GL 교대 점등</p>
+        </div>
+        <div class="links"><a class="primary" href="e/07/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="e" data-group="e-2m" data-text="승강기기능사 승강기 승 전동기 2대 M1 M2 간헐 승-08 승08 08 e08 t 뒤 fr m2 간헐 운전">
+        <div class="number">승-08</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · 전동기 2대</p>
+          </div>
+          <h2>M1 → M2 간헐</h2>
+          <p>T 뒤 FR로 M2 간헐 운전</p>
+        </div>
+        <div class="links"><a class="primary" href="e/08/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="e" data-group="e-2m" data-text="승강기기능사 승강기 승 전동기 2대 M1 간헐 M2 승-09 승09 09 e09 t 동안 fr m1 간헐 t 뒤 m2 운전">
+        <div class="number">승-09</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · 전동기 2대</p>
+          </div>
+          <h2>M1 간헐 → M2</h2>
+          <p>T 동안 FR로 M1 간헐, T 뒤 M2 운전</p>
+        </div>
+        <div class="links"><a class="primary" href="e/09/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <article class="card" data-course="e" data-group="e-2m" data-text="승강기기능사 승강기 승 전동기 2대 M1 M2 교대 동시 승-10 승10 10 e10 fr m1 m2 교대 t 뒤 두 대 운전">
+        <div class="number">승-10</div>
+        <div class="card-body">
+          <div class="card-head">
+            <p class="kind">승강기 · 전동기 2대</p>
+          </div>
+          <h2>M1·M2 교대 → 동시</h2>
+          <p>FR로 M1·M2 교대, T 뒤 두 대 운전</p>
+        </div>
+        <div class="links"><a class="primary" href="e/10/sim/">▶ 시뮬레이션</a></div>
+      </article>
+      <div id="no-results" class="no-results" hidden>
+        <p>🔍 일치하는 시퀀스 회로 자료가 없습니다.</p>
+        <button type="button" id="reset-filter" class="btn-reset">검색 조건 초기화</button>
+      </div>
+    </section>
+
+    <p class="source-notice" style="margin: 24px auto 0; text-align: center; font-size: 12px; color: #6b7f79; line-height: 1.6; max-width: 900px;">
+      이 사이트는 경성전자고등학교 IoT전기과가 비영리 학교 수업을 위해 만든 학습 자료입니다. 회로는 한국산업인력공단 국가기술자격 공개문제(전기기능사·승강기기능사)를 학습용으로 새로 그리고 재구성한 것이며, 원본 도면과 문제의 저작권은 한국산업인력공단에 있습니다. 원본은 큐넷(<a href="https://www.q-net.or.kr" target="_blank" rel="noopener noreferrer">q-net.or.kr</a>)에서 확인할 수 있습니다.
+    </p>
+
+    <section class="help">
+      <h2>포털 안내</h2>
+      <ol>
+        <li>수업 및 학습에서는 각 카드의 <strong>시뮬레이션</strong>을 클릭하여 회로 동작을 실시간으로 확인합니다.</li>
+        <li>카드 아래 <strong>실습</strong> 줄의 <strong>회로해석 · 핀번호 · 단자대 · 결선</strong>으로 동작 원리 이해와 도면 실습을 진행합니다. (승강기기능사는 단자대 단계가 없습니다.)</li>
+        <li>본 시각화 자료는 <strong>경성전자고등학교 IoT전기과</strong>에서 학생들의 전기기능사 및 승강기기능사 실무 능력 향상을 위해 제작하였습니다.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <img src="logo_emblem_white.png" alt="" class="footer-emblem" width="46" height="46">
+        <strong class="footer-name">경성전자고등학교</strong>
+        <nav class="footer-nav" aria-label="관련 사이트">
+          <a href="https://school.busanedu.net/kse-h" target="_blank" rel="noopener noreferrer" aria-label="학교 홈페이지"><span class="lg">학교 홈페이지</span><span class="sm">학교</span></a>
+          <a href="https://aie.ksetech.org" target="_blank" rel="noopener noreferrer" aria-label="AIE 과정평가 문제은행"><span class="lg">AIE 과정평가 문제은행</span><span class="sm">AIE</span></a>
+          <a href="https://cbt.ksetech.org" target="_blank" rel="noopener noreferrer" aria-label="CBT 기능사 문제은행"><span class="lg">CBT 기능사 문제은행</span><span class="sm">CBT</span></a>
+        </nav>
+        <p class="footer-addr"><span class="lg">부산광역시 서구 꽃마을로 25 · 교무실 051-253-2450</span><span class="sm">부산 서구 꽃마을로 25 · 051-253-2450</span></p>
+      </div>
+      <section class="footer-credits" aria-label="제작 안내">
+        <p class="credit-production">기획·총괄: 경성전자고등학교 IoT전기과 박○우 · 생성형 AI(Claude·Codex·Gemini)와 함께 만들었습니다.</p>
+        <div class="footer-credit-groups">
+          <div>
+            <h3>A.I.E 과정평가 연구회</h3>
+            <p class="credit-members">동아리원: <span>박○우(회장)</span>, <span>정○주(총무)</span>, <span>이○태</span>, <span>구○후</span>, <span>한○숙</span>, <span>박○환</span></p>
+            <p class="credit-affiliation"><span>2026년 AI·디지털 교사 동아리</span><span>부산광역시교육청 디지털미래교육과</span></p>
+          </div>
+          <div>
+            <h3>AX 전기 실무 리프트 업 교사연구회</h3>
+            <p class="credit-members">연구회원: <span>손○희(대표)</span>, <span>한○숙(총무)</span>, <span>박○우</span>, <span>정○주</span></p>
+            <p class="credit-affiliation"><span>2026년 AX(AI+X) 교사연구회</span><span>중소기업특성화고 인력양성사업</span></p>
+          </div>
+        </div>
+      </section>
+      <div class="footer-bottom">
+        <p class="footer-copy"><span class="lg">© 2026 경성전자고등학교 IoT전기과</span><span class="sm">© 2026 경성전자고 IoT전기과</span></p>
+        <p id="visitCount" class="footer-visits" hidden></p>
+      </div>
+    </div>
+  </footer>
+  <script src="목차.js?v=20260928g"></script>
+</body>
+</html>

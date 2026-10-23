@@ -1,0 +1,80 @@
+/* 실습 공통 화면 배치. 회로해석 연결은 3-B 검수 전까지 시안. */
+body.practice-fit { margin:0; display:flex; flex-direction:column; height:100vh; height:100dvh; min-height:0; }
+.practice-fit [hidden] { display:none !important; }
+body.practice-fit > .page-header { display:flex; flex-wrap:wrap; align-items:center; gap:4px 16px; padding:8px 14px; flex:none; }
+.practice-fit .header-row { display:contents; }
+.practice-fit .brand-logo { width:30px; height:30px; }
+.practice-fit .brand-name { font-size:15px; }
+.practice-fit .brand-name span { display:none; }
+.practice-fit .header-actions { order:3; margin-left:auto; }
+body.practice-fit .page-header h1 { margin:0; font-size:17px; }
+.practice-fit .pf-help .lead { display:block; margin:0 0 12px; }
+body.practice-fit > #steps { padding:4px 12px; margin:0; gap:4px; flex:none; }
+.practice-fit #steps a, .practice-fit #steps span { font-size:12px; }
+body.practice-fit > .ip-tabs { padding:4px 12px; margin:0; gap:4px; flex:none; }
+body.practice-fit > .ip-tabs button { padding:6px 12px; min-height:40px; font-size:13px; }
+body.practice-fit > .toolbar, body.practice-fit > #tExplainBar { margin:4px 12px 8px; padding:6px 10px; gap:6px; flex:none; }
+.practice-fit .toolbar .sep { display:none; }
+.practice-fit .toolbar label { font-size:13px; gap:5px; white-space:nowrap; }
+.practice-fit .toolbar input[type=text] { width:85px; }
+.practice-fit button, .practice-fit select, .practice-fit input[type=text], .practice-fit summary { min-height:40px; box-sizing:border-box; }
+.practice-fit .pf-tools > button { font-size:13px; padding:6px 10px; }
+.practice-fit .pf-help, .practice-fit .pf-options { position:relative; }
+.practice-fit summary { cursor:pointer; border:1px solid var(--line,#cbd5e1); border-radius:8px; padding:8px 12px; background:white; font-size:13px; list-style:none; }
+.practice-fit summary::-webkit-details-marker { display:none; }
+.practice-fit .pf-help summary { min-width:40px; text-align:center; font-weight:700; }
+.practice-fit .pf-popover { position:absolute; z-index:30; top:calc(100% + 6px); right:0; width:min(460px,calc(100vw - 32px)); max-height:65vh; overflow:auto; padding:16px; background:white; border:1px solid #cbd5e1; border-radius:10px; box-shadow:0 8px 24px #1233; }
+.practice-fit .pf-options .pf-popover { left:0; right:auto; width:280px; display:flex; flex-direction:column; gap:12px; }
+.practice-fit .pf-popover p.note { padding:0 !important; margin:8px 0 0; }
+body.practice-fit > main { display:grid; grid-template-columns:minmax(0,1fr) 400px; grid-template-rows:minmax(0,1fr); flex:1 1 0; min-height:0; gap:12px; padding:0 12px 10px; align-items:stretch; }
+body.practice-fit > main > .circuit-wrap, body.practice-fit > main.pf-tb-main > .card:first-child { display:flex; flex-direction:column; min-width:0; min-height:0; padding:8px; overflow:hidden; }
+.practice-fit .pf-figure-head { display:flex; align-items:center; gap:8px; flex-wrap:wrap; flex:none; margin-bottom:6px; }
+.practice-fit .pf-figure-head > strong { font-size:13px; margin-right:auto; }
+.practice-fit .pf-zoom, .practice-fit .pf-slot-nav { display:flex; gap:4px; }
+.practice-fit .pf-figure-head button { min-width:40px; min-height:44px; padding:5px 10px; font-size:13px; }
+.practice-fit .pf-viewport { position:relative; flex:1 1 0; min-width:0; min-height:0; overflow:hidden; touch-action:none; }
+.practice-fit .pf-zoomed { cursor:grab; }
+body.practice-fit #circuit, body.practice-fit #tBoard svg { position:absolute; inset:0; width:100%; min-width:0; height:100%; max-height:none; transition:none; }
+.practice-fit .pf-side { display:flex; flex-direction:column; min-height:0; min-width:0; }
+body.practice-fit #panel, body.practice-fit #tInfo { position:static; min-height:0; max-height:none; overflow:auto; overscroll-behavior:contain; margin:0; padding:12px 16px; }
+.practice-fit .pf-side #panel { flex:1 1 0; }
+.practice-fit #panel h2, .practice-fit #tInfo h2 { font-size:17px; }
+.practice-fit #panel .keypad button { min-height:44px; min-width:46px; }
+.practice-fit #result { margin:0 0 8px; max-height:35%; overflow:auto; flex-shrink:0; }
+.practice-fit #btnCircToggle { display:none; }
+body.practice-fit[data-stage=interpret] > main,
+body.practice-fit[data-stage=interpret][data-ip-mode] > main { display:grid; grid-template-columns:minmax(0,1fr) minmax(440px,.9fr); }
+body.practice-fit[data-stage=interpret][data-ip-compare] > main { grid-template-columns:minmax(0,.65fr) minmax(640px,1.35fr); }
+body.practice-fit[data-stage=interpret] #panel { order:initial; }
+body.practice-fit[data-stage=interpret][data-ip-mode] .circuit-wrap { display:flex; }
+body.practice-fit[data-stage=interpret][data-ip-mode] #circuit { position:absolute; width:100%; height:100%; min-width:0; max-width:none; margin:0; }
+body.practice-fit[data-stage=interpret][data-ip-mode] #answer { min-height:332px; height:332px; max-height:none; resize:vertical; font-size:15px; }
+body.practice-fit .ip-compare { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+body.practice-fit .ip-cmp-model { max-height:none; overflow:visible; }
+body.practice-fit #panel > h2 { margin:0 0 8px; padding-bottom:6px; }
+body.practice-fit #panel > .where { margin:0 0 6px; padding:4px 10px; font-size:13px; }
+body.practice-fit #panel .ip-help { margin:0 0 6px; padding:0; }
+body.practice-fit #panel .ip-help summary { border:0; padding:6px 10px; }
+body.practice-fit #panel .ip-label { margin:4px 0; }
+@media (min-width:600px) and (orientation:portrait) {
+ body.practice-fit > main, body.practice-fit[data-stage=interpret][data-ip-mode] > main { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) minmax(0,1fr); }
+ body.practice-fit > main.pf-tb-main { grid-template-rows:minmax(0,1.15fr) minmax(0,1fr); }
+}
+/* 화면 키보드와 작은 화면에서는 입력 영역의 크기를 우선한다. */
+body.practice-fit.pf-keyboard { height:auto; min-height:100dvh; }
+body.practice-fit.pf-keyboard > main, body.practice-fit.pf-keyboard[data-stage=interpret][data-ip-mode] > main { flex:none; display:flex; flex-direction:column; }
+body.practice-fit.pf-keyboard #panel { overflow:visible; }
+body.practice-fit.pf-keyboard .circuit-wrap { height:300px; flex:none; }
+@media (max-width:599px) {
+ body.practice-fit { height:auto; min-height:100dvh; }
+ body.practice-fit > main, body.practice-fit[data-stage=interpret][data-ip-mode] > main { flex:none; display:flex; flex-direction:column; }
+ body.practice-fit > main > .circuit-wrap, body.practice-fit > main.pf-tb-main > .card:first-child { height:360px; flex:none; }
+ body.practice-fit #panel, body.practice-fit #tInfo { max-height:none; overflow:visible; }
+ .practice-fit .pf-side { display:block; }
+ .practice-fit .eyebrow { font-size:10px; }
+ .practice-fit .header-actions { gap:4px; }
+ .practice-fit .page-header h1 { flex-basis:100%; }
+ .practice-fit .pf-tools { flex-wrap:wrap; }
+ .practice-fit #result { max-height:none; }
+ body.practice-fit .ip-compare { grid-template-columns:minmax(0,1fr); }
+}

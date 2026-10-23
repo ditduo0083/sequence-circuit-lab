@@ -1,0 +1,50 @@
+window.circuitNumber=10;
+window.circuitHints={X1:'PB1과 병렬인 X1 a가 1번 계통을 자기유지합니다. LS1 감지를 해제해도 X1은 유지됩니다.',X2:'PB2와 병렬인 X2 a가 2번 계통을 자기유지합니다. 1번 계통과 독립적으로 동작합니다.',T1:'X1이 여자된 상태에서 LS1 a가 닫히면 계시합니다. 완료 시 T1 한시 a가 MC1을 켭니다.',T2:'X2가 여자된 상태에서 LS2 a가 닫히면 계시합니다. T1과 별도로 시간을 설정합니다.',LS1:'기계적으로 감지되면 닫히는 a접점입니다. 감지 해제 시 T1은 0초로 복귀하고 M1은 즉시 멈춥니다.',LS2:'기계적으로 감지되면 닫히는 a접점입니다. 감지 해제는 2번 계통의 T2·M2에만 작용합니다.',MC1:'T1 한시 a로 여자됩니다. 보조 a는 RL, 보조 b는 WL의 1번 대기 경로를 제어합니다.',MC2:'T2 한시 a로 여자됩니다. 보조 a는 GL, 보조 b는 WL의 2번 대기 경로를 제어합니다.',WL:'(X1 a + MC1 b)와 (X2 a + MC2 b)는 병렬입니다. 선택된 계통 중 하나라도 모터가 정지한 대기 상태면 WL이 켜집니다.',EOCR:'트립 시 두 계통의 운전 전원을 차단하고 YL만 켭니다. 원본에 FR이나 부저는 없습니다.'};
+window.createCircuitLessons=function(model){
+ const fresh=()=>{const m=new CircuitModel();m.set('delay1',model.delay1);m.set('delay2',model.delay2);return m;};
+ const item=(m,heading,title,description,focus='')=>({snapshot:m.snapshot(),heading,title,description,focus});
+ const pulse=(m,i)=>{m.set('start'+i,true);m.set('start'+i,false);};
+ const lessons={};
+ for(const i of [1,2]){
+  const m=fresh(),list=[],d=m['delay'+i],lamp=i===1?'RL':'GL';
+  m.set('power',true);list.push(item(m,`${i}번 계통 · 기동 대기`,`PB${i}부터 누르고 LS${i}을 감지시켜 보세요.`,`PB${i}은 운전 준비, LS${i}은 타이머 계시 조건입니다.`,'X'+i));
+  m.set('start'+i,true);list.push(item(m,`PB${i} 누름 · WL 점등`,`X${i}이 여자되고 WL이 켜집니다.`,`아직 LS${i}이 열려 있어 T${i}과 모터는 대기합니다.`,'X'+i));
+  m.set('start'+i,false);list.push(item(m,`PB${i} 놓음 · 자기유지`,`X${i} a접점이 PB${i}을 우회합니다.`,`버튼을 놓아도 운전 준비 상태와 WL이 유지됩니다.`,'X'+i));
+  m.set('ls'+i,true);list.push(item(m,`LS${i} 감지 · T${i} 시작`,`LS${i} a접점이 닫혀 T${i}이 계시합니다.`,`지연 중에는 MC${i}이 소자이므로 WL은 계속 켜져 있습니다.`,'LS'+i));
+  m.tick(d/2);list.push(item(m,`T${i} 계시 중`,`T${i} ${d}초가 끝나기 전에는 M${i}이 기다립니다.`,`타이머 코일의 여자와 한시 접점의 닫힘은 같은 순간이 아닙니다.`,'T'+i));
+  m.tick(d/2);list.push(item(m,`T${i} 완료 · M${i} 운전`,`M${i}·${lamp}이 켜지고 WL이 꺼집니다.`,`다른 계통이 선택되지 않은 단독 운전 예입니다. MC${i} b가 WL 경로를 끊습니다.`,'MC'+i));
+  m.set('ls'+i,false);list.push(item(m,`LS${i} 해제 · M${i} 정지`,`T${i}은 복귀하고 M${i}은 멈추며 WL이 켜집니다.`,`X${i} 자기유지는 유지됩니다. LS 해제는 PB0 전체 정지와 다릅니다.`,'LS'+i));
+  m.set('ls'+i,true);list.push(item(m,`LS${i} 재감지 · 새 계시`,`PB${i}을 다시 누르지 않아도 T${i}이 0초부터 셉니다.`,`X${i}이 남아 있으므로 감지 조건만 다시 성립하면 됩니다.`,'T'+i));
+  lessons['branch'+i]=list;
+ }
+ const m=fresh(),both=[];
+ m.set('power',true);pulse(m,1);m.set('ls1',true);m.tick(m.delay1);both.push(item(m,'1번 운전 · 2번 미선택','M1만 운전 중이며 WL은 꺼져 있습니다.','이제 2번 계통을 준비해 WL 병렬 경로를 확인합니다.','WL'));
+ pulse(m,2);both.push(item(m,'M1 운전 + 2번 대기','M1이 운전해도 WL이 다시 켜집니다.','X2 a와 MC2 b의 별도 경로가 WL에 전원을 공급합니다.','WL'));
+ m.set('ls2',true);both.push(item(m,'LS2 감지 · T2 계시','M1은 계속 운전하고 2번은 지연 중입니다.','T1과 T2는 독립적입니다. 2번 대기 경로 때문에 WL은 켜져 있습니다.','T2'));
+ m.tick(m.delay2);both.push(item(m,'두 모터 동시 운전','M1·M2와 RL·GL이 함께 켜지고 WL은 꺼집니다.','원본에 두 계통의 상호 금지 접점이 없어 동시 운전이 가능합니다.','WL'));
+ m.set('ls1',false);both.push(item(m,'LS1만 해제 · M2 유지','M1만 멈추고 M2는 계속 운전합니다.','X1은 유지되므로 1번 대기 경로에서 WL이 켜집니다.','LS1'));
+ m.set('ls1',true);m.tick(m.delay1);both.push(item(m,'1번 재계시 완료','M1이 다시 합류해 두 모터가 운전합니다.','M2의 시간과 운전에는 영향을 주지 않습니다.','T1'));
+ m.set('stop',true);both.push(item(m,'PB0 · 두 계통 전체 정지','공통 PB0 b가 열려 X1·X2 자기유지를 해제합니다.','두 타이머와 모터 및 WL·RL·GL이 모두 꺼집니다.','X1'));
+ m.set('stop',false);both.push(item(m,'PB0 놓음 · 새 기동 대기','LS1·LS2 감지가 남아 있어도 재기동하지 않습니다.','PB1 또는 PB2로 해당 계통을 다시 선택해야 합니다.','X2'));
+ lessons.together=both;
+ const e=fresh(),alarm=[];e.set('power',true);pulse(e,1);pulse(e,2);e.set('ls1',true);e.set('ls2',true);e.tick(Math.max(e.delay1,e.delay2));
+ alarm.push(item(e,'두 모터 운전 · 보호 동작 전','과부하 시 공통 운전 경로가 어떻게 바뀌는지 보세요.','EOCR 기기 전원과 YL 경보 분기는 PB0보다 앞에 있습니다.','EOCR'));
+ e.set('trip',true);alarm.push(item(e,'과부하 · YL 점등','두 모터와 WL은 꺼지고 YL만 켜집니다.','X1·X2 자기유지와 T1·T2 계시도 해제됩니다. 부저는 없습니다.','EOCR'));
+ e.tick(10);alarm.push(item(e,'과부하 유지 · YL 지속','YL은 점멸하지 않고 계속 켜져 있습니다.','이 도면에는 FR이 없습니다.','EOCR'));
+ e.set('stop',true);alarm.push(item(e,'트립 중 PB0 · YL 유지','PB0를 눌러도 YL은 꺼지지 않습니다.','경보는 공통 정지 버튼 앞에서 전원을 받습니다.','EOCR'));
+ e.set('stop',false);e.set('trip',false);alarm.push(item(e,'RESET · 두 계통 대기','감지 입력이 남아 있어도 PB1·PB2를 기다립니다.','자기유지가 해제되어 LS만으로 모터가 켜지지 않습니다.','X1'));
+ pulse(e,1);alarm.push(item(e,'PB1 재기동 · T1 계시','LS1 감지가 남아 있어 T1은 바로 새 계시를 시작합니다.','WL은 켜지고 M1은 지연 완료까지 기다립니다.','T1'));
+ e.tick(e.delay1);alarm.push(item(e,'T1 완료 · M1 운전','선택한 1번 계통만 다시 운전합니다.','2번 계통은 PB2를 누르지 않아 계속 대기합니다.','MC1'));
+ e.set('power',false);alarm.push(item(e,'전원 OFF · 모든 부하 차단','MCCB를 끄면 EOCR 전원도 꺼집니다.','다시 켜더라도 기동 버튼을 놓았다면 두 계통은 대기합니다.','EOCR'));
+ lessons.alarm=alarm;return lessons;
+};
+window.explainCircuitState=s=>{
+ if(!s.power)return ['전원 OFF · 도면 010','MCCB를 켜고 PB1 또는 PB2를 누르세요.','두 계통은 각각의 LS 감지 후 T 지연을 거쳐 운전합니다.'];
+ if(s.trip)return ['과부하 · YL 점등','두 계통은 정지하고 YL만 계속 켜져 있습니다.','RESET 후 기동 버튼을 놓은 상태라면 PB1·PB2를 다시 눌러야 합니다.'];
+ if(s.stop)return ['PB0 · 전체 정지','X1·X2 자기유지와 두 타이머를 복귀시킵니다.','LS 감지 해제와 달리 운전 준비 상태도 함께 해제합니다.'];
+ if(s.mc1&&s.mc2)return ['두 모터 동시 운전','M1·M2와 RL·GL이 켜지고 WL은 꺼집니다.','두 계통에 상호 금지 접점이 없으므로 함께 운전할 수 있습니다.'];
+ if(s.mc1||s.mc2)return ['M'+(s.mc1?'1':'2')+' 운전'+(s.wl?' · 다른 계통 대기':''),s.wl?'한 모터가 운전 중이어도 다른 준비 계통이 대기하면 WL은 켜집니다.':'선택된 계통이 운전 중이므로 WL은 꺼집니다.','LS를 해제하면 해당 모터만 멈추며 자기유지는 남습니다.'];
+ if(s.timerOn1||s.timerOn2)return ['LS 감지 · 지연 계시 중','해당 타이머가 완료되어야 모터가 기동합니다.','감지를 해제하면 경과 시간이 0초로 복귀합니다. WL은 대기 중 점등합니다.'];
+ if(s.x1||s.x2)return ['운전 준비 · WL 점등','선택된 계통의 LS를 감지시켜 보세요.','PB를 놓아도 X 자기유지는 남아 감지를 기다립니다.'];
+ return ['기동 대기','PB1 또는 PB2를 눌렀다 놓으세요.','LS 감지만으로는 X 자기유지가 시작되지 않습니다.'];
+};

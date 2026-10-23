@@ -1,0 +1,6 @@
+interface:
+  display_name: "시퀀스 핀번호 적기 페이지"
+  short_description: "회로별 핀번호 데이터(circuit-NNN.js)와 핀번호 적기 페이지 제작·검사"
+  default_prompt: "$sequence-pin-number-page 요청 문서에 적힌 회로 번호의 핀번호 적기 데이터와 페이지를 001 기준 구현과 같은 방식으로 만들고 검사하기·겹침검사로 확인해줘."
+policy:
+  allow_implicit_invocation: true

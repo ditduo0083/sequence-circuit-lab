@@ -1,0 +1,82 @@
+/* 0078: 회로해석 28개 공용 화면. 클래스 없는 페이지에는 적용하지 않는다. */
+body.ip-layout { display:flex; flex-direction:column; height:100dvh; min-height:0; }
+.ip-layout [hidden] { display:none!important; }
+.ip-layout > .page-header { display:flex; align-items:center; flex-wrap:wrap; gap:4px 16px; padding:8px 14px; flex:none; }
+.ip-layout .header-row { display:contents; }
+.ip-layout .brand-logo { width:30px; height:30px; }
+.ip-layout .brand-name { font-size:15px; }
+.ip-layout .brand-name span { display:none; }
+.ip-layout .header-actions { margin-left:auto; order:3; }
+.ip-layout > .page-header h1 { font-size:17px; margin:0; }
+.ip-layout > #steps { padding:4px 12px; margin:0; gap:4px; flex:none; }
+.ip-layout #steps a,.ip-layout #steps span { font-size:12px; }
+.ip-layout > .ps-row { flex-wrap:wrap; }
+.ip-layout .ip-tabs { margin:0; padding:0; gap:4px; }
+.ip-layout .ip-tabs button { transition:none; }
+.ip-layout .ps-settings { position:relative; }
+.ip-layout .pf-popover { position:absolute; z-index:30; right:0; top:100%; width:min(500px,calc(100vw - 32px)); max-height:65dvh; overflow:auto; padding:14px; border:1px solid var(--line); border-radius:10px; background:white; box-shadow:var(--shadow-md); }
+.ip-layout .ps-settings .pf-popover { width:240px; }
+.ip-layout .ps-brief .pf-popover { left:0; right:auto; width:min(650px,calc(100vw - 32px)); }
+.ip-layout .ps-row .ip-progress { font-size:12px; }
+.ip-layout .ps-settings { margin-left:auto; }
+.ip-layout button,.ip-layout summary { min-height:44px; }
+body.ip-layout > main,body.ip-layout[data-ip-mode] > main { display:grid; grid-template-columns:minmax(0,68fr) minmax(0,32fr); grid-template-rows:minmax(0,1fr); flex:1; min-height:0; padding:0 12px 12px; gap:12px; align-items:stretch; }
+body.ip-layout[data-ip-mode=write] > main { grid-template-columns:minmax(0,62fr) minmax(0,38fr); }
+body.ip-layout[data-ip-compare] > main { grid-template-columns:minmax(0,72fr) minmax(0,28fr); }
+/* 0081: 쓰기 활동만 회로를 넓힌다. 비교·설명 펼침·태블릿/모바일은 기존 배치. */
+@media(min-width:1101px) {
+ body.ip-layout[data-ip-mode=write]:not([data-ip-compare]) > main { grid-template-columns:minmax(0,40fr) minmax(0,60fr); }
+ body.ip-layout[data-ip-mode=write]:not([data-ip-compare]) > .ps-brief[open] ~ main { grid-template-columns:minmax(0,62fr) minmax(0,38fr); }
+}
+.ip-layout .ip-number-guide { flex:none; margin:5px 0 0; font-size:11px; line-height:1.5; color:var(--muted); }
+body.ip-layout > main > .circuit-wrap { display:flex; flex-direction:column; min-width:0; min-height:0; padding:8px; overflow:hidden; }
+body.ip-layout[data-ip-mode=write] > main > #panel { order:-1; }
+.ip-layout .il-figure-head { display:flex; gap:5px; align-items:center; flex-wrap:wrap; flex:none; margin-bottom:6px; }
+.ip-layout .il-figure-head strong { margin-right:auto; font-size:13px; }
+.ip-layout .il-figure-head button { min-width:44px; padding:5px 8px; font-size:12px; }
+.ip-layout .il-viewport { position:relative; flex:1; min-height:0; overflow:hidden; touch-action:none; }
+body.ip-layout[data-ip-mode] #circuit { position:absolute; inset:0; width:100%; height:100%; min-width:0; max-width:none; max-height:none; margin:0; transition:none; }
+/* 0082: 이전 쓰기 CSS의 최소 360px·자동 너비보다 맞춤 칸의 실제 폭/높이를 우선한다. */
+.ip-layout .il-viewport > #circuit { width:100%!important; height:100%!important; min-width:0!important; max-width:none!important; min-height:0!important; max-height:none!important; margin:0!important; }
+body.ip-layout #panel { position:static; min-height:0; min-width:0; max-height:none; overflow:auto; overscroll-behavior:contain; padding:12px; margin:0; }
+body.ip-layout[data-ip-mode=write] #panel { display:flex; flex-direction:column; overflow:hidden; }
+.ip-layout #panel > h2 { font-size:17px; margin:0 0 8px; }
+.ip-layout[data-ip-mode=write] #panel > h2 { display:none; }
+.ip-layout[data-ip-mode=write] .ip-label { margin:0 0 6px; }
+body.ip-layout[data-ip-mode=write] #answer { flex:1; min-height:240px; height:auto; max-height:none; font-size:16px; line-height:1.8; resize:none; }
+.ip-layout #panel > .where,.ip-layout #panel > .ip-help,.ip-layout #panel > .ip-model-note { display:none; }
+.ip-layout #panel > .ip-row { margin:8px 0 0; flex:none; }
+.ip-layout .ip-compare { flex:1; min-height:0; display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:12px; }
+.ip-layout .ip-cmp-mine { min-height:0; display:flex; flex-direction:column; }
+.ip-layout .ip-cmp-model { margin:0; padding:0 0 0 12px; min-height:0; overflow:auto; }
+.ip-layout .ip-cmp-mine .ip-row { flex:none; }
+.ip-layout .ip-qdots button { min-height:44px; min-width:44px; }
+.ip-layout #btnCircToggle { display:none!important; }
+.il-large { width:calc(100vw - 32px); max-width:none; height:calc(100dvh - 32px); max-height:none; padding:12px; border:1px solid var(--line); border-radius:12px; }
+.il-large::backdrop { background:#173d4877; }
+.il-large > header { display:flex; align-items:center; gap:8px; padding:0 0 8px; }
+.il-large > header strong { margin-right:auto; }
+.il-large button { min-height:44px; }
+.il-large .il-large-picture { height:calc(100% - 56px); }
+.il-large svg { width:100%; height:100%; }
+@media (orientation:portrait),(max-width:1100px) {
+ .ip-layout .eyebrow,.ip-layout #fullscreen-button { display:none; }
+ .ip-layout .brand-name { font-size:13px; }
+ .ip-layout > .page-header h1 { font-size:15px; }
+ .ip-layout #steps .cn-title,.ip-layout #steps .cn-word { display:none; }
+ .ip-layout > main { gap:8px; }
+ .ip-layout .il-figure-head strong { flex-basis:100%; }
+}
+/* 높이가 줄어도 답안과 참고 회로를 유지한다. 입력 칸은 문서 스크롤로 접근한다. */
+body.ip-layout.il-keyboard { height:auto; min-height:100dvh; }
+body.ip-layout.il-keyboard[data-ip-mode=write] > main { flex:none; min-height:400px; }
+body.ip-layout.il-keyboard[data-ip-mode=write] #answer { min-height:280px; }
+@media(max-width:599px) {
+ body.ip-layout { height:auto; min-height:100dvh; }
+ body.ip-layout[data-ip-mode] > main { flex:none; display:flex; flex-direction:column; }
+ body.ip-layout[data-ip-mode=write] > main > #panel { order:0; min-height:430px; }
+ body.ip-layout > main > .circuit-wrap { height:340px; flex:none; }
+ .ip-layout .ip-compare { grid-template-columns:minmax(0,1fr); }
+ .ip-layout .ip-cmp-model { max-height:300px; }
+ .ip-layout > .page-header h1 { flex-basis:100%; }
+}
